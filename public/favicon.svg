@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B1E2D"/>
+      <stop offset="100%" stop-color="#C0253F"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
+  <!-- White S letterform — clean, bold, centered -->
+  <text
+    x="16"
+    y="23"
+    font-family="'Arial Black', 'Arial', sans-serif"
+    font-size="20"
+    font-weight="900"
+    text-anchor="middle"
+    fill="white"
+    letter-spacing="-0.5"
+  >S</text>
+</svg>
