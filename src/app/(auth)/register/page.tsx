@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
 
-export default function RegisterPage() {
+// 1. Vnitřní komponenta s veškerou logikou formuláře
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signUp, signInWithGoogle } = useAuthStore();
@@ -16,7 +17,6 @@ export default function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  // Email confirmation required state
   const [confirmationSent, setConfirmationSent] = useState(false);
 
   const selectedPlan = searchParams.get('plan');
@@ -49,12 +49,10 @@ export default function RegisterPage() {
     }
 
     if (result.needsConfirmation) {
-      // Supabase requires email confirmation — show message instead of redirecting
       setConfirmationSent(true);
       return;
     }
 
-    // Auto-confirmed (email confirmation disabled in Supabase)
     router.push('/onboarding');
   };
 
@@ -66,10 +64,8 @@ export default function RegisterPage() {
       setErrors({ general: error });
       setIsGoogleLoading(false);
     }
-    // Redirect happens via OAuth — no further action
   };
 
-  // Email confirmation sent screen
   if (confirmationSent) {
     return (
       <div className="text-center">
@@ -82,9 +78,6 @@ export default function RegisterPage() {
           <span className="text-[#F5F5F5] font-medium">{email}</span>.
           <br />
           Klikni na odkaz v e-mailu a poté se přihlas.
-        </p>
-        <p className="text-xs text-[#A1A1AA]/60 mb-6">
-          Pokud e-mail nevidíš, zkontroluj složku se spamem.
         </p>
         <Link
           href="/login"
@@ -119,7 +112,6 @@ export default function RegisterPage() {
         </div>
       )}
 
-      {/* Google first — easier for users */}
       <button
         type="button"
         onClick={handleGoogle}
@@ -210,5 +202,14 @@ export default function RegisterPage() {
         </Link>
       </p>
     </div>
+  );
+}
+
+// 2. Hlavní export, který Next.js vyžaduje pro build
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="text-[#A1A1AA] text-center p-10">Načítání...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }
