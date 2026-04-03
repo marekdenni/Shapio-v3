@@ -3,8 +3,9 @@ import OpenAI from 'openai';
 import type { UserProfile, SubscriptionTier, WorkoutPlan, NutritionPlan } from '@/types';
 
 // Initialize OpenAI client
+// PŘIDÁNA POJISTKA: Pokud klíč chybí během buildu, použije se dummy text, aby proces nespadl.
 export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'sk-dummy-key-to-bypass-netlify-build-error',
 });
 
 // AI usage limits per tier per day
