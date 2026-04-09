@@ -6,6 +6,7 @@ import { create } from 'zustand';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { User } from '@supabase/supabase-js';
 import type { UserProfile } from '@/types';
+import { getAppUrl } from '@/lib/config';
 
 const supabase = createClientComponentClient();
 
@@ -22,6 +23,8 @@ interface AuthState {
   signOut: () => Promise<void>;
   loadProfile: (userId: string) => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<{ error: string | null }>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
 
   isAuthenticated: () => boolean;
   isOnboardingCompleted: () => boolean;
@@ -106,13 +109,12 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   signUp: async (email, password, name) => {
     set({ loading: true });
     try {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: { name },
-          emailRedirectTo: `${appUrl}/auth/callback?next=/onboarding`,
+          emailRedirectTo: `${getAppUrl()}/auth/callback?next=/onboarding`,
         },
       });
 
@@ -152,11 +154,10 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   signInWithGoogle: async () => {
     try {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${appUrl}/auth/callback`,
+          redirectTo: `${getAppUrl()}/auth/callback`,
         },
       });
 
@@ -170,6 +171,38 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   signOut: async () => {
     await supabase.auth.signOut();
     set({ user: null, profile: null, loading: false });
+  },
+
+  resetPassword: async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${getAppUrl()}/auth/callback?next=/reset-password`,
+      });
+      if (error) {
+        if (error.message.includes('rate limit')) {
+          return { error: 'Příliš mnoho pokusů. Zkus to za chvíli.' };
+        }
+        return { error: 'Nastala chyba. Zkontroluj e-mail a zkus to znovu.' };
+      }
+      return { error: null };
+    } catch {
+      return { error: 'Nastala neočekávaná chyba. Zkontroluj připojení.' };
+    }
+  },
+
+  updatePassword: async (newPassword: string) => {
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) {
+        if (error.message.includes('same password')) {
+          return { error: 'Nové heslo musí být jiné než stávající.' };
+        }
+        return { error: 'Změna hesla selhala. Zkus to prosím znovu.' };
+      }
+      return { error: null };
+    } catch {
+      return { error: 'Nastala neočekávaná chyba.' };
+    }
   },
 
   loadProfile: async (userId: string) => {

@@ -269,6 +269,123 @@ Do not start with "Based on" - be direct and personal.
 }
 
 /**
+ * Structured free welcome analysis shown on the results page after onboarding.
+ * Provides real value to free users without revealing premium content.
+ */
+export interface FreeWelcomeAnalysis {
+  greeting: string;
+  startingPoint: string;
+  mainBottleneck: string;
+  sevenDayFocus: string;
+  trainingDirection: string;
+  nutritionDirection: string;
+  motivationalCta: string;
+}
+
+export async function generateFreeWelcomeAnalysis(
+  profile: Partial<UserProfile>
+): Promise<FreeWelcomeAnalysis> {
+  const goalMap: Record<string, string> = {
+    fat_loss: 'spalování tuku a zhubnutí',
+    muscle_gain: 'budování svalů a nabírání hmoty',
+    recomposition: 'rekompozici těla (svaly + hubnutí zároveň)',
+    general_fitness: 'zlepšení celkové kondice a pohyblivosti',
+  };
+  const levelMap: Record<string, string> = {
+    beginner: 'začátečník',
+    intermediate: 'středně pokročilý',
+    advanced: 'pokročilý',
+  };
+  const equipmentMap: Record<string, string> = {
+    none: 'bez vybavení (cvičení doma s vlastní vahou)',
+    home_basic: 'domácí vybavení (činky, odporové gumy)',
+    gym_full: 'plně vybavená posilovna',
+  };
+  const sexLabel = profile.sex === 'female' ? 'žena' : 'muž';
+  const goalLabel = goalMap[profile.goal || 'general_fitness'] ?? 'transformaci těla';
+  const levelLabel = levelMap[profile.fitnessLevel || 'beginner'] ?? 'začátečník';
+  const equipmentLabel = equipmentMap[profile.equipment || 'gym_full'] ?? 'posilovna';
+
+  const prompt = `
+Jsi osobní fitness kouč Shapio. Uživatel právě dokončil vstupní dotazník a čeká na svou první analýzu.
+Toto je ZDARMA verze analýzy — má uživatele nadchnout, ukázat mu, že mu Shapio rozumí, ale nesmí nahradit prémiový plán.
+
+Profil uživatele:
+- Pohlaví: ${sexLabel}
+- Věk: ${profile.age || 25} let
+- Výška: ${profile.heightCm || 175} cm
+- Váha: ${profile.weightKg || 80} kg
+- Cíl: ${goalLabel}
+- Úroveň: ${levelLabel}
+- Vybavení: ${equipmentLabel}
+- Tréninků/týden: ${profile.workoutDaysPerWeek || 3}
+- Stravování: ${profile.dietaryPreference || 'bez omezení'}
+- Motivace: ${profile.targetMotivation || ''}
+- Zranění: ${profile.injuries || 'žádná'}
+
+Vytvoř personalizovanou uvítací analýzu v češtině. Buď přímý, konkrétní, motivující. Nepoužívej prázdná klišé.
+Délky: greeting 1 věta, ostatní sekce 2–3 věty.
+
+Vrať JSON přesně v tomto formátu:
+{
+  "greeting": "Osobní pozdrav adresovaný uživateli (bez jména) — 1 věta, přímá, motivující",
+  "startingPoint": "Shrnutí výchozího stavu — co vidíš v jeho profilu, kde je teď",
+  "mainBottleneck": "Největší překážka nebo příležitost — co ho nejspíš brzdí nebo co může být jeho klíčovým pákem",
+  "sevenDayFocus": "Konkrétní doporučení na prvních 7 dní — co přesně dělat, žádné generické rady",
+  "trainingDirection": "Směr tréninku — jakým stylem cvičit, jak často, na co se soustředit (BEZ konkrétního plánu — to je premium)",
+  "nutritionDirection": "Stravovací směr — základní pravidla pro jeho cíl (BEZ přesných maker/kalorií — to je premium)",
+  "motivationalCta": "Závěrečná motivační věta + výzva k akci — proč začít hned dnes"
+}`;
+
+  const fallback: FreeWelcomeAnalysis = {
+    greeting: 'Tvůj profil je připraven — pojďme na to.',
+    startingPoint: `Začínáš jako ${levelLabel} s cílem ${goalLabel}. To je solidní výchozí bod — přesně víme, s čím pracujeme.`,
+    mainBottleneck: 'Největší překážka pro většinu lidí na tvé úrovni je konzistence v prvních 4 týdnech. Přesně na to se zaměříme.',
+    sevenDayFocus: `Prvních 7 dní: cvič ${profile.workoutDaysPerWeek || 3}× a dbej na pravidelný spánek. Nevynechej ani jeden trénink — první týden nastavuje zvyk.`,
+    trainingDirection: `Pro tvůj cíl (${goalLabel}) doporučujeme kombinaci silového tréninku a dostatku odpočinku. Progresivní přetížení je klíčové.`,
+    nutritionDirection: 'Zaměř se na dostatečný příjem bílkovin a vyhnout se zpracovaným potravinám. Hydratace (2,5 l/den) je základ.',
+    motivationalCta: 'Začít dnes je vždy lepší než začít zítra. Tvůj plán na 30 dní tě čeká.',
+  };
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
+
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: 'Jsi fitness kouč. Vždy odpovídej pouze platným JSON objektem, žádný markdown.' },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.75,
+      max_tokens: 700,
+      response_format: { type: 'json_object' },
+    });
+
+    const raw = completion.choices[0]?.message?.content ?? '{}';
+    const parsed = JSON.parse(raw) as Partial<FreeWelcomeAnalysis>;
+
+    // Validate that all required fields exist
+    if (
+      parsed.greeting &&
+      parsed.startingPoint &&
+      parsed.mainBottleneck &&
+      parsed.sevenDayFocus &&
+      parsed.trainingDirection &&
+      parsed.nutritionDirection &&
+      parsed.motivationalCta
+    ) {
+      return parsed as FreeWelcomeAnalysis;
+    }
+
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+/**
  * Generates AI progress feedback based on uploaded photos (for PRO/ELITE only).
  */
 export async function generateProgressFeedback(

@@ -10,6 +10,7 @@ import { QuestionnaireForm } from '@/components/onboarding/QuestionnaireForm';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { useAuth } from '@/hooks/useAuth';
 import { ONBOARDING } from '@/constants/copy';
+import { useEffect } from 'react';
 
 const TOTAL_STEPS = 5; // 0-4 (step 5 is loading, separate page)
 
@@ -17,8 +18,15 @@ const stepLabels = ['Vítej', 'Fotka', 'Cíl', 'Fyzička', 'Preference'];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { profile, updateProfile } = useAuth();
+  const { profile, updateProfile, loading } = useAuth();
   const store = useOnboardingStore();
+
+  // If onboarding already completed, go straight to dashboard
+  useEffect(() => {
+    if (!loading && profile?.onboardingCompleted) {
+      router.replace('/dashboard');
+    }
+  }, [loading, profile?.onboardingCompleted, router]);
 
   const handleNext = async () => {
     if (!store.canGoNext()) return;

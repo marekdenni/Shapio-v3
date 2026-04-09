@@ -78,7 +78,7 @@ export function PricingSection({
             tier={tier}
             onSelect={handleSelectPlan}
             loading={loadingTier === tier}
-            currentTier={currentTier}
+            currentTier={isAuthenticated ? currentTier : undefined}
           />
         ))}
       </div>

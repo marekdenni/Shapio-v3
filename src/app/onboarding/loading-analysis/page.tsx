@@ -69,6 +69,9 @@ export default function LoadingAnalysisPage() {
         // Complete progress
         setProgress(100);
 
+        // Clear persisted onboarding data — user is done with onboarding
+        store.reset();
+
         // Small delay then redirect to results
         setTimeout(() => {
           router.push('/onboarding/results');

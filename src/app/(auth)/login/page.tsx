@@ -9,6 +9,8 @@ import { useAuthStore } from '@/stores/auth';
 export default function LoginPage() {
   const router = useRouter();
   const { signIn, signInWithGoogle, loading } = useAuthStore();
+  // Used to read profile state after signIn resolves
+  const getState = useAuthStore.getState;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,9 +34,13 @@ export default function LoginPage() {
       return;
     }
 
-    // Redirect to dashboard after successful sign in
-    // Middleware and onboarding page will handle further routing if needed
-    router.push('/dashboard');
+    // Profile is loaded after signIn resolves — route intelligently
+    const { profile } = getState();
+    if (profile?.onboardingCompleted === false) {
+      router.push('/onboarding');
+    } else {
+      router.push('/dashboard');
+    }
   };
 
   const handleGoogle = async () => {

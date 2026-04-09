@@ -8,6 +8,7 @@
 //   STRIPE_WEBHOOK_SECRET — from Stripe dashboard or CLI (whsec_...)
 import Stripe from 'stripe';
 import type { SubscriptionTier, PlanDetails } from '@/types';
+import { getAppUrl } from '@/lib/config';
 
 // Initialize Stripe with secret key
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -126,7 +127,7 @@ export async function createCheckoutSession(
   customerEmail?: string,
   stripeCustomerId?: string | null
 ): Promise<Stripe.Checkout.Session> {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appUrl = getAppUrl();
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: 'subscription', // Always subscription — ELITE is now monthly
@@ -164,11 +165,9 @@ export async function createCheckoutSession(
 export async function createBillingPortalSession(
   customerId: string
 ): Promise<Stripe.BillingPortal.Session> {
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
-    return_url: `${appUrl}/settings`,
+    return_url: `${getAppUrl()}/settings`,
   });
 
   return session;

@@ -8,10 +8,14 @@ import { Card } from '@/components/ui/Card';
 import { useAuth } from '@/hooks/useAuth';
 import { RESULTS } from '@/constants/copy';
 import { supabase } from '@/lib/supabase/client';
+import type { FreeWelcomeAnalysis } from '@/lib/openai';
+
+interface ParsedSummary {
+  text?: string;
+  freeAnalysis?: FreeWelcomeAnalysis;
+}
 
 interface WorkoutPlanData {
-  assessmentSummary?: string;
-  focusAreas?: string[];
   weeks?: Array<{
     days: Array<{
       isRestDay: boolean;
@@ -23,6 +27,7 @@ interface WorkoutPlanData {
 
 export default function ResultsPage() {
   const { profile } = useAuth();
+  const [freeAnalysis, setFreeAnalysis] = useState<FreeWelcomeAnalysis | null>(null);
   const [planData, setPlanData] = useState<WorkoutPlanData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,13 +45,22 @@ export default function ResultsPage() {
           .single();
 
         if (data) {
-          setPlanData({
-            assessmentSummary: data.assessment_summary,
-            weeks: data.plan_data as WorkoutPlanData['weeks'],
-          });
+          setPlanData({ weeks: data.plan_data as WorkoutPlanData['weeks'] });
+
+          // Try to parse structured analysis (new format)
+          if (data.assessment_summary) {
+            try {
+              const parsed = JSON.parse(data.assessment_summary) as ParsedSummary;
+              if (parsed.freeAnalysis) {
+                setFreeAnalysis(parsed.freeAnalysis);
+              }
+            } catch {
+              // Old format — plain string, no structured analysis available
+            }
+          }
         }
-      } catch (err) {
-        // If no plan yet, show placeholder
+      } catch {
+        // No plan yet — show placeholder content
       } finally {
         setLoading(false);
       }
@@ -54,12 +68,6 @@ export default function ResultsPage() {
 
     fetchPlan();
   }, [profile?.id]);
-
-  const assessmentText =
-    planData?.assessmentSummary ||
-    `Na základě tvého profilu jsem sestavil personalizovaný plán zaměřený na tvůj cíl.
-    Tvůj program je navržen s ohledem na tvou aktuální kondici a dostupné vybavení.
-    Připravil jsem pro tebe optimální kombinaci tréninků a výživy pro maximální výsledky.`;
 
   // Sample exercises from plan or defaults
   const firstDay = planData?.weeks?.[0]?.days?.find((d) => !d.isRestDay);
@@ -69,155 +77,165 @@ export default function ResultsPage() {
     { name: 'Mrtvý tah', sets: 3, reps: '5-8' },
   ];
 
-  const focusAreas = [
-    { label: 'Spalování tuku', score: 87, color: 'bg-cta' },
-    { label: 'Svalový rozvoj', score: 74, color: 'bg-blue-500' },
-    { label: 'Celková kondice', score: 61, color: 'bg-green-500' },
+  const lockedSections = [
+    { title: 'Kompletní plán', description: 'Trénink na 30–180 dní dopředu', icon: '📅' },
+    { title: 'Přesná makra', description: 'Kalorie, bílkoviny, sacharidy, tuky', icon: '🥗' },
+    { title: 'AI Kouč 24/7', description: 'Odpovím na cokoliv kdykoli', icon: '🤖' },
+    { title: 'Adaptivní plán', description: 'Přizpůsobuje se tvému pokroku', icon: '⚡' },
   ];
 
-  const lockedSections = [
-    {
-      title: 'Podrobná analýza',
-      description: 'Kompletní body composition analýza',
-      icon: '📊',
-    },
-    {
-      title: 'Adaptivní plán',
-      description: 'Plán se upravuje podle tvého pokroku',
-      icon: '⚡',
-    },
-    {
-      title: 'Makra a výživa',
-      description: 'Přesné kalorické a makro cíle',
-      icon: '🥗',
-    },
-    {
-      title: 'AI Kouč',
-      description: 'Osobní AI asistent 24/7',
-      icon: '🤖',
-    },
-  ];
+  const analysisSection = (icon: string, title: string, content: string) => (
+    <div className="flex gap-3">
+      <div className="w-8 h-8 rounded-xl bg-[#B3263E]/10 border border-[#B3263E]/20 flex items-center justify-center shrink-0 mt-0.5">
+        <span className="text-sm">{icon}</span>
+      </div>
+      <div>
+        <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-1">{title}</p>
+        <p className="text-sm text-[#A1A1AA] leading-relaxed">{content}</p>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4">
+    <div className="min-h-screen bg-[#0B0B0D] py-8 px-4">
       <div className="max-w-lg mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-14 h-14 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-red mx-auto mb-5">
+          <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(179,38,62,0.4)] mx-auto mb-5">
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-3xl font-black text-text-primary mb-2">{RESULTS.title}</h1>
-          <p className="text-text-secondary">{RESULTS.subtitle}</p>
+          <h1 className="text-3xl font-black text-[#F5F5F5] mb-2">{RESULTS.title}</h1>
+          <p className="text-[#A1A1AA] text-sm">{RESULTS.subtitle}</p>
         </div>
 
-        {/* Assessment summary */}
-        <Card variant="elevated" className="mb-5">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-7 h-7 rounded-lg bg-cta/20 border border-cta/40 flex items-center justify-center">
+        {/* Free AI Welcome Analysis */}
+        <div className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 mb-5">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-7 h-7 rounded-lg bg-[#B3263E]/20 border border-[#B3263E]/40 flex items-center justify-center">
               <span className="text-sm">🤖</span>
             </div>
-            <span className="text-sm font-semibold text-text-primary">AI Analýza</span>
+            <span className="text-sm font-semibold text-[#F5F5F5]">Tvoje osobní analýza od Shapio</span>
+            <span className="ml-auto px-2 py-0.5 bg-green-900/30 border border-green-700/40 rounded-full text-xs text-green-400 font-semibold">
+              Zdarma
+            </span>
           </div>
-          <p className="text-text-secondary text-sm leading-relaxed">
-            {loading ? (
-              <span className="animate-pulse">Načítám analýzu...</span>
-            ) : (
-              assessmentText
-            )}
-          </p>
-        </Card>
 
-        {/* Focus areas */}
-        <Card variant="elevated" className="mb-5">
-          <h3 className="text-sm font-semibold text-text-primary mb-4">{RESULTS.focusAreas}</h3>
-          <div className="flex flex-col gap-3">
-            {focusAreas.map((area) => (
-              <div key={area.label}>
-                <div className="flex justify-between items-center mb-1.5">
-                  <span className="text-sm text-text-secondary">{area.label}</span>
-                  <span className="text-sm font-bold text-text-primary">{area.score}%</span>
+          {loading ? (
+            <div className="flex flex-col gap-4 animate-pulse">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="flex gap-3">
+                  <div className="w-8 h-8 bg-[#2A2A31] rounded-xl shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-3 bg-[#2A2A31] rounded w-1/3" />
+                    <div className="h-3 bg-[#2A2A31] rounded w-full" />
+                    <div className="h-3 bg-[#2A2A31] rounded w-4/5" />
+                  </div>
                 </div>
-                <div className="h-2 bg-surface rounded-full overflow-hidden border border-border/50">
-                  <div
-                    className={`h-full ${area.color} rounded-full transition-all duration-1000`}
-                    style={{ width: `${area.score}%` }}
-                  />
-                </div>
+              ))}
+            </div>
+          ) : freeAnalysis ? (
+            <div className="flex flex-col gap-4">
+              {/* Greeting */}
+              <p className="text-[#F5F5F5] font-semibold text-base border-l-2 border-[#B3263E] pl-3">
+                {freeAnalysis.greeting}
+              </p>
+
+              {analysisSection('📍', 'Kde začínáš', freeAnalysis.startingPoint)}
+              {analysisSection('🎯', 'Tvůj hlavní pák', freeAnalysis.mainBottleneck)}
+              {analysisSection('📅', 'Prvních 7 dní', freeAnalysis.sevenDayFocus)}
+              {analysisSection('💪', 'Tréninkový směr', freeAnalysis.trainingDirection)}
+              {analysisSection('🥦', 'Výživový směr', freeAnalysis.nutritionDirection)}
+
+              {/* Motivational CTA */}
+              <div className="mt-2 p-3 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl">
+                <p className="text-sm text-[#D13A52] font-medium leading-relaxed">
+                  {freeAnalysis.motivationalCta}
+                </p>
               </div>
-            ))}
-          </div>
-        </Card>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              <p className="text-[#F5F5F5] font-semibold border-l-2 border-[#B3263E] pl-3">
+                Tvůj plán je připraven. Pojďme na to.
+              </p>
+              {analysisSection('📍', 'Kde začínáš', 'Na základě tvého profilu vidíme jasný výchozí bod pro transformaci. Máš solidní základ, se kterým se dá skvěle pracovat.')}
+              {analysisSection('📅', 'Prvních 7 dní', `Začni s ${profile?.workoutDaysPerWeek || 3} tréninky tento týden. Konzistence v prvním týdnu vytváří zvyk, který pak jede automaticky.`)}
+              {analysisSection('💪', 'Tréninkový směr', 'Kombinace silového tréninku s progresivním přetížením je základ pro každý cíl — ať chceš hubnout nebo nabírat.')}
+              {analysisSection('🥦', 'Výživový směr', 'Dostatečný příjem bílkovin (min. 1,6 g/kg) a hydratace (2,5 l vody denně) jsou dvě věci, které zafungují okamžitě.')}
+            </div>
+          )}
+        </div>
 
         {/* Sample workout preview */}
-        <Card variant="elevated" className="mb-5">
-          <h3 className="text-sm font-semibold text-text-primary mb-4">{RESULTS.sampleWorkout}</h3>
+        <div className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 mb-5">
+          <h3 className="text-sm font-semibold text-[#F5F5F5] mb-4">{RESULTS.sampleWorkout}</h3>
           <div className="flex flex-col gap-2">
             {sampleExercises.map((exercise, i) => (
-              <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                <span className="text-sm text-text-primary">{exercise.name}</span>
-                <span className="text-xs text-text-secondary font-mono bg-surface px-2 py-1 rounded-lg border border-border">
+              <div key={i} className="flex items-center justify-between py-2 border-b border-[#2A2A31] last:border-0">
+                <span className="text-sm text-[#F5F5F5]">{exercise.name}</span>
+                <span className="text-xs text-[#A1A1AA] font-mono bg-[#1D1D22] px-2 py-1 rounded-lg border border-[#2A2A31]">
                   {exercise.sets}× {exercise.reps}
                 </span>
               </div>
             ))}
           </div>
-          <p className="text-xs text-text-secondary/60 mt-3 text-center">
-            + dalších {profile?.workoutDaysPerWeek || 3} dnů tréninků v týdnu
+          <p className="text-xs text-[#A1A1AA]/60 mt-3 text-center">
+            + dalších {profile?.workoutDaysPerWeek || 3} dnů tréninků v týdnu — odemkni plný plán
           </p>
-        </Card>
+        </div>
 
-        {/* Locked sections */}
+        {/* Locked premium sections */}
         <div className="mb-6">
-          <p className="text-xs font-semibold text-text-secondary/60 uppercase tracking-wider mb-3">
-            Odemkni s PRO
+          <p className="text-xs font-semibold text-[#A1A1AA]/60 uppercase tracking-wider mb-3">
+            Odemkni s PRO nebo STARTER
           </p>
           <div className="grid grid-cols-2 gap-3">
             {lockedSections.map((section) => (
               <div
                 key={section.title}
-                className="relative bg-surface border border-border rounded-2xl p-4 overflow-hidden"
+                className="relative bg-[#151518] border border-[#2A2A31] rounded-2xl p-4 overflow-hidden"
               >
                 {/* Lock overlay */}
-                <div className="absolute inset-0 bg-background/60 flex items-center justify-center rounded-2xl">
-                  <svg className="w-5 h-5 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute inset-0 bg-[#0B0B0D]/50 flex items-center justify-center rounded-2xl">
+                  <svg className="w-5 h-5 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <span className="text-2xl blur-sm">{section.icon}</span>
-                <p className="text-sm font-semibold text-text-primary mt-1 blur-sm">{section.title}</p>
-                <p className="text-xs text-text-secondary blur-sm">{section.description}</p>
+                <span className="text-2xl blur-sm select-none">{section.icon}</span>
+                <p className="text-sm font-semibold text-[#F5F5F5] mt-1 blur-sm select-none">{section.title}</p>
+                <p className="text-xs text-[#A1A1AA] blur-sm select-none">{section.description}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Main CTA */}
-        <div className="bg-surface2 border border-cta/30 rounded-2xl p-5 mb-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-radial from-cta/5 to-transparent pointer-events-none" />
+        <div className="bg-[#151518] border border-[#B3263E]/30 rounded-2xl p-5 mb-4 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#B3263E]/5 to-transparent pointer-events-none" />
           <div className="relative">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-xl">🔥</span>
-              <span className="text-sm font-semibold text-cta">Nejoblíbenější volba</span>
+              <span className="text-sm font-semibold text-[#B3263E]">Nejoblíbenější volba</span>
             </div>
-            <h3 className="text-xl font-black text-text-primary mb-1">PRO plán — 349 Kč/měs</h3>
-            <p className="text-text-secondary text-sm mb-4">
-              90 dní • AI kouč • Adaptivní plán • Makra a výživa
+            <h3 className="text-xl font-black text-[#F5F5F5] mb-1">PRO plán — 349 Kč/měs</h3>
+            <p className="text-[#A1A1AA] text-sm mb-4">
+              90 dní · AI kouč · Adaptivní plán · Přesná makra
             </p>
             <Link href="/paywall">
               <Button variant="primary" fullWidth size="lg">
                 {RESULTS.proCta}
               </Button>
             </Link>
-            <p className="text-xs text-text-secondary/60 text-center mt-2">{RESULTS.proCtaSubtext}</p>
+            <p className="text-xs text-[#A1A1AA]/60 text-center mt-2">{RESULTS.proCtaSubtext}</p>
           </div>
         </div>
 
         {/* Free continue link */}
         <Link
           href="/dashboard"
-          className="block text-center text-sm text-text-secondary/60 hover:text-text-secondary transition-colors py-3"
+          className="block text-center text-sm text-[#A1A1AA]/60 hover:text-[#A1A1AA] transition-colors py-3"
         >
           {RESULTS.freeCta} →
         </Link>

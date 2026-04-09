@@ -914,6 +914,298 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── NEW: KONEČNĚ SYSTÉM MÍSTO CHAOSU ──────────────────────────────────── */}
+      <section className="py-20 sm:py-28 bg-[#0B0B0D]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14 scroll-animate">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#B3263E]" />
+              Pro lidi, kteří to zkusili, ale nevydrželi
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
+              Konečně systém místo chaosu
+            </h2>
+            <p className="text-[#A1A1AA] text-lg max-w-2xl mx-auto">
+              Dost bylo hledání videí na YouTube, obecných plánů z internetu a rad, které si navzájem odporují. Shapio ti řekne přesně co, kdy a proč.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+            {/* CHAOS strana */}
+            <div className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6">
+              <p className="text-xs font-semibold text-[#A1A1AA]/50 uppercase tracking-wider mb-4">Jak to vypadá bez systému</p>
+              {[
+                'Každý týden jiný plán z jiného zdroje',
+                'Nevíš, jestli cvičíš dost nebo moc',
+                'Po 2 týdnech motivace zmizí',
+                'Výživa? Buď přísná dieta nebo nic',
+                'Nevidíš výsledky → vzdáváš to',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5 mb-3 last:mb-0">
+                  <div className="w-5 h-5 rounded-full bg-red-900/30 border border-red-800/40 flex items-center justify-center shrink-0 mt-0.5">
+                    <svg className="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-[#A1A1AA]">{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* SHAPIO strana */}
+            <div className="scroll-animate bg-[#151518] border border-[#B3263E]/40 rounded-2xl p-6 shadow-[0_0_30px_rgba(179,38,62,0.08)]">
+              <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-4">Se Shapio</p>
+              {[
+                'Jeden jasný plán šitý na tebe — hned první den',
+                'Přesně víš, co dělat a proč to funguje',
+                'Systém, který tě drží konzistentní',
+                'Výživa přizpůsobená tvému cíli a preferencím',
+                'Vidíš pokrok → chceš pokračovat',
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5 mb-3 last:mb-0">
+                  <div className="w-5 h-5 rounded-full bg-[#B3263E]/20 border border-[#B3263E]/40 flex items-center justify-center shrink-0 mt-0.5">
+                    <svg className="w-3 h-3 text-[#D13A52]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-[#F5F5F5]">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEW: CO DOSTANEŠ HNED PRVNÍ DEN ───────────────────────────────────── */}
+      <section className="py-20 sm:py-28 bg-[#151518]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14 scroll-animate">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
+              Co dostaneš hned první den
+            </h2>
+            <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
+              Žádné čekání, žádné zbytečné intro. Shapio tě nastaví za méně než 5 minut.
+            </p>
+          </div>
+
+          <div className="max-w-2xl mx-auto">
+            {[
+              {
+                step: '01',
+                time: 'Za 2 minuty',
+                title: 'Vyplníš dotazník',
+                desc: 'Cíl, váha, výška, úroveň, vybavení. Pár kliknutí — žádné složité formuláře.',
+              },
+              {
+                step: '02',
+                time: 'Za 3 minuty',
+                title: 'AI sestaví tvůj plán',
+                desc: 'Shapio zpracuje tvůj profil a vygeneruje tréninkový i výživový plán přesně pro tebe.',
+              },
+              {
+                step: '03',
+                time: 'Ihned',
+                title: 'Vidíš svou první analýzu',
+                desc: 'Dostaneš osobní hodnocení: kde začínáš, co tě brzdí a na co se zaměřit v prvním týdnu.',
+              },
+              {
+                step: '04',
+                time: 'Dnes',
+                title: 'Máš první trénink připravený',
+                desc: 'Dnešní trénink, cviky, sety a opakování. Víš přesně, co dělat ještě dnes večer.',
+              },
+            ].map((item, i) => (
+              <div key={i} className="scroll-animate flex gap-4 mb-6 last:mb-0">
+                <div className="flex flex-col items-center">
+                  <div className="w-10 h-10 rounded-xl bg-[#B3263E]/10 border border-[#B3263E]/30 flex items-center justify-center shrink-0">
+                    <span className="text-xs font-black text-[#B3263E]">{item.step}</span>
+                  </div>
+                  {i < 3 && <div className="w-px flex-1 bg-[#2A2A31] mt-2" />}
+                </div>
+                <div className="pb-6">
+                  <span className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider">{item.time}</span>
+                  <h3 className="text-base font-bold text-[#F5F5F5] mt-1 mb-1">{item.title}</h3>
+                  <p className="text-sm text-[#A1A1AA] leading-relaxed">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10 scroll-animate">
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#B3263E] hover:bg-[#D13A52] text-white font-black rounded-2xl transition-all duration-200 hover:shadow-[0_0_30px_rgba(179,38,62,0.4)] hover:scale-105"
+            >
+              Začít hned →
+            </Link>
+            <p className="text-xs text-[#A1A1AA]/60 mt-3">Zdarma · Bez kreditní karty</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEW: PROČ TO TENTOKRÁT VYDRŽÍŠ ────────────────────────────────────── */}
+      <section className="py-20 sm:py-28 bg-[#0B0B0D]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14 scroll-animate">
+            <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
+              Proč to tentokrát vydržíš déle než týden
+            </h2>
+            <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
+              Přestat není selhání tvé vůle. Je to selhání systému, který jsi měl. Shapio to mění.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: '🎯',
+                title: 'Víš přesně, co dělat',
+                desc: 'Nejistota je největší nepřítel konzistentnosti. Shapio odstraní otázku „co dnes cvičit?" jednou provždy. Otevřeš appku — plán je tam.',
+              },
+              {
+                icon: '📈',
+                title: 'Vidíš, že to funguje',
+                desc: 'Sleduješ pokrok v číslech i vizuálně. Když vidíš výsledky, chceš pokračovat. Motivace přichází sama — nečekáš na ni.',
+              },
+              {
+                icon: '🤝',
+                title: 'Plán se přizpůsobuje tobě',
+                desc: 'Nestíháš 5 tréninků? Plán se upraví. Máš zranění? Shapio ví. Nejsi vězněm rigidního plánu — plán pracuje pro tebe.',
+              },
+            ].map((card, i) => (
+              <div
+                key={i}
+                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#B3263E]/40 transition-all duration-300 group"
+              >
+                <div className="text-3xl mb-4">{card.icon}</div>
+                <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">{card.title}</h3>
+                <p className="text-[#A1A1AA] text-sm leading-relaxed">{card.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEW: CO DĚLAT DÁL ──────────────────────────────────────────────────── */}
+      <section className="py-20 sm:py-28 bg-[#151518]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Text */}
+            <div className="scroll-animate">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
+                <span className="text-base">🧠</span>
+                Osobní průvodce, ne jen seznam cviků
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-5">
+                Shapio ti neřekne jen co cvičit, ale co dělat dál
+              </h2>
+              <p className="text-[#A1A1AA] leading-relaxed mb-6">
+                Každý druhý plán ti dá seznam cviků. Jenže cviky samotné nestačí — potřebuješ vědět, proč cvičíš právě tohle, co jíst po tréninku, jak reagovat, když tě to přestane bavit, a co udělat příště jinak.
+              </p>
+              <p className="text-[#A1A1AA] leading-relaxed mb-8">
+                Shapio tě provází celou cestou — od nulového bodu až po výsledky. Každý den, každý týden, každý milestone. Ptáš se, odpovídám.
+              </p>
+              <div className="flex flex-col gap-3">
+                {[
+                  'Dnes: víš, co cvičit a co jíst',
+                  'Za týden: vidíš první změny v energii',
+                  'Za měsíc: vidíš výsledky v zrcadle',
+                  'Za 3 měsíce: vybudoval sis návyk, který drží',
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#B3263E] shrink-0" />
+                    <span className="text-sm text-[#F5F5F5]">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Visual */}
+            <div className="scroll-animate">
+              <div className="bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-6 h-6 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
+                    <span className="text-white font-black text-xs">S</span>
+                  </div>
+                  <span className="text-sm font-semibold text-[#F5F5F5]">Shapio AI Kouč</span>
+                  <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />
+                </div>
+                {[
+                  { from: 'user', text: 'Mám bolavé rameno — mám dnes vynechat?' },
+                  { from: 'ai', text: 'Ne, nevynechávej. Upravím dnešní plán — přeskočíme tlaky nad hlavou a nahradím je izolačními cviky na jinou partii. Rameno si odpočine, aniž by ses zastavil.' },
+                  { from: 'user', text: 'A co jídlo — mám jíst méně, protože jsem necvičil plně?' },
+                  { from: 'ai', text: 'Bílkoviny nesnižuj — tělo je potřebuje na regeneraci. Sacharidy sníž o 15–20 %. Přesné číslo závisí na tvém dnešním tréninku, podívám se na plán a dám ti přesný odhad.' },
+                ].map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`mb-3 last:mb-0 flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[85%] px-3.5 py-2.5 rounded-xl text-sm leading-relaxed ${
+                        msg.from === 'user'
+                          ? 'bg-[#B3263E]/20 border border-[#B3263E]/30 text-[#F5F5F5]'
+                          : 'bg-[#1D1D22] border border-[#2A2A31] text-[#A1A1AA]'
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
+                <p className="text-xs text-[#A1A1AA]/40 text-center mt-4">Ilustrativní ukázka AI kouče (PRO plán)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEW: I BEZ POSILOVNY ───────────────────────────────────────────────── */}
+      <section className="py-20 sm:py-28 bg-[#0B0B0D]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Visual */}
+            <div className="scroll-animate order-2 lg:order-1">
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: '🏠', title: 'Doma', desc: 'Plán s vlastní vahou, bez jakéhokoli vybavení. Stačí 2 m² podlahy.' },
+                  { icon: '🪢', title: 'Doma s vybavením', desc: 'Gumy, jednoručky, hrazda? Výborně — plán to využije naplno.' },
+                  { icon: '🏋️', title: 'Posilovna', desc: 'Plný přístup ke všemu vybavení = plán na maximum výsledků.' },
+                  { icon: '🌳', title: 'Venku', desc: 'Parkoury, lavičky, příroda. Kardio i silový trénink ve volné přírodě.' },
+                ].map((opt) => (
+                  <div key={opt.icon} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-4 hover:border-[#B3263E]/40 transition-all duration-200">
+                    <div className="text-2xl mb-2">{opt.icon}</div>
+                    <p className="text-sm font-bold text-[#F5F5F5] mb-1">{opt.title}</p>
+                    <p className="text-xs text-[#A1A1AA] leading-relaxed">{opt.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Text */}
+            <div className="scroll-animate order-1 lg:order-2">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
+                <span>🏠</span>
+                Posilovna není podmínka
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-5">
+                I bez posilovny můžeš začít správně
+              </h2>
+              <p className="text-[#A1A1AA] leading-relaxed mb-5">
+                Nemáš přístup do posilovny? Nevadí. Shapio vytvoří plán přesně pro vybavení, které máš. Nic víc nepotřebuješ.
+              </p>
+              <p className="text-[#A1A1AA] leading-relaxed mb-8">
+                Doma, v parku nebo v plně vybavené posilovně — plán se přizpůsobí. Začít správně nezávisí na místě, kde cvičíš, ale na tom, jestli máš správný systém.
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)]"
+              >
+                Začít hned zdarma →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── SECTION 12: PRICING ─────────────────────────────────────────────── */}
       <section id="pricing" className="py-20 sm:py-28 bg-[#151518]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

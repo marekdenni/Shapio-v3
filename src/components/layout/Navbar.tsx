@@ -120,10 +120,14 @@ export function Navbar() {
                     </Link>
                   </>
                 ) : (
-                  <Link href="/dashboard">
-                    <Button variant="primary" size="sm">
-                      Dashboard
-                    </Button>
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#B3263E] hover:bg-[#D13A52] text-white text-sm font-semibold rounded-xl transition-all duration-200 hover:shadow-[0_0_15px_rgba(179,38,62,0.4)]"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Účet
                   </Link>
                 )}
               </>
@@ -164,8 +168,11 @@ export function Navbar() {
                     <Badge variant={tier} size="sm">{tier.toUpperCase()}</Badge>
                   </div>
                 </div>
-                <Link href="/dashboard" className="py-2 px-3 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface2 text-sm" onClick={() => setMenuOpen(false)}>
-                  Dashboard
+                <Link href="/dashboard" className="py-2 px-3 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface2 text-sm flex items-center gap-2" onClick={() => setMenuOpen(false)}>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Přehled
                 </Link>
                 <Link href="/plan" className="py-2 px-3 rounded-lg text-text-secondary hover:text-text-primary hover:bg-surface2 text-sm" onClick={() => setMenuOpen(false)}>
                   Tréninkový plán
