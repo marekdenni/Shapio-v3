@@ -235,6 +235,42 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
           .single();
 
         if (insertError) {
+          // 23505 = unique_violation — DB trigger already created the row, retry SELECT
+          if (insertError.code === '23505') {
+            const { data: retryData } = await supabase
+              .from('user_profiles')
+              .select('*')
+              .eq('id', userId)
+              .single();
+            if (retryData) {
+              // Re-enter the mapping path below by falling through with data
+              set({
+                profile: {
+                  id: retryData.id,
+                  name: retryData.name || '',
+                  email: retryData.email || '',
+                  age: retryData.age || 0,
+                  sex: retryData.sex || 'male',
+                  heightCm: retryData.height_cm || 0,
+                  weightKg: retryData.weight_kg || 0,
+                  fitnessLevel: retryData.fitness_level || 'beginner',
+                  goal: retryData.goal || 'general_fitness',
+                  equipment: retryData.equipment || 'gym_full',
+                  workoutDaysPerWeek: retryData.workout_days_per_week || 3,
+                  dietaryPreference: retryData.dietary_preference || 'no_preference',
+                  injuries: retryData.injuries || '',
+                  targetMotivation: retryData.target_motivation || '',
+                  onboardingCompleted: retryData.onboarding_completed || false,
+                  subscriptionTier: retryData.subscription_tier || 'free',
+                  stripeCustomerId: retryData.stripe_customer_id || undefined,
+                  stripeSubscriptionId: retryData.stripe_subscription_id || undefined,
+                  createdAt: retryData.created_at,
+                  updatedAt: retryData.updated_at,
+                },
+              });
+            }
+            return;
+          }
           console.error('[auth] profile creation error:', insertError);
           return;
         }

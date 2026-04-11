@@ -2,7 +2,7 @@
 
 // App layout — middleware already guards unauthenticated access.
 // This layout loads subscription data and handles onboarding redirect.
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuthStore } from '@/stores/auth';
@@ -10,8 +10,19 @@ import { useSubscriptionStore } from '@/stores/subscription';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user, profile, loading } = useAuthStore();
+  const { user, profile, loading, loadProfile } = useAuthStore();
   const loadSubscription = useSubscriptionStore((s) => s.loadSubscription);
+
+  // If user is authenticated but profile failed to load, retry once
+  const retryLoad = useCallback(() => {
+    if (user?.id) loadProfile(user.id);
+  }, [user?.id, loadProfile]);
+
+  useEffect(() => {
+    if (!loading && user && !profile) {
+      retryLoad();
+    }
+  }, [loading, user, profile, retryLoad]);
 
   // Load subscription once we have a user
   useEffect(() => {
@@ -34,8 +45,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [loading, user, router]);
 
-  // Show loading spinner while auth is resolving
-  if (loading) {
+  // Show loading spinner while auth is resolving or profile is still loading
+  if (loading || (user && !profile)) {
     return (
       <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">

@@ -150,7 +150,7 @@ export const useOnboardingStore = create<OnboardingState>()(
           dietaryPreference: state.dietaryPreference || 'no_preference',
           injuries: state.injuries || '',
           targetMotivation: state.targetMotivation || '',
-          onboardingCompleted: false,
+          // onboardingCompleted intentionally omitted — set only by generate-plan API
         };
       },
     }),

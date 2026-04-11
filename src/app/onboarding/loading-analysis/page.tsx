@@ -4,7 +4,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/stores/onboarding';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/stores/auth';
 
 const LOADING_MESSAGES = [
   'Analyzujeme vaši výchozí formu…',
@@ -17,7 +17,7 @@ const LOADING_MESSAGES = [
 
 export default function LoadingAnalysisPage() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, updateProfile } = useAuthStore();
   const store = useOnboardingStore();
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -66,10 +66,14 @@ export default function LoadingAnalysisPage() {
           throw new Error('Failed to generate plan');
         }
 
+        // Sync Zustand auth store — API marked onboarding_completed: true in DB
+        // Without this, (app)/layout.tsx reads stale false and redirects back to /onboarding
+        await updateProfile({ onboardingCompleted: true });
+
         // Complete progress
         setProgress(100);
 
-        // Clear persisted onboarding data — user is done with onboarding
+        // Clear persisted onboarding form data — user is done with onboarding
         store.reset();
 
         // Small delay then redirect to results

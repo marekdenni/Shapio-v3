@@ -43,12 +43,21 @@ export default function OnboardingPage() {
   const handleSubmit = async () => {
     store.setSubmitting(true);
 
-    // Save profile data to Supabase
-    const profileData = store.toProfile();
-    await updateProfile(profileData);
+    try {
+      // Save profile data to Supabase before AI generation
+      const profileData = store.toProfile();
+      const { error } = await updateProfile(profileData);
 
-    // Navigate to loading/analysis page
-    router.push('/onboarding/loading-analysis');
+      if (error) {
+        console.error('[onboarding] profile save failed:', error);
+        // Non-fatal — proceed anyway so the user isn't stuck
+      }
+
+      // Navigate to loading/analysis page
+      router.push('/onboarding/loading-analysis');
+    } finally {
+      store.setSubmitting(false);
+    }
   };
 
   const renderStep = () => {
