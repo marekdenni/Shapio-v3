@@ -10,7 +10,7 @@ import { useSubscriptionStore } from '@/stores/subscription';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user, profile, loading, loadProfile } = useAuthStore();
+  const { user, profile, loading, loadProfile, updateProfile } = useAuthStore();
   const loadSubscription = useSubscriptionStore((s) => s.loadSubscription);
 
   // If user is authenticated but profile failed to load, retry once
@@ -31,12 +31,22 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [user?.id, loadSubscription]);
 
-  // Redirect to onboarding if profile exists but onboarding not completed
+  // Redirect to onboarding if profile exists but onboarding not completed.
+  // Exception: if the profile already has form data (age/height/weight > 0,
+  // which are only written to DB when the onboarding form is submitted),
+  // the completion flag was likely not set due to an AI generation failure.
+  // In that case, auto-fix the flag silently so the user isn't stuck in a
+  // redirect loop between /dashboard and /onboarding.
   useEffect(() => {
     if (!loading && user && profile && !profile.onboardingCompleted) {
+      const hasSubmittedForm = profile.age > 0 && profile.heightCm > 0 && profile.weightKg > 0;
+      if (hasSubmittedForm) {
+        updateProfile({ onboardingCompleted: true });
+        return;
+      }
       router.replace('/onboarding');
     }
-  }, [loading, user, profile, router]);
+  }, [loading, user, profile, router, updateProfile]);
 
   // Redirect to login if auth resolved and no user (fallback — middleware is primary guard)
   useEffect(() => {

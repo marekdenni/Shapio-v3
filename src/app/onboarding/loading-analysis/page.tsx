@@ -66,10 +66,6 @@ export default function LoadingAnalysisPage() {
           throw new Error('Failed to generate plan');
         }
 
-        // Sync Zustand auth store — API marked onboarding_completed: true in DB
-        // Without this, (app)/layout.tsx reads stale false and redirects back to /onboarding
-        await updateProfile({ onboardingCompleted: true });
-
         // Complete progress
         setProgress(100);
 
@@ -87,6 +83,14 @@ export default function LoadingAnalysisPage() {
         setTimeout(() => {
           router.push('/onboarding/results');
         }, 2000);
+      } finally {
+        // Always mark onboarding complete. The user submitted their form and
+        // reached this screen — the completion flag must be set regardless of
+        // whether AI generation succeeded or failed. Previously this was only
+        // called on success, so any API failure left onboarding_completed: false
+        // in the DB, causing (app)/layout.tsx to redirect back to /onboarding
+        // on every subsequent /dashboard visit.
+        await updateProfile({ onboardingCompleted: true });
       }
     };
 
