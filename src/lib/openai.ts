@@ -2,10 +2,11 @@
 import OpenAI from 'openai';
 import type { UserProfile, SubscriptionTier, WorkoutPlan, NutritionPlan } from '@/types';
 
-// Initialize OpenAI client
-// PŘIDÁNA POJISTKA: Pokud klíč chybí během buildu, použije se dummy text, aby proces nespadl.
+// Initialize OpenAI client — requires OPENAI_API_KEY in environment.
+// TODO: set OPENAI_API_KEY in .env.local (dev) and Netlify environment variables (prod).
+// The dummy key prevents a build-time crash on import; runtime guards below handle missing keys safely.
 export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || 'sk-dummy-key-to-bypass-netlify-build-error',
+  apiKey: process.env.OPENAI_API_KEY || 'sk-dummy-key-to-bypass-build',
 });
 
 // AI usage limits per tier per day
@@ -42,9 +43,15 @@ export async function generateWorkoutPlan(
   profile: Partial<UserProfile>,
   tier: SubscriptionTier
 ): Promise<Partial<WorkoutPlan>> {
-  const model = getModelForTier(tier);
   const durationDays = getDurationForTier(tier);
   const weeks = Math.ceil(durationDays / 7);
+  const model = getModelForTier(tier);
+
+  const fallback: Partial<WorkoutPlan> = { tier, durationDays, weeks: [], assessmentSummary: '', focusAreas: [] };
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
 
   const prompt = `
 You are an expert personal trainer creating a personalized workout plan.
@@ -102,32 +109,37 @@ All text values should be in Czech language.
 For free tier, only generate 1-2 weeks of detail. For paid tiers, generate all ${weeks} weeks.
 `;
 
-  const completion = await openai.chat.completions.create({
-    model,
-    messages: [
-      {
-        role: 'system',
-        content: 'You are an expert personal trainer. Always respond with valid JSON only, no markdown.',
-      },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.7,
-    max_tokens: tier === 'elite' ? 4000 : tier === 'pro' ? 3000 : 2000,
-    response_format: { type: 'json_object' },
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert personal trainer. Always respond with valid JSON only, no markdown.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: tier === 'elite' ? 4000 : tier === 'pro' ? 3000 : 2000,
+      response_format: { type: 'json_object' },
+    });
 
-  const response = JSON.parse(completion.choices[0].message.content || '{}');
+    const response = JSON.parse(completion.choices[0].message.content || '{}');
 
-  return {
-    tier,
-    durationDays,
-    weeks: response.weeks || [],
-    assessmentSummary: response.assessmentSummary || '',
-    focusAreas: response.focusAreas || [],
-  };
+    return {
+      tier,
+      durationDays,
+      weeks: response.weeks || [],
+      assessmentSummary: response.assessmentSummary || '',
+      focusAreas: response.focusAreas || [],
+    };
+  } catch (err) {
+    console.error('[openai] generateWorkoutPlan failed:', err);
+    return fallback;
+  }
 }
 
 /**
@@ -150,6 +162,19 @@ export async function generateNutritionPlan(
 
   const activityMultiplier = (profile.workoutDaysPerWeek || 3) >= 5 ? 1.55 : 1.375;
   const tdee = Math.round(bmr * activityMultiplier);
+
+  const fallback: Partial<NutritionPlan> = {
+    tier,
+    dailyTargets: { calories: tdee, proteinG: 150, carbsG: 200, fatG: 60 },
+    meals: [],
+    hydrationLiters: 2.5,
+    generalGuidelines: [],
+    supplementSuggestions: [],
+  };
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
 
   const prompt = `
 You are an expert sports nutritionist creating a personalized nutrition plan.
@@ -199,33 +224,38 @@ All text in Czech. Adjust macros based on goal:
 - general_fitness: maintenance calories, balanced macros
 `;
 
-  const completion = await openai.chat.completions.create({
-    model,
-    messages: [
-      {
-        role: 'system',
-        content: 'You are an expert sports nutritionist. Always respond with valid JSON only.',
-      },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.6,
-    max_tokens: 2000,
-    response_format: { type: 'json_object' },
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model,
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert sports nutritionist. Always respond with valid JSON only.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.6,
+      max_tokens: 2000,
+      response_format: { type: 'json_object' },
+    });
 
-  const response = JSON.parse(completion.choices[0].message.content || '{}');
+    const response = JSON.parse(completion.choices[0].message.content || '{}');
 
-  return {
-    tier,
-    dailyTargets: response.dailyTargets || { calories: tdee, proteinG: 150, carbsG: 200, fatG: 60 },
-    meals: response.meals || [],
-    hydrationLiters: response.hydrationLiters || 2.5,
-    generalGuidelines: response.generalGuidelines || [],
-    supplementSuggestions: response.supplementSuggestions || [],
-  };
+    return {
+      tier,
+      dailyTargets: response.dailyTargets || fallback.dailyTargets,
+      meals: response.meals || [],
+      hydrationLiters: response.hydrationLiters || 2.5,
+      generalGuidelines: response.generalGuidelines || [],
+      supplementSuggestions: response.supplementSuggestions || [],
+    };
+  } catch (err) {
+    console.error('[openai] generateNutritionPlan failed:', err);
+    return fallback;
+  }
 }
 
 /**
@@ -234,7 +264,11 @@ All text in Czech. Adjust macros based on goal:
 export async function generateAssessmentSummary(
   profile: Partial<UserProfile>
 ): Promise<string> {
-  const model = 'gpt-4o-mini'; // Always use mini for quick assessment
+  const fallback = 'Tvůj plán je připraven. Začínáme transformaci.';
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
 
   const prompt = `
 You are a fitness assessment specialist.
@@ -253,19 +287,24 @@ Write in a direct, masculine tone (the app is targeted at men).
 Do not start with "Based on" - be direct and personal.
 `;
 
-  const completion = await openai.chat.completions.create({
-    model,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.8,
-    max_tokens: 300,
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.8,
+      max_tokens: 300,
+    });
 
-  return completion.choices[0].message.content || 'Tvůj plán je připraven. Začínáme transformaci.';
+    return completion.choices[0].message.content || fallback;
+  } catch (err) {
+    console.error('[openai] generateAssessmentSummary failed:', err);
+    return fallback;
+  }
 }
 
 /**
@@ -306,6 +345,20 @@ export async function generateFreeWelcomeAnalysis(
   const levelLabel = levelMap[profile.fitnessLevel || 'beginner'] ?? 'začátečník';
   const equipmentLabel = equipmentMap[profile.equipment || 'gym_full'] ?? 'posilovna';
 
+  const fallback: FreeWelcomeAnalysis = {
+    greeting: 'Tvůj profil je připraven — pojďme na to.',
+    startingPoint: `Začínáš jako ${levelLabel} s cílem ${goalLabel}. To je solidní výchozí bod — přesně víme, s čím pracujeme.`,
+    mainBottleneck: 'Největší překážka pro většinu lidí na tvé úrovni je konzistence v prvních 4 týdnech. Přesně na to se zaměříme.',
+    sevenDayFocus: `Prvních 7 dní: cvič ${profile.workoutDaysPerWeek || 3}× a dbej na pravidelný spánek. Nevynechej ani jeden trénink — první týden nastavuje zvyk.`,
+    trainingDirection: `Pro tvůj cíl (${goalLabel}) doporučujeme kombinaci silového tréninku a dostatku odpočinku. Progresivní přetížení je klíčové.`,
+    nutritionDirection: 'Zaměř se na dostatečný příjem bílkovin a vyhýbej se zpracovaným potravinám. Hydratace (2,5 l/den) je základ.',
+    motivationalCta: 'Začít dnes je vždy lepší než začít zítra. Tvůj plán na 30 dní tě čeká.',
+  };
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
+
   const prompt = `
 Jsi osobní fitness kouč Shapio. Uživatel právě dokončil vstupní dotazník a čeká na svou první analýzu.
 Toto je ZDARMA verze analýzy — má uživatele nadchnout, ukázat mu, že mu Shapio rozumí, ale nesmí nahradit prémiový plán.
@@ -337,20 +390,6 @@ Vrať JSON přesně v tomto formátu:
   "motivationalCta": "Závěrečná motivační věta + výzva k akci — proč začít hned dnes"
 }`;
 
-  const fallback: FreeWelcomeAnalysis = {
-    greeting: 'Tvůj profil je připraven — pojďme na to.',
-    startingPoint: `Začínáš jako ${levelLabel} s cílem ${goalLabel}. To je solidní výchozí bod — přesně víme, s čím pracujeme.`,
-    mainBottleneck: 'Největší překážka pro většinu lidí na tvé úrovni je konzistence v prvních 4 týdnech. Přesně na to se zaměříme.',
-    sevenDayFocus: `Prvních 7 dní: cvič ${profile.workoutDaysPerWeek || 3}× a dbej na pravidelný spánek. Nevynechej ani jeden trénink — první týden nastavuje zvyk.`,
-    trainingDirection: `Pro tvůj cíl (${goalLabel}) doporučujeme kombinaci silového tréninku a dostatku odpočinku. Progresivní přetížení je klíčové.`,
-    nutritionDirection: 'Zaměř se na dostatečný příjem bílkovin a vyhnout se zpracovaným potravinám. Hydratace (2,5 l/den) je základ.',
-    motivationalCta: 'Začít dnes je vždy lepší než začít zítra. Tvůj plán na 30 dní tě čeká.',
-  };
-
-  if (!process.env.OPENAI_API_KEY) {
-    return fallback;
-  }
-
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
@@ -380,7 +419,8 @@ Vrať JSON přesně v tomto formátu:
     }
 
     return fallback;
-  } catch {
+  } catch (err) {
+    console.error('[openai] generateFreeWelcomeAnalysis failed:', err);
     return fallback;
   }
 }
@@ -392,6 +432,12 @@ export async function generateProgressFeedback(
   photos: string[],
   profile: Partial<UserProfile>
 ): Promise<string> {
+  const fallback = 'Skvělá práce! Pokračuj v tomto tempu.';
+
+  if (!process.env.OPENAI_API_KEY) {
+    return fallback;
+  }
+
   const model = getModelForTier(profile.subscriptionTier || 'pro');
 
   const prompt = `
@@ -409,19 +455,24 @@ Focus on consistency and effort, avoid commenting on specific body parts.
 Be motivating and forward-looking.
 `;
 
-  const completion = await openai.chat.completions.create({
-    model,
-    messages: [
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.8,
-    max_tokens: 200,
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model,
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.8,
+      max_tokens: 200,
+    });
 
-  return completion.choices[0].message.content || 'Skvělá práce! Pokračuj v tomto tempu.';
+    return completion.choices[0].message.content || fallback;
+  } catch (err) {
+    console.error('[openai] generateProgressFeedback failed:', err);
+    return fallback;
+  }
 }
 
 /**

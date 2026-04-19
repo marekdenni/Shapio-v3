@@ -4,7 +4,9 @@ import { generateWorkoutPlan, generateNutritionPlan, generateAssessmentSummary, 
 import type { UserProfile } from '@/types';
 
 // POST /api/onboarding/generate-plan
-// Generates AI workout and nutrition plans for authenticated users
+// Generates AI workout and nutrition plans for authenticated users.
+// Each AI call is wrapped individually — a single failure returns a fallback
+// and never prevents onboarding from completing.
 export async function POST(request: NextRequest) {
   try {
     const supabase = createServerClient();
@@ -31,14 +33,29 @@ export async function POST(request: NextRequest) {
       .single();
 
     const tier = userProfile?.subscription_tier || 'free';
+    const profileWithTier = { ...profile, subscriptionTier: tier };
 
-    // Generate plans and free welcome analysis in parallel using OpenAI
-    const [workoutPlanData, nutritionPlanData, assessmentSummary, freeWelcomeAnalysis] = await Promise.all([
-      generateWorkoutPlan({ ...profile, subscriptionTier: tier }, tier),
-      generateNutritionPlan({ ...profile, subscriptionTier: tier }, tier),
-      generateAssessmentSummary({ ...profile, subscriptionTier: tier }),
-      generateFreeWelcomeAnalysis({ ...profile, subscriptionTier: tier }),
-    ]);
+    // Run all AI calls in parallel; each has its own fallback so one failure
+    // does not block the others or crash the response.
+    const [workoutPlanData, nutritionPlanData, assessmentSummary, freeWelcomeAnalysis] =
+      await Promise.all([
+        generateWorkoutPlan(profileWithTier, tier).catch((err) => {
+          console.error('[route] generateWorkoutPlan threw unexpectedly:', err);
+          return { tier, durationDays: 30, weeks: [], assessmentSummary: '', focusAreas: [] };
+        }),
+        generateNutritionPlan(profileWithTier, tier).catch((err) => {
+          console.error('[route] generateNutritionPlan threw unexpectedly:', err);
+          return { tier, dailyTargets: { calories: 2000, proteinG: 150, carbsG: 200, fatG: 60 }, meals: [], hydrationLiters: 2.5, generalGuidelines: [], supplementSuggestions: [] };
+        }),
+        generateAssessmentSummary(profileWithTier).catch((err) => {
+          console.error('[route] generateAssessmentSummary threw unexpectedly:', err);
+          return 'Tvůj plán je připraven. Začínáme transformaci.';
+        }),
+        generateFreeWelcomeAnalysis(profileWithTier).catch((err) => {
+          console.error('[route] generateFreeWelcomeAnalysis threw unexpectedly:', err);
+          return null;
+        }),
+      ]);
 
     // Save workout plan to Supabase.
     // assessment_summary stores the structured free welcome analysis as JSON,
@@ -85,7 +102,9 @@ export async function POST(request: NextRequest) {
       console.error('Error saving nutrition plan:', nutritionError);
     }
 
-    // Mark onboarding as completed
+    // Always mark onboarding completed — even if AI generation partially failed.
+    // This matches the client-side guard in loading-analysis/page.tsx and
+    // prevents the dashboard → /onboarding redirect loop.
     await supabase
       .from('user_profiles')
       .update({ onboarding_completed: true })
