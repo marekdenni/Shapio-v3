@@ -1,7 +1,7 @@
 'use client';
 
 // Onboarding orchestrator page - manages multi-step onboarding flow
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { StepProgress } from '@/components/onboarding/StepProgress';
@@ -10,7 +10,6 @@ import { QuestionnaireForm } from '@/components/onboarding/QuestionnaireForm';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { useAuth } from '@/hooks/useAuth';
 import { ONBOARDING } from '@/constants/copy';
-import { useEffect } from 'react';
 
 const TOTAL_STEPS = 5; // 0-4 (step 5 is loading, separate page)
 
@@ -18,8 +17,15 @@ const stepLabels = ['Vítej', 'Fotka', 'Cíl', 'Fyzička', 'Preference'];
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { profile, updateProfile, loading } = useAuth();
+  const { profile, updateProfile, loading, isAuthenticated } = useAuth();
   const store = useOnboardingStore();
+
+  // Redirect to login if not authenticated (fallback — middleware is primary guard)
+  useEffect(() => {
+    if (!loading && !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [loading, isAuthenticated, router]);
 
   // If onboarding already completed, go straight to dashboard
   useEffect(() => {
@@ -59,6 +65,24 @@ export default function OnboardingPage() {
       store.setSubmitting(false);
     }
   };
+
+  // Wait for auth to resolve before rendering the form
+  // (onboarding is outside the (app) route group, so there's no layout guard)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-14 h-14 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-red animate-pulse">
+            <span className="text-white font-black text-2xl tracking-tight">S</span>
+          </div>
+          <p className="text-text-secondary text-sm">Načítám...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not authenticated — redirect in flight
+  if (!isAuthenticated) return null;
 
   const renderStep = () => {
     switch (store.currentStep) {

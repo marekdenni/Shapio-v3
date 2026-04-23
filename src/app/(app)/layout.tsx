@@ -2,27 +2,25 @@
 
 // App layout — middleware already guards unauthenticated access.
 // This layout loads subscription data and handles onboarding redirect.
-import React, { useCallback, useEffect } from 'react';
+//
+// RELIABILITY GUARANTEES:
+// - Profile retry has a max count (prevents infinite loops on permanent failure)
+// - Profile load failure shows a recoverable error state (not infinite spinner)
+// - Onboarding auto-fix handles the case where form data exists but flag is false
+// - Free users always reach dashboard (no plan-based blocking in layout)
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuthStore } from '@/stores/auth';
+import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useSubscriptionStore } from '@/stores/subscription';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { user, profile, loading, loadProfile, updateProfile } = useAuthStore();
+  const { user, profile, loading, profileFailed, retryProfile } = useRequireAuth();
+  const { updateProfile } = useAuthStore();
+  const { loadProfile } = useAuthStore();
   const loadSubscription = useSubscriptionStore((s) => s.loadSubscription);
-
-  // If user is authenticated but profile failed to load, retry once
-  const retryLoad = useCallback(() => {
-    if (user?.id) loadProfile(user.id);
-  }, [user?.id, loadProfile]);
-
-  useEffect(() => {
-    if (!loading && user && !profile) {
-      retryLoad();
-    }
-  }, [loading, user, profile, retryLoad]);
 
   // Load subscription once we have a user
   useEffect(() => {
@@ -48,15 +46,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     }
   }, [loading, user, profile, router, updateProfile]);
 
-  // Redirect to login if auth resolved and no user (fallback — middleware is primary guard)
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/login');
-    }
-  }, [loading, user, router]);
-
   // Show loading spinner while auth is resolving or profile is still loading
-  if (loading || (user && !profile)) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -67,6 +58,53 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="h-full bg-[#B3263E] rounded-full w-2/3 animate-[shimmer_1.5s_ease-in-out_infinite]" />
           </div>
           <p className="text-[#A1A1AA] text-sm">Načítám...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Profile load failed after retries — show recoverable error instead of infinite spinner
+  if (profileFailed) {
+    return (
+      <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[#151518] border border-[#2A2A31] rounded-2xl p-8 text-center">
+          <div className="w-14 h-14 bg-[#1D1D22] border border-[#2A2A31] rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
+            ⚠️
+          </div>
+          <h2 className="text-lg font-bold text-[#F5F5F5] mb-2">
+            Nepodařilo se načíst profil
+          </h2>
+          <p className="text-sm text-[#A1A1AA] mb-6">
+            Zkontroluj připojení k internetu a zkus to znovu.
+          </p>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={retryProfile}
+              className="w-full py-3 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200"
+            >
+              Zkusit znovu
+            </button>
+            <button
+              onClick={() => useAuthStore.getState().signOut()}
+              className="w-full py-3 bg-[#1D1D22] border border-[#2A2A31] text-[#A1A1AA] hover:text-[#F5F5F5] rounded-xl transition-all duration-200"
+            >
+              Odhlásit se
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Profile still loading (within retry budget) — show spinner
+  if (user && !profile) {
+    return (
+      <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#B3263E] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(179,38,62,0.3)] animate-pulse">
+            <span className="text-white font-black text-2xl tracking-tight">S</span>
+          </div>
+          <p className="text-[#A1A1AA] text-sm">Načítám profil...</p>
         </div>
       </div>
     );

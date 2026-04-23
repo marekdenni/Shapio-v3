@@ -10,11 +10,52 @@ import { getAppUrl } from '@/lib/config';
 
 const supabase = createClientComponentClient();
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+/**
+ * Maps a Supabase `user_profiles` row (snake_case) to the client-side
+ * UserProfile interface (camelCase). All optional/nullable fields use
+ * nullish coalescing to produce safe defaults. This is the SINGLE source
+ * of truth for the DB→client mapping — used by loadProfile for initial
+ * fetch, insert fallback, and retry-after-conflict paths.
+ */
+function mapRowToProfile(row: Record<string, any>): UserProfile {
+  return {
+    id: row.id,
+    name: row.name ?? '',
+    email: row.email ?? '',
+    age: row.age ?? 0,
+    sex: row.sex ?? 'male',
+    heightCm: row.height_cm ?? 0,
+    weightKg: row.weight_kg ?? 0,
+    fitnessLevel: row.fitness_level ?? 'beginner',
+    goal: row.goal ?? 'general_fitness',
+    equipment: row.equipment ?? 'gym_full',
+    workoutDaysPerWeek: row.workout_days_per_week ?? 3,
+    dietaryPreference: row.dietary_preference ?? 'no_preference',
+    injuries: row.injuries ?? '',
+    targetMotivation: row.target_motivation ?? '',
+    onboardingCompleted: row.onboarding_completed ?? false,
+    subscriptionTier: row.subscription_tier ?? 'free',
+    stripeCustomerId: row.stripe_customer_id ?? undefined,
+    stripeSubscriptionId: row.stripe_subscription_id ?? undefined,
+    activeOrgId: row.active_org_id ?? undefined,
+    isPlatformAdmin: row.is_platform_admin ?? false,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+// ─── Store ──────────────────────────────────────────────────────────────────
+
 interface AuthState {
   user: User | null;
   profile: UserProfile | null;
   loading: boolean;
   initialized: boolean;
+  /** Set to true when profile loading fails after attempt(s). Allows UI to
+   *  distinguish "profile never loaded" from "profile load encountered an error". */
+  profileError: boolean;
 
   initialize: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -35,6 +76,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   profile: null,
   loading: true,
   initialized: false,
+  profileError: false,
 
   isAuthenticated: () => !!get().user,
   isOnboardingCompleted: () => get().profile?.onboardingCompleted ?? false,
@@ -59,15 +101,25 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       set({ loading: false });
     }
 
-    // Listen for future auth changes (sign in, sign out, token refresh)
-    supabase.auth.onAuthStateChange(async (_event, session) => {
+    // Listen for future auth changes (sign in, sign out, token refresh).
+    // IMPORTANT: Skip INITIAL_SESSION — we already handled it above.
+    // Without this guard, loadProfile fires twice on first load (race condition).
+    supabase.auth.onAuthStateChange(async (event, session) => {
+      // INITIAL_SESSION fires immediately after subscribe — skip it since
+      // we already loaded the session above via getSession().
+      if (event === 'INITIAL_SESSION') return;
+
       const user = session?.user ?? null;
       set({ user });
 
-      if (user) {
+      if (event === 'SIGNED_OUT') {
+        set({ profile: null, profileError: false, loading: false });
+        return;
+      }
+
+      // Only reload profile on meaningful events (not every token refresh)
+      if (user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED')) {
         await get().loadProfile(user.id);
-      } else {
-        set({ profile: null });
       }
 
       // Always exit loading after any auth event
@@ -170,7 +222,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   signOut: async () => {
     await supabase.auth.signOut();
-    set({ user: null, profile: null, loading: false });
+    set({ user: null, profile: null, profileError: false, loading: false });
   },
 
   resetPassword: async (email: string) => {
@@ -206,6 +258,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   loadProfile: async (userId: string) => {
+    // Clear error state on each fresh attempt
+    set({ profileError: false });
+
     try {
       const { data, error } = await supabase
         .from('user_profiles')
@@ -216,6 +271,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       if (error && error.code !== 'PGRST116') {
         // PGRST116 = row not found — handle below
         console.error('[auth] loadProfile error:', error);
+        set({ profileError: true });
         return;
       }
 
@@ -243,91 +299,27 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
               .eq('id', userId)
               .single();
             if (retryData) {
-              // Re-enter the mapping path below by falling through with data
-              set({
-                profile: {
-                  id: retryData.id,
-                  name: retryData.name || '',
-                  email: retryData.email || '',
-                  age: retryData.age || 0,
-                  sex: retryData.sex || 'male',
-                  heightCm: retryData.height_cm || 0,
-                  weightKg: retryData.weight_kg || 0,
-                  fitnessLevel: retryData.fitness_level || 'beginner',
-                  goal: retryData.goal || 'general_fitness',
-                  equipment: retryData.equipment || 'gym_full',
-                  workoutDaysPerWeek: retryData.workout_days_per_week || 3,
-                  dietaryPreference: retryData.dietary_preference || 'no_preference',
-                  injuries: retryData.injuries || '',
-                  targetMotivation: retryData.target_motivation || '',
-                  onboardingCompleted: retryData.onboarding_completed || false,
-                  subscriptionTier: retryData.subscription_tier || 'free',
-                  stripeCustomerId: retryData.stripe_customer_id || undefined,
-                  stripeSubscriptionId: retryData.stripe_subscription_id || undefined,
-                  createdAt: retryData.created_at,
-                  updatedAt: retryData.updated_at,
-                },
-              });
+              set({ profile: mapRowToProfile(retryData) });
+            } else {
+              set({ profileError: true });
             }
             return;
           }
           console.error('[auth] profile creation error:', insertError);
+          set({ profileError: true });
           return;
         }
 
         if (newProfile) {
-          set({
-            profile: {
-              id: newProfile.id,
-              name: newProfile.name || '',
-              email: newProfile.email || '',
-              age: 0,
-              sex: 'male',
-              heightCm: 0,
-              weightKg: 0,
-              fitnessLevel: 'beginner',
-              goal: 'general_fitness',
-              equipment: 'gym_full',
-              workoutDaysPerWeek: 3,
-              dietaryPreference: 'no_preference',
-              injuries: '',
-              targetMotivation: '',
-              onboardingCompleted: false,
-              subscriptionTier: 'free',
-              createdAt: newProfile.created_at,
-              updatedAt: newProfile.updated_at ?? undefined,
-            },
-          });
+          set({ profile: mapRowToProfile(newProfile) });
         }
         return;
       }
 
-      set({
-        profile: {
-          id: data.id,
-          name: data.name || '',
-          email: data.email || '',
-          age: data.age || 0,
-          sex: data.sex || 'male',
-          heightCm: data.height_cm || 0,
-          weightKg: data.weight_kg || 0,
-          fitnessLevel: data.fitness_level || 'beginner',
-          goal: data.goal || 'general_fitness',
-          equipment: data.equipment || 'gym_full',
-          workoutDaysPerWeek: data.workout_days_per_week || 3,
-          dietaryPreference: data.dietary_preference || 'no_preference',
-          injuries: data.injuries || '',
-          targetMotivation: data.target_motivation || '',
-          onboardingCompleted: data.onboarding_completed || false,
-          subscriptionTier: data.subscription_tier || 'free',
-          stripeCustomerId: data.stripe_customer_id || undefined,
-          stripeSubscriptionId: data.stripe_subscription_id || undefined,
-          createdAt: data.created_at,
-          updatedAt: data.updated_at,
-        },
-      });
+      set({ profile: mapRowToProfile(data) });
     } catch (err) {
       console.error('[auth] loadProfile unexpected error:', err);
+      set({ profileError: true });
     }
   },
 
@@ -352,6 +344,7 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       if (updates.targetMotivation !== undefined) dbUpdates.target_motivation = updates.targetMotivation;
       if (updates.onboardingCompleted !== undefined) dbUpdates.onboarding_completed = updates.onboardingCompleted;
       if (updates.subscriptionTier !== undefined) dbUpdates.subscription_tier = updates.subscriptionTier;
+      if (updates.activeOrgId !== undefined) dbUpdates.active_org_id = updates.activeOrgId;
 
       const { error } = await supabase
         .from('user_profiles')

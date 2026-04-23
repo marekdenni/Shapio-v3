@@ -7,8 +7,12 @@
 //   STRIPE_PRICE_ELITE_MONTHLY — Stripe price ID for Elite (1499 CZK/month recurring)
 //   STRIPE_WEBHOOK_SECRET — from Stripe dashboard or CLI (whsec_...)
 import Stripe from 'stripe';
-import type { SubscriptionTier, PlanDetails } from '@/types';
+import type { SubscriptionTier } from '@/types';
 import { getAppUrl } from '@/lib/config';
+
+// Re-export PLANS from the single source of truth.
+// Previously this file had its own copy — now consolidated.
+export { PLANS } from '@/constants/plans';
 
 // Initialize Stripe with secret key
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -22,77 +26,6 @@ export const STRIPE_PRICE_IDS: Record<string, string> = {
   starter: process.env.STRIPE_PRICE_STARTER_MONTHLY || '',
   pro: process.env.STRIPE_PRICE_PRO_MONTHLY || '',
   elite: process.env.STRIPE_PRICE_ELITE_MONTHLY || '', // Was one-time, now monthly recurring
-};
-
-// Complete plan details with pricing in CZK and feature lists
-export const PLANS: Record<SubscriptionTier, PlanDetails> = {
-  free: {
-    name: 'Free',
-    price: 0,
-    priceLabel: 'Zdarma',
-    duration: 30,
-    features: [
-      '30denní startovní plán',
-      'Základní tréninkový plán',
-      'Omezené tipy ke stravě',
-      'Přístup k aplikaci',
-    ],
-    limitations: [
-      'Bez maker a kalorií',
-      'Bez adaptivního plánování',
-      'Bez AI kouče',
-      'Bez pokročilé analýzy',
-    ],
-  },
-  starter: {
-    name: 'Starter',
-    price: 149,
-    priceLabel: '149 Kč/měs',
-    duration: 60,
-    features: [
-      '60denní transformační plán',
-      'Kompletní tréninkový plán',
-      'Makra a kalorický plán',
-      'Týdenní check-in',
-      'Přístup k aplikaci',
-    ],
-    limitations: [
-      'Bez AI kouče',
-      'Bez adaptivního plánování',
-    ],
-  },
-  pro: {
-    name: 'Pro',
-    price: 349,
-    priceLabel: '349 Kč/měs',
-    duration: 90,
-    isPopular: true,
-    features: [
-      '90denní transformační plán',
-      'Adaptivní tréninkový plán',
-      'Detailní výživový plán s makry',
-      'AI kouč (10 zpráv/den)',
-      'Porovnání před/po fotek',
-      'Pokročilá analýza pokroku',
-      'Týdenní check-in',
-      'Prioritní podpora',
-    ],
-  },
-  elite: {
-    name: 'Elite',
-    price: 1499,
-    priceLabel: '1 499 Kč/měs',
-    duration: 180,
-    features: [
-      '180denní transformační plán',
-      'Plně adaptivní trénink',
-      'Komplexní výživový plán',
-      'AI kouč bez omezení (50 zpráv/den)',
-      'Prioritní porovnání fotek',
-      'Detailní analýza každý týden',
-      'Doživotní přístup k výsledkům',
-    ],
-  },
 };
 
 /**

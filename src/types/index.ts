@@ -25,6 +25,19 @@ export type Sex = 'male' | 'female';
 
 export type AIMessageRole = 'user' | 'assistant' | 'system';
 
+// ─── Organization / B2B ────────────────────────────────────────────────────
+
+export type OrgType = 'gym' | 'coach' | 'brand' | 'employer' | 'program' | 'other';
+export type OrgPlan = 'free' | 'starter' | 'pro' | 'enterprise';
+export type OrgRole = 'owner' | 'admin' | 'coach' | 'member';
+export type MembershipStatus = 'active' | 'invited' | 'suspended';
+
+// ─── Program / Experience ──────────────────────────────────────────────────
+
+export type ProgramType = 'transformation' | 'challenge' | 'course' | 'plan' | 'other';
+export type EnrollmentStatus = 'active' | 'completed' | 'paused' | 'dropped';
+
+
 // ─── User / Profile ────────────────────────────────────────────────────────
 
 export interface UserProfile {
@@ -46,6 +59,8 @@ export interface UserProfile {
   subscriptionTier: SubscriptionTier;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
+  activeOrgId?: string;
+  isPlatformAdmin: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -81,6 +96,7 @@ export interface WorkoutWeek {
 export interface WorkoutPlan {
   id: string;
   userId: string;
+  orgId?: string;  // nullable — null = personal/B2C, set = org-scoped
   tier: SubscriptionTier;
   durationDays: number;
   weeks: WorkoutWeek[];
@@ -113,6 +129,7 @@ export interface Meal {
 export interface NutritionPlan {
   id: string;
   userId: string;
+  orgId?: string;  // nullable — null = personal/B2C, set = org-scoped
   tier: SubscriptionTier;
   dailyTargets: MacroTargets;
   meals: Meal[];
@@ -127,6 +144,7 @@ export interface NutritionPlan {
 export interface ProgressPhoto {
   id: string;
   userId: string;
+  orgId?: string;  // nullable — null = personal/B2C, set = org-scoped
   photoUrl: string;
   notes?: string;
   uploadedAt: string;
@@ -138,6 +156,7 @@ export interface ProgressPhoto {
 export interface AICoachMessage {
   id: string;
   userId: string;
+  orgId?: string;  // nullable — null = personal/B2C, set = org-scoped
   role: AIMessageRole;
   content: string;
   createdAt: string;
@@ -215,6 +234,8 @@ export interface UserProfileRow {
   subscription_tier: SubscriptionTier;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
+  active_org_id: string | null;
+  is_platform_admin: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -222,6 +243,7 @@ export interface UserProfileRow {
 export interface WorkoutPlanRow {
   id: string;
   user_id: string;
+  org_id: string | null;
   tier: SubscriptionTier;
   duration_days: number;
   plan_data: WorkoutWeek[];
@@ -232,6 +254,7 @@ export interface WorkoutPlanRow {
 export interface NutritionPlanRow {
   id: string;
   user_id: string;
+  org_id: string | null;
   tier: SubscriptionTier;
   plan_data: object;
   created_at: string;
@@ -240,6 +263,7 @@ export interface NutritionPlanRow {
 export interface ProgressPhotoRow {
   id: string;
   user_id: string;
+  org_id: string | null;
   photo_url: string;
   notes: string | null;
   uploaded_at: string;
@@ -249,6 +273,7 @@ export interface ProgressPhotoRow {
 export interface AICoachMessageRow {
   id: string;
   user_id: string;
+  org_id: string | null;
   role: AIMessageRole;
   content: string;
   created_at: string;
@@ -259,4 +284,134 @@ export interface AIDailyUsageRow {
   user_id: string;
   date: string;
   message_count: number;
+}
+
+// ─── Organization Types ────────────────────────────────────────────────────
+
+export interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  type: OrgType;
+  logoUrl?: string;
+  plan: OrgPlan;
+  settings: Record<string, unknown>;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OrgMembership {
+  id: string;
+  orgId: string;
+  userId: string;
+  role: OrgRole;
+  status: MembershipStatus;
+  invitedEmail?: string;
+  invitedAt?: string;
+  joinedAt?: string;
+  createdAt: string;
+}
+
+export interface OrgInvite {
+  id: string;
+  orgId: string;
+  email: string;
+  role: OrgRole;
+  token: string;
+  expiresAt: string;
+  acceptedAt?: string;
+  createdAt: string;
+}
+
+// ─── Organization DB Row Types (snake_case) ────────────────────────────────
+
+export interface OrganizationRow {
+  id: string;
+  name: string;
+  slug: string;
+  type: OrgType;
+  logo_url: string | null;
+  plan: OrgPlan;
+  settings: Record<string, unknown>;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface OrgMembershipRow {
+  id: string;
+  org_id: string;
+  user_id: string;
+  role: OrgRole;
+  status: MembershipStatus;
+  invited_email: string | null;
+  invited_at: string | null;
+  joined_at: string | null;
+  created_at: string;
+}
+
+export interface OrgInviteRow {
+  id: string;
+  org_id: string;
+  email: string;
+  role: OrgRole;
+  token: string;
+  expires_at: string;
+  accepted_at: string | null;
+  created_at: string;
+}
+
+// ─── Program Types ─────────────────────────────────────────────────────────
+
+export interface Program {
+  id: string;
+  orgId?: string;  // null = platform-owned
+  name: string;
+  slug: string;
+  description?: string;
+  type: ProgramType;
+  durationDays?: number;
+  settings: Record<string, unknown>;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ProgramEnrollment {
+  id: string;
+  programId: string;
+  userId: string;
+  status: EnrollmentStatus;
+  startedAt: string;
+  completedAt?: string;
+  createdAt: string;
+}
+
+// ─── Program DB Row Types (snake_case) ─────────────────────────────────────
+
+export interface ProgramRow {
+  id: string;
+  org_id: string | null;
+  name: string;
+  slug: string;
+  description: string | null;
+  type: ProgramType;
+  duration_days: number | null;
+  settings: Record<string, unknown>;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProgramEnrollmentRow {
+  id: string;
+  program_id: string;
+  user_id: string;
+  status: EnrollmentStatus;
+  started_at: string;
+  completed_at: string | null;
+  created_at: string;
 }

@@ -11,10 +11,15 @@ interface UseAuthReturn {
   loading: boolean;
   isAuthenticated: boolean;
   isOnboardingCompleted: boolean;
+  /** True when profile loading encountered an error. */
+  profileError: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
-  signUp: (email: string, password: string, name: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string, name: string) => Promise<{ error: string | null; needsConfirmation?: boolean }>;
+  signInWithGoogle: () => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<{ error: string | null }>;
+  resetPassword: (email: string) => Promise<{ error: string | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
   requireAuth: (router: ReturnType<typeof useRouter>) => boolean;
 }
 
@@ -39,10 +44,14 @@ export function useAuth(): UseAuthReturn {
     loading: store.loading,
     isAuthenticated: store.isAuthenticated(),
     isOnboardingCompleted: store.isOnboardingCompleted(),
+    profileError: store.profileError,
     signIn: store.signIn,
     signUp: store.signUp,
+    signInWithGoogle: store.signInWithGoogle,
     signOut: store.signOut,
     updateProfile: store.updateProfile,
+    resetPassword: store.resetPassword,
+    updatePassword: store.updatePassword,
     requireAuth,
   };
 }

@@ -1,13 +1,15 @@
 'use client';
 
 // Login page — přihlášení do Shapio s email/heslo + Google OAuth
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
 
-export default function LoginPage() {
+// Inner component that uses useSearchParams (requires Suspense boundary)
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn, signInWithGoogle, loading } = useAuthStore();
   // Used to read profile state after signIn resolves
   const getState = useAuthStore.getState;
@@ -17,6 +19,29 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  /**
+   * Resolves the post-login destination:
+   * 1. If profile onboarding is incomplete → /onboarding
+   * 2. If middleware set ?redirect=<path> → that path (validated)
+   * 3. Default → /dashboard
+   */
+  const resolveRedirect = (): string => {
+    const { profile } = getState();
+
+    // Onboarding takes priority — don't let a redirect param bypass it
+    if (profile?.onboardingCompleted === false) {
+      return '/onboarding';
+    }
+
+    // Honor the redirect param if present and safe
+    const redirect = searchParams.get('redirect');
+    if (redirect && redirect.startsWith('/') && !redirect.startsWith('//')) {
+      return redirect;
+    }
+
+    return '/dashboard';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,17 +60,20 @@ export default function LoginPage() {
     }
 
     // Profile is loaded after signIn resolves — route intelligently
-    const { profile } = getState();
-    if (profile?.onboardingCompleted === false) {
-      router.push('/onboarding');
-    } else {
-      router.push('/dashboard');
-    }
+    router.push(resolveRedirect());
   };
 
   const handleGoogle = async () => {
     setIsGoogleLoading(true);
     setError(null);
+
+    // Pass the redirect through to the OAuth callback so the user
+    // lands where they intended after Google auth completes.
+    const redirect = searchParams.get('redirect');
+    const callbackUrl = redirect && redirect.startsWith('/') && !redirect.startsWith('//')
+      ? `/auth/callback?next=${encodeURIComponent(redirect)}`
+      : '/auth/callback';
+
     const { error: googleError } = await signInWithGoogle();
     if (googleError) {
       setError(googleError);
@@ -70,6 +98,13 @@ export default function LoginPage() {
       {error && (
         <div className="mb-5 p-4 bg-red-950/30 border border-red-800/50 rounded-xl text-sm text-red-400 animate-fade-in-up">
           {error}
+        </div>
+      )}
+
+      {/* Auth callback error display */}
+      {searchParams.get('error') === 'auth_callback_failed' && !error && (
+        <div className="mb-5 p-4 bg-red-950/30 border border-red-800/50 rounded-xl text-sm text-red-400 animate-fade-in-up">
+          Přihlášení selhalo. Zkus to prosím znovu.
         </div>
       )}
 
@@ -155,5 +190,14 @@ export default function LoginPage() {
         </Link>
       </p>
     </div>
+  );
+}
+
+// Main export wrapped in Suspense for useSearchParams
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="text-[#A1A1AA] text-center p-10">Načítání...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
