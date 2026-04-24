@@ -10,9 +10,9 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
-              <span className="text-white font-black text-sm">S</span>
+              <span className="text-white font-black text-sm">G</span>
             </div>
-            <span className="text-lg font-black text-[#F5F5F5]">Shapio</span>
+            <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
           </Link>
           <Link href="/" className="text-sm text-[#A1A1AA] hover:text-[#F5F5F5] transition-colors">
             ← Zpět
@@ -32,7 +32,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">1. Správce osobních údajů</h2>
             <p>
-              Správcem osobních údajů je provozovatel aplikace Shapio. Kontaktní e-mail:{' '}
+              Správcem osobních údajů je provozovatel aplikace getbeter. Kontaktní e-mail:{' '}
               <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E] hover:text-[#D13A52]">
                 jedlicekm@gmail.com
               </a>
@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">3. K čemu osobní údaje používáme</h2>
             <ul className="flex flex-col gap-2">
               {[
-                'Poskytování a personalizace služby Shapio',
+                'Poskytování a personalizace služby getbeter',
                 'Generování tréninkových a výživových plánů pomocí AI',
                 'Komunikace s uživatelem (transakční e-maily, podpora)',
                 'Zpracování plateb předplatného',
@@ -114,7 +114,7 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">6. Fotografie</h2>
             <p>
-              Fotografie nahrané do Shapio (profilové fotky, fotky pokroku) jsou:
+              Fotografie nahrané do getbeter (profilové fotky, fotky pokroku) jsou:
             </p>
             <ul className="flex flex-col gap-2 mt-2">
               {[

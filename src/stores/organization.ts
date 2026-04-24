@@ -11,6 +11,7 @@ import type {
   OrgRole,
   OrgType,
   OrgPlan,
+  OrgSettings,
   MembershipStatus,
 } from '@/types';
 
@@ -19,6 +20,12 @@ const supabase = createClientComponentClient();
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function mapOrg(row: any): Organization {
+  // Cast settings to OrgSettings — the DB stores a typed JSONB object.
+  // Existing {} rows are safe: all OrgSettings fields are optional.
+  const settings: OrgSettings = (row.settings && typeof row.settings === 'object')
+    ? row.settings as OrgSettings
+    : {};
+
   return {
     id: row.id,
     name: row.name,
@@ -26,7 +33,7 @@ function mapOrg(row: any): Organization {
     type: row.type || 'other',
     logoUrl: row.logo_url || undefined,
     plan: row.plan || 'free',
-    settings: row.settings || {},
+    settings,
     stripeCustomerId: row.stripe_customer_id || undefined,
     stripeSubscriptionId: row.stripe_subscription_id || undefined,
     createdAt: row.created_at,

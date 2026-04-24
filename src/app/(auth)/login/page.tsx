@@ -1,6 +1,6 @@
 'use client';
 
-// Login page — přihlášení do Shapio s email/heslo + Google OAuth
+// Login page — přihlášení do getbeter s email/heslo + Google OAuth
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -67,14 +67,14 @@ function LoginForm() {
     setIsGoogleLoading(true);
     setError(null);
 
-    // Pass the redirect through to the OAuth callback so the user
-    // lands where they intended after Google auth completes.
+    // Pass the intended destination so the auth callback can route the user
+    // back where they came from after Google OAuth completes.
     const redirect = searchParams.get('redirect');
-    const callbackUrl = redirect && redirect.startsWith('/') && !redirect.startsWith('//')
-      ? `/auth/callback?next=${encodeURIComponent(redirect)}`
-      : '/auth/callback';
+    const next = redirect && redirect.startsWith('/') && !redirect.startsWith('//')
+      ? redirect
+      : undefined;
 
-    const { error: googleError } = await signInWithGoogle();
+    const { error: googleError } = await signInWithGoogle(next);
     if (googleError) {
       setError(googleError);
       setIsGoogleLoading(false);
@@ -87,7 +87,7 @@ function LoginForm() {
       {/* Header */}
       <div className="mb-7">
         <h1 className="text-2xl font-black text-[#F5F5F5] mb-2">
-          Přihlásit se do Shapio
+          Přihlásit se do getbeter
         </h1>
         <p className="text-[#A1A1AA] text-sm">
           Vítej zpět! Zadej své přihlašovací údaje.

@@ -2,6 +2,13 @@
 import OpenAI from 'openai';
 import type { UserProfile, SubscriptionTier, WorkoutPlan, NutritionPlan } from '@/types';
 
+export interface OnboardingContext {
+  activityLevel?: string | null;
+  sessionDurationMinutes?: number | null;
+  mainFrictions?: string[];
+  interestSignals?: string[];
+}
+
 // Initialize OpenAI client — requires OPENAI_API_KEY in environment.
 // TODO: set OPENAI_API_KEY in .env.local (dev) and Netlify environment variables (prod).
 // The dummy key prevents a build-time crash on import; runtime guards below handle missing keys safely.
@@ -24,6 +31,47 @@ Do not provide medical diagnoses, treatment recommendations, or specific medical
 Focus on general fitness and nutrition principles suitable for healthy adults.
 `;
 
+// ─── Shared label maps used across AI prompts ────────────────────────────────
+
+const GOAL_LABELS: Record<string, string> = {
+  fat_loss: 'spalování tuku a zhubnutí',
+  muscle_gain: 'budování svalů a nabírání hmoty',
+  recomposition: 'rekompozici těla (svaly a tuk zároveň)',
+  general_fitness: 'zlepšení celkové kondice',
+  improve_discipline: 'budování konzistentní rutiny a zdravých návyků',
+  improve_appearance: 'zlepšení vzhledu a sebevědomí v těle',
+};
+
+const LEVEL_LABELS: Record<string, string> = {
+  beginner: 'začátečník (0–1 rok tréninku)',
+  intermediate: 'středně pokročilý (1–3 roky)',
+  advanced: 'pokročilý (3+ let)',
+};
+
+const EQUIPMENT_LABELS: Record<string, string> = {
+  none: 'bez vybavení (cvičení s vlastní vahou)',
+  home_basic: 'domácí vybavení (základní náčiní)',
+  gym_full: 'plně vybavená posilovna',
+};
+
+const ACTIVITY_LABELS: Record<string, string> = {
+  sedentary: 'sedavý (kancelář, minimum pohybu)',
+  lightly_active: 'lehce aktivní (pravidelná chůze)',
+  moderately_active: 'středně aktivní (sport 2–3×/týden)',
+  very_active: 'velmi aktivní (sport denně nebo fyzická práce)',
+};
+
+const FRICTION_LABELS: Record<string, string> = {
+  no_time: 'nedostatek času',
+  no_motivation: 'nedostatek motivace',
+  no_energy: 'nedostatek energie',
+  dont_know_what_to_do: 'neví přesně, co dělat',
+  injury_fear: 'strach ze zranění',
+  past_failures: 'předchozí neúspěchy',
+  social_anxiety: 'sociální úzkost v posilovně',
+  bad_diet_habits: 'špatné stravovací návyky',
+};
+
 /**
  * Returns the appropriate OpenAI model based on subscription tier.
  * Free/Starter users get gpt-4o-mini for cost efficiency.
@@ -41,7 +89,8 @@ export function getModelForTier(tier: SubscriptionTier): string {
  */
 export async function generateWorkoutPlan(
   profile: Partial<UserProfile>,
-  tier: SubscriptionTier
+  tier: SubscriptionTier,
+  context?: OnboardingContext
 ): Promise<Partial<WorkoutPlan>> {
   const durationDays = getDurationForTier(tier);
   const weeks = Math.ceil(durationDays / 7);
@@ -69,6 +118,9 @@ User Profile:
 - Dietary Preference: ${profile.dietaryPreference || 'no_preference'}
 - Injuries/Limitations: ${profile.injuries || 'none'}
 - Motivation: ${profile.targetMotivation || 'general improvement'}
+- Daily Activity Level: ${context?.activityLevel || 'moderately_active'}
+- Preferred Session Duration: ${context?.sessionDurationMinutes || 60} minutes
+- Known Blockers (address these): ${context?.mainFrictions?.join(', ') || 'none'}
 
 Create a ${durationDays}-day (${weeks}-week) workout plan.
 Return a JSON object with this structure:
@@ -147,7 +199,8 @@ For free tier, only generate 1-2 weeks of detail. For paid tiers, generate all $
  */
 export async function generateNutritionPlan(
   profile: Partial<UserProfile>,
-  tier: SubscriptionTier
+  tier: SubscriptionTier,
+  context?: OnboardingContext
 ): Promise<Partial<NutritionPlan>> {
   const model = getModelForTier(tier);
 
@@ -160,7 +213,15 @@ export async function generateNutritionPlan(
     ? 10 * weight + 6.25 * height - 5 * age + 5
     : 10 * weight + 6.25 * height - 5 * age - 161;
 
-  const activityMultiplier = (profile.workoutDaysPerWeek || 3) >= 5 ? 1.55 : 1.375;
+  const activityMultiplierMap: Record<string, number> = {
+    sedentary: 1.2,
+    lightly_active: 1.375,
+    moderately_active: 1.55,
+    very_active: 1.725,
+  };
+  const activityMultiplier = context?.activityLevel
+    ? (activityMultiplierMap[context.activityLevel] ?? 1.375)
+    : (profile.workoutDaysPerWeek || 3) >= 5 ? 1.55 : 1.375;
   const tdee = Math.round(bmr * activityMultiplier);
 
   const fallback: Partial<NutritionPlan> = {
@@ -189,6 +250,7 @@ User Profile:
 - Fitness Level: ${profile.fitnessLevel || 'beginner'}
 - Workout Days: ${profile.workoutDaysPerWeek || 3}/week
 - Dietary Preference: ${profile.dietaryPreference || 'no_preference'}
+- Daily Activity Level: ${context?.activityLevel || 'moderately_active'}
 - Estimated TDEE: ${tdee} kcal
 
 Create a daily nutrition plan. Return JSON:
@@ -262,7 +324,8 @@ All text in Czech. Adjust macros based on goal:
  * Generates an assessment summary for the results page after onboarding.
  */
 export async function generateAssessmentSummary(
-  profile: Partial<UserProfile>
+  profile: Partial<UserProfile>,
+  context?: OnboardingContext
 ): Promise<string> {
   const fallback = 'Tvůj plán je připraven. Začínáme transformaci.';
 
@@ -270,21 +333,25 @@ export async function generateAssessmentSummary(
     return fallback;
   }
 
+  const assessmentGoalLabel = GOAL_LABELS[profile.goal || 'general_fitness'] ?? 'transformaci těla';
+  const assessmentLevelLabel = LEVEL_LABELS[profile.fitnessLevel || 'beginner'] ?? 'začátečník';
+
   const prompt = `
 You are a fitness assessment specialist.
 ${WELLNESS_DISCLAIMER}
 
-Based on this user profile, write a personalized 3-4 sentence assessment in Czech:
-- Goal: ${profile.goal}
+Write a personalized 3-4 sentence assessment in Czech for this user:
+- Goal: ${assessmentGoalLabel}
 - Age: ${profile.age}
-- Sex: ${profile.sex}
-- Weight: ${profile.weightKg} kg
-- Fitness Level: ${profile.fitnessLevel}
-- Equipment: ${profile.equipment}
+- Sex: ${profile.sex === 'female' ? 'female' : 'male'}
+- Weight: ${profile.weightKg} kg / Height: ${profile.heightCm} cm
+- Fitness Level: ${assessmentLevelLabel}
+- Equipment: ${EQUIPMENT_LABELS[profile.equipment || 'gym_full']}
+- Activity Level: ${context?.activityLevel ? ACTIVITY_LABELS[context.activityLevel] ?? context.activityLevel : 'not specified'}
+- Known Blockers: ${context?.mainFrictions?.map((f) => FRICTION_LABELS[f] ?? f).join(', ') || 'none'}
 
-Be encouraging, specific, and motivating. Mention their specific goal and fitness level.
-Write in a direct, masculine tone (the app is targeted at men).
-Do not start with "Based on" - be direct and personal.
+Be specific to their profile — mention their goal, level, and one key strength or opportunity.
+Do not start with "Based on". Avoid generic filler. Write in Czech.
 `;
 
   try {
@@ -308,117 +375,122 @@ Do not start with "Based on" - be direct and personal.
 }
 
 /**
- * Structured free welcome analysis shown on the results page after onboarding.
- * Provides real value to free users without revealing premium content.
+ * Structured analysis shown on the results page after onboarding.
+ * Free tier gets the full shape — premium teaser points toward upgrade.
+ * All fields are required; fallback values ensure no empty renders.
  */
 export interface FreeWelcomeAnalysis {
   greeting: string;
   startingPoint: string;
   mainBottleneck: string;
-  sevenDayFocus: string;
+  focusArea: string;
   trainingDirection: string;
   nutritionDirection: string;
+  habitFocus: string;
+  nextStep: string;
   motivationalCta: string;
+  premiumTeaser: string;
 }
 
 export async function generateFreeWelcomeAnalysis(
-  profile: Partial<UserProfile>
+  profile: Partial<UserProfile>,
+  context?: OnboardingContext
 ): Promise<FreeWelcomeAnalysis> {
-  const goalMap: Record<string, string> = {
-    fat_loss: 'spalování tuku a zhubnutí',
-    muscle_gain: 'budování svalů a nabírání hmoty',
-    recomposition: 'rekompozici těla (svaly + hubnutí zároveň)',
-    general_fitness: 'zlepšení celkové kondice a pohyblivosti',
-  };
-  const levelMap: Record<string, string> = {
-    beginner: 'začátečník',
-    intermediate: 'středně pokročilý',
-    advanced: 'pokročilý',
-  };
-  const equipmentMap: Record<string, string> = {
-    none: 'bez vybavení (cvičení doma s vlastní vahou)',
-    home_basic: 'domácí vybavení (činky, odporové gumy)',
-    gym_full: 'plně vybavená posilovna',
-  };
-  const sexLabel = profile.sex === 'female' ? 'žena' : 'muž';
-  const goalLabel = goalMap[profile.goal || 'general_fitness'] ?? 'transformaci těla';
-  const levelLabel = levelMap[profile.fitnessLevel || 'beginner'] ?? 'začátečník';
-  const equipmentLabel = equipmentMap[profile.equipment || 'gym_full'] ?? 'posilovna';
+  const goalLabel = GOAL_LABELS[profile.goal || 'general_fitness'] ?? 'transformaci těla';
+  const levelLabel = LEVEL_LABELS[profile.fitnessLevel || 'beginner'] ?? 'začátečník';
+  const equipmentLabel = EQUIPMENT_LABELS[profile.equipment || 'gym_full'] ?? 'posilovna';
+  const activityLabel = context?.activityLevel
+    ? (ACTIVITY_LABELS[context.activityLevel] ?? context.activityLevel)
+    : 'neuvedeno';
+  const frictionLabels = context?.mainFrictions
+    ?.map((f) => FRICTION_LABELS[f] ?? f)
+    .join(', ') || null;
+  const sessionMin = context?.sessionDurationMinutes ?? null;
 
   const fallback: FreeWelcomeAnalysis = {
-    greeting: 'Tvůj profil je připraven — pojďme na to.',
-    startingPoint: `Začínáš jako ${levelLabel} s cílem ${goalLabel}. To je solidní výchozí bod — přesně víme, s čím pracujeme.`,
-    mainBottleneck: 'Největší překážka pro většinu lidí na tvé úrovni je konzistence v prvních 4 týdnech. Přesně na to se zaměříme.',
-    sevenDayFocus: `Prvních 7 dní: cvič ${profile.workoutDaysPerWeek || 3}× a dbej na pravidelný spánek. Nevynechej ani jeden trénink — první týden nastavuje zvyk.`,
-    trainingDirection: `Pro tvůj cíl (${goalLabel}) doporučujeme kombinaci silového tréninku a dostatku odpočinku. Progresivní přetížení je klíčové.`,
-    nutritionDirection: 'Zaměř se na dostatečný příjem bílkovin a vyhýbej se zpracovaným potravinám. Hydratace (2,5 l/den) je základ.',
-    motivationalCta: 'Začít dnes je vždy lepší než začít zítra. Tvůj plán na 30 dní tě čeká.',
+    greeting: 'Tvůj profil je připraven — začínáme.',
+    startingPoint: `Jsi ${levelLabel} s cílem ${goalLabel}. Máš k dispozici ${equipmentLabel} a chceš cvičit ${profile.workoutDaysPerWeek || 3}× týdně${sessionMin ? ` po ${sessionMin} minutách` : ''}. To je realistický základ, se kterým se dá pracovat.`,
+    mainBottleneck: frictionLabels
+      ? `Označil jsi jako překážku: ${frictionLabels}. To jsou reálné bariéry — plán je navržen tak, aby s nimi počítal od prvního týdne.`
+      : `Pro ${levelLabel} na úrovni jako tvá je největší překážka obvykle konzistence v prvních 3–4 týdnech, než se trénink stane rutinou.`,
+    focusArea: `S cílem ${goalLabel} je klíčová oblast ${profile.goal === 'fat_loss' ? 'kalorický deficit + udržení svalů' : profile.goal === 'muscle_gain' ? 'progresivní přetížení + dostatečný kalorický příjem' : 'kombinace silového základu a metabolické adaptace'}.`,
+    trainingDirection: `Pro ${equipmentLabel} a ${profile.workoutDaysPerWeek || 3} tréninky týdně doporučujeme strukturu full-body nebo push/pull/legs${sessionMin ? `, vždy ${sessionMin} minut` : ''}. Progresivní přetížení — přidání váhy nebo opakování každý týden — je základní princip.`,
+    nutritionDirection: `Pro cíl ${goalLabel} je priorita ${profile.goal === 'fat_loss' ? 'mírný kalorický deficit (–300 až –500 kcal/den) s vysokým příjmem bílkovin' : profile.goal === 'muscle_gain' ? 'mírný kalorický přebytek (+200 až +400 kcal/den) s důrazem na bílkoviny' : 'příjem bílkovin min. 1,6–2 g/kg tělesné hmotnosti'}. ${profile.dietaryPreference && profile.dietaryPreference !== 'no_preference' ? `Stravovací preference (${profile.dietaryPreference}) je zohledněna.` : ''}`,
+    habitFocus: `Prvních 7 dní: každý večer si nachystej věci na trénink den dopředu. Eliminuješ tím rozhodovací bariéru ráno — jeden z nejúčinnějších triků pro konzistenci.`,
+    nextStep: `Naplánuj si první trénink na konkrétní čas v kalendáři. Ne "dnes nebo zítra" — konkrétní den a hodina. Studie ukazují, že plánování zvyšuje dokončení o 40 %.`,
+    motivationalCta: 'Plán máš. Teď záleží jen na jednom kroku — prvním tréninku.',
+    premiumTeaser: `S PRO plánem dostaneš přesný týdenní rozvrh, makra přizpůsobená tvé váze, a AI kouče, který ti odpoví na každou otázku — kdykoli.`,
   };
 
   if (!process.env.OPENAI_API_KEY) {
     return fallback;
   }
 
-  const prompt = `
-Jsi osobní fitness kouč Shapio. Uživatel právě dokončil vstupní dotazník a čeká na svou první analýzu.
-Toto je ZDARMA verze analýzy — má uživatele nadchnout, ukázat mu, že mu Shapio rozumí, ale nesmí nahradit prémiový plán.
+  const prompt = `Jsi osobní fitness kouč getbeter. Uživatel dokončil vstupní dotazník. Vytvoř mu strukturovanou, konkrétní a věcnou analýzu.
 
-Profil uživatele:
-- Pohlaví: ${sexLabel}
+PRAVIDLA:
+- Každá sekce musí být specifická pro tohoto konkrétního uživatele — žádná generická klišé
+- Vycházej přímo z dat profilu (věk, váha, úroveň, vybavení, denní aktivita, překážky)
+- Délka každé sekce: 2–3 věty max
+- Neposkytuj lékařské diagnózy ani léčebná doporučení
+- Tón: přímý, věcný, grounded — ne rádoby motivační prázdné fráze
+
+PROFIL UŽIVATELE:
+- Pohlaví: ${profile.sex === 'female' ? 'žena' : 'muž'}
 - Věk: ${profile.age || 25} let
-- Výška: ${profile.heightCm || 175} cm
-- Váha: ${profile.weightKg || 80} kg
+- Výška / váha: ${profile.heightCm || 175} cm / ${profile.weightKg || 80} kg
 - Cíl: ${goalLabel}
-- Úroveň: ${levelLabel}
+- Tréninková úroveň: ${levelLabel}
 - Vybavení: ${equipmentLabel}
-- Tréninků/týden: ${profile.workoutDaysPerWeek || 3}
-- Stravování: ${profile.dietaryPreference || 'bez omezení'}
-- Motivace: ${profile.targetMotivation || ''}
-- Zranění: ${profile.injuries || 'žádná'}
+- Denní aktivita: ${activityLabel}
+- Počet tréninků/týden: ${profile.workoutDaysPerWeek || 3}
+- Délka tréninku: ${sessionMin ? `${sessionMin} minut` : 'neuvedeno'}
+- Stravovací preference: ${profile.dietaryPreference || 'bez omezení'}
+- Co ho v minulosti brzdilo: ${frictionLabels || 'neuvedeno'}
+- Co ho zajímá: ${context?.interestSignals?.join(', ') || 'neuvedeno'}
+- Motivace (vlastními slovy): ${profile.targetMotivation || 'neuvedeno'}
+- Zranění / omezení: ${profile.injuries || 'žádná'}
 
-Vytvoř personalizovanou uvítací analýzu v češtině. Buď přímý, konkrétní, motivující. Nepoužívej prázdná klišé.
-Délky: greeting 1 věta, ostatní sekce 2–3 věty.
-
-Vrať JSON přesně v tomto formátu:
+Vrať POUZE JSON v přesně tomto formátu (žádný markdown, žádné obalující znaky):
 {
-  "greeting": "Osobní pozdrav adresovaný uživateli (bez jména) — 1 věta, přímá, motivující",
-  "startingPoint": "Shrnutí výchozího stavu — co vidíš v jeho profilu, kde je teď",
-  "mainBottleneck": "Největší překážka nebo příležitost — co ho nejspíš brzdí nebo co může být jeho klíčovým pákem",
-  "sevenDayFocus": "Konkrétní doporučení na prvních 7 dní — co přesně dělat, žádné generické rady",
-  "trainingDirection": "Směr tréninku — jakým stylem cvičit, jak často, na co se soustředit (BEZ konkrétního plánu — to je premium)",
-  "nutritionDirection": "Stravovací směr — základní pravidla pro jeho cíl (BEZ přesných maker/kalorií — to je premium)",
-  "motivationalCta": "Závěrečná motivační věta + výzva k akci — proč začít hned dnes"
+  "greeting": "1 věta, osobní, přímá — zmiň jeho cíl nebo situaci, ne jméno",
+  "startingPoint": "Shrnutí výchozího stavu — úroveň, vybavení, cíl, kapacita tréninku — konkrétní čísla z profilu",
+  "mainBottleneck": "Největší překážka nebo rizikový bod — vycházej z jeho bariér, úrovně a cíle — buď konkrétní, ne obecný",
+  "focusArea": "Primární příležitost — co mu může přinést největší výsledek nejrychleji, specifické pro jeho profil",
+  "trainingDirection": "Konkrétní tréninkový přístup — styl, frekvence, délka, zaměření — bez odhalení detailního plánu",
+  "nutritionDirection": "Konkrétní výživový přístup — pro jeho cíl a stravovací preference — bez přesných maker (to je premium)",
+  "habitFocus": "1 konkrétní návyk pro první týden — realistický, implementovatelný hned, specifický",
+  "nextStep": "1 konkrétní akce na dnes nebo zítra — ne vágní rada, ale přesný krok",
+  "motivationalCta": "Závěrečná věta — stručná, grounded, specifická pro jeho situaci — ne motivační poster",
+  "premiumTeaser": "1 věta o tom, co PRO plán přidá navíc — specifické a hodnotné, ne generický upgrade pitch"
 }`;
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-4o',
       messages: [
-        { role: 'system', content: 'Jsi fitness kouč. Vždy odpovídej pouze platným JSON objektem, žádný markdown.' },
+        {
+          role: 'system',
+          content: 'Jsi fitness kouč. Odpovídej pouze platným JSON objektem. Nikdy neposkytuj lékařské rady ani diagnózy.',
+        },
         { role: 'user', content: prompt },
       ],
-      temperature: 0.75,
-      max_tokens: 700,
+      temperature: 0.6,
+      max_tokens: 900,
       response_format: { type: 'json_object' },
     });
 
     const raw = completion.choices[0]?.message?.content ?? '{}';
     const parsed = JSON.parse(raw) as Partial<FreeWelcomeAnalysis>;
 
-    // Validate that all required fields exist
-    if (
-      parsed.greeting &&
-      parsed.startingPoint &&
-      parsed.mainBottleneck &&
-      parsed.sevenDayFocus &&
-      parsed.trainingDirection &&
-      parsed.nutritionDirection &&
-      parsed.motivationalCta
-    ) {
-      return parsed as FreeWelcomeAnalysis;
-    }
+    const required: (keyof FreeWelcomeAnalysis)[] = [
+      'greeting', 'startingPoint', 'mainBottleneck', 'focusArea',
+      'trainingDirection', 'nutritionDirection', 'habitFocus',
+      'nextStep', 'motivationalCta', 'premiumTeaser',
+    ];
+    const allPresent = required.every((k) => typeof parsed[k] === 'string' && parsed[k]!.length > 0);
 
-    return fallback;
+    return allPresent ? (parsed as FreeWelcomeAnalysis) : fallback;
   } catch (err) {
     console.error('[openai] generateFreeWelcomeAnalysis failed:', err);
     return fallback;

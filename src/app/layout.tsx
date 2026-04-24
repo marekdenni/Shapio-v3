@@ -3,11 +3,11 @@ import './globals.css';
 import { AuthProvider } from '@/components/AuthProvider';
 
 export const metadata: Metadata = {
-  title: 'Shapio — AI-powered transformace těla',
+  title: 'getbeter — AI-powered transformace těla',
   description:
-    'Shapio analyzuje tvé tělo pomocí AI a vytvoří personalizovaný tréninkový a výživový plán. Začni svou transformaci ještě dnes.',
+    'getbeter analyzuje tvé tělo pomocí AI a vytvoří personalizovaný tréninkový a výživový plán. Začni svou transformaci ještě dnes.',
   keywords: ['fitness', 'transformace', 'AI trénink', 'výživa', 'hubnutí', 'nabírání svalů'],
-  authors: [{ name: 'Shapio' }],
+  authors: [{ name: 'getbeter' }],
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'Shapio — AI transformace těla',
+    title: 'getbeter — AI transformace těla',
     description: 'Personalizovaný trénink a výživa powered by AI',
     type: 'website',
   },

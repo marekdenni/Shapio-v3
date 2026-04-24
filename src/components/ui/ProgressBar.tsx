@@ -1,6 +1,6 @@
 'use client';
 
-// Animated progress bar component with Shapio dark styling
+// Animated progress bar component with getbeter dark styling
 import React from 'react';
 
 interface ProgressBarProps {

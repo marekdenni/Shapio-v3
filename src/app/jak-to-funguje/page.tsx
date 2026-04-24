@@ -19,7 +19,7 @@ export default function JakToFungujePage() {
             Průvodce aplikací
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-[#F5F5F5] mb-6 leading-tight">
-            Jak Shapio funguje?
+            Jak getbeter funguje?
           </h1>
           <p className="text-lg text-[#A1A1AA] max-w-2xl mx-auto mb-8 leading-relaxed">
             Od registrace po první viditelné výsledky — kompletní průvodce procesem personalizované transformace pomocí AI.
@@ -47,7 +47,7 @@ export default function JakToFungujePage() {
                 step: 1,
                 title: 'Registrace — 30 sekund',
                 duration: '30 sekund',
-                description: 'Vytvoř si bezplatný účet pomocí e-mailu nebo Google. Žádná platební karta. Žádné závazky. Shapio je zdarma po prvních 30 dní.',
+                description: 'Vytvoř si bezplatný účet pomocí e-mailu nebo Google. Žádná platební karta. Žádné závazky. getbeter je zdarma po prvních 30 dní.',
                 details: [
                   'Zadej e-mail a heslo, nebo se přihlas přes Google',
                   'Potvrď e-mail (příde za pár sekund)',
@@ -95,7 +95,7 @@ export default function JakToFungujePage() {
                   'Vytvoří personalizovaný výživový plán s makronutrienty',
                   'Napíše osobní hodnocení a doporučení',
                 ],
-                disclaimer: 'Shapio využívá AI pro vytváření obecných fitness a výživových doporučení. Nejde o lékařskou péči ani zdravotní diagnózu.',
+                disclaimer: 'getbeter využívá AI pro vytváření obecných fitness a výživových doporučení. Nejde o lékařskou péči ani zdravotní diagnózu.',
               },
               {
                 step: 5,
@@ -163,7 +163,7 @@ export default function JakToFungujePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <h2 className="text-3xl font-black text-[#F5F5F5] mb-4">Příklady použití</h2>
-            <p className="text-[#A1A1AA]">Jak Shapio pomohl různým lidem s různými cíli</p>
+            <p className="text-[#A1A1AA]">Jak getbeter pomohl různým lidem s různými cíli</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -173,7 +173,7 @@ export default function JakToFungujePage() {
                 photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80',
                 situation: 'Sedavé zaměstnání, přes 10 hodin denně u počítače. Žádný pravidelný pohyb 3 roky. Cíl: zhubnout 10 kg tuku a začít budovat svaly.',
                 challenge: 'Nedostatek času, únava po práci, nevěděl jak začít bez přeplácení za trenéra.',
-                solution: 'Shapio sestavil 90denní PRO plán s 4 tréninky týdně po 45 minutách. AI kouč pomohl s výživou a odstranil zábrany.',
+                solution: 'getbeter sestavil 90denní PRO plán s 4 tréninky týdně po 45 minutách. AI kouč pomohl s výživou a odstranil zábrany.',
                 result: '−9 kg tuku, +3 kg svalů za 14 týdnů. Nyní cvičí pravidelně bez aplikace.',
               },
               {
@@ -181,7 +181,7 @@ export default function JakToFungujePage() {
                 photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80',
                 situation: 'Aktivní studentka, málo peněz na trenéra nebo drahé doplňky. Cíl: zpevnit tělo, ne dramaticky zhubnout.',
                 challenge: 'Omezený rozpočet, domácí trénink bez vybavení, nejistota co jíst.',
-                solution: 'Shapio Starter plán zaměřený na domácí trénink s vlastní vahou. Personalizovaný výživový plán v rámci studentského rozpočtu.',
+                solution: 'getbeter Starter plán zaměřený na domácí trénink s vlastní vahou. Personalizovaný výživový plán v rámci studentského rozpočtu.',
                 result: 'Výrazné zpevnění postavy za 10 týdnů. Pravidelné cvičení 3× týdně.',
               },
               {
@@ -189,7 +189,7 @@ export default function JakToFungujePage() {
                 photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&q=80',
                 situation: 'Dříve aktivní sportovec, pak 5 let bez pohybu kvůli pracovnímu vytížení. Cíl: návrat do kondice, více energie.',
                 challenge: 'Strach z přetížení po dlouhé pauze, svalová nerovnováha, zpomaleláregenerace v 35 letech.',
-                solution: 'Shapio Elite plán s postupnou progresí, zaměřený na regeneraci a budování základní kondice. AI kouč navigoval přes svalovou bolest.',
+                solution: 'getbeter Elite plán s postupnou progresí, zaměřený na regeneraci a budování základní kondice. AI kouč navigoval přes svalovou bolest.',
                 result: '+7 kg svalů, výrazně lepší kondice a energie za 20 týdnů.',
               },
               {
@@ -197,7 +197,7 @@ export default function JakToFungujePage() {
                 photo: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=80&q=80',
                 situation: 'Nepravidelný denní režim, cestování, stravování v restauracích. Cíl: rekompozice těla a více energie.',
                 challenge: 'Nepravidelný jídelníček, trénink v různých posilovnách a hotelích, stres z podnikání.',
-                solution: 'Shapio PRO plán s flexibilním tréninkem přizpůsobeným různým podmínkám. Výživa optimalizovaná pro restaurační jídlo.',
+                solution: 'getbeter PRO plán s flexibilním tréninkem přizpůsobeným různým podmínkám. Výživa optimalizovaná pro restaurační jídlo.',
                 result: 'Rekompozice těla za 16 týdnů. Lepší energetická hladina a spánek.',
               },
             ].map((study, i) => (
@@ -220,7 +220,7 @@ export default function JakToFungujePage() {
                     <p className="text-[#A1A1AA]">{study.challenge}</p>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider mb-1">Řešení Shapio</p>
+                    <p className="text-xs font-semibold text-[#A1A1AA] uppercase tracking-wider mb-1">Řešení getbeter</p>
                     <p className="text-[#A1A1AA]">{study.solution}</p>
                   </div>
                   <div className="pt-3 border-t border-[#2A2A31]">
@@ -243,7 +243,7 @@ export default function JakToFungujePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-black text-[#F5F5F5] mb-4">
-              Shapio mění více než jen tvoje tělo
+              getbeter mění více než jen tvoje tělo
             </h2>
             <p className="text-[#A1A1AA] max-w-xl mx-auto">
               Pravidelný fitness program přináší hluboké změny daleko za fyzičkou
@@ -268,7 +268,7 @@ export default function JakToFungujePage() {
                   </svg>
                 ),
                 title: 'Disciplína',
-                text: 'Dodržovat tréninkový plán týden za týdnem je cvičení mentální pevnosti. Lidé, kteří si vybudují disciplínu v posilovně, ji přirozeně přenášejí do práce, studia a osobního života. Disciplína je návyk — a Shapio ti pomáhá ji budovat systematicky.',
+                text: 'Dodržovat tréninkový plán týden za týdnem je cvičení mentální pevnosti. Lidé, kteří si vybudují disciplínu v posilovně, ji přirozeně přenášejí do práce, studia a osobního života. Disciplína je návyk — a getbeter ti pomáhá ji budovat systematicky.',
               },
               {
                 icon: (
@@ -306,8 +306,8 @@ export default function JakToFungujePage() {
                 a: 'AI z fotek nevytváří medicínskou diagnózu — slouží jako kontextový doplněk k dotazníkovým datům. Hlavním vstupem pro personalizaci plánu jsou tvoje odpovědi na dotazník (věk, výška, váha, cíl, úroveň kondice atd.). Fotky pomáhají sledovat vizuální pokrok v čase.',
               },
               {
-                q: 'Je Shapio vhodný pro ženy?',
-                a: 'Absolutně ano. Shapio je navržen pro muže i ženy. Plány jsou přizpůsobeny pohlaví a cílům — jiný přístup pro nabírání svalů u muže a jiný pro zpevnění postavy u ženy. Výživa je taktéž personalizována.',
+                q: 'Je getbeter vhodný pro ženy?',
+                a: 'Absolutně ano. getbeter je navržen pro muže i ženy. Plány jsou přizpůsobeny pohlaví a cílům — jiný přístup pro nabírání svalů u muže a jiný pro zpevnění postavy u ženy. Výživa je taktéž personalizována.',
               },
               {
                 q: 'Co když mám zranění?',
@@ -318,7 +318,7 @@ export default function JakToFungujePage() {
                 a: 'První viditelné změny (více energie, lepší nálada, mírné zpevnění) přichází obvykle za 2–3 týdny. Viditelné vizuální změny se projevují nejčastěji za 6–8 týdnů při konzistentním plnění plánu. Výsledky se individuálně liší.',
               },
               {
-                q: 'Mohu používat Shapio bez posilovny?',
+                q: 'Mohu používat getbeter bez posilovny?',
                 a: 'Ano. Při registraci vybereš dostupné vybavení — bez vybavení, domácí posilovna nebo plná posilovna. Plán bude sestavený přesně pro tvoje podmínky. Cvičení s vlastní vahou doma může být velmi efektivní.',
               },
               {
@@ -330,8 +330,8 @@ export default function JakToFungujePage() {
                 a: 'Ano, předplatné lze zrušit kdykoliv z nastavení účtu bez nutnosti kontaktovat podporu. Přístup zůstane aktivní do konce zaplacené periody.',
               },
               {
-                q: 'Je Shapio zdravotnická aplikace?',
-                a: 'Ne. Shapio je aplikace pro obecné fitness a wellness. Obsah a plány mají pouze informační charakter a nepředstavují lékařskou radu, diagnózu ani léčbu. Vždy konzultuj svého lékaře před zahájením nového fitness programu.',
+                q: 'Je getbeter zdravotnická aplikace?',
+                a: 'Ne. getbeter je aplikace pro obecné fitness a wellness. Obsah a plány mají pouze informační charakter a nepředstavují lékařskou radu, diagnózu ani léčbu. Vždy konzultuj svého lékaře před zahájením nového fitness programu.',
               },
               {
                 q: 'Co se stane s mými fotkami?',
@@ -382,10 +382,10 @@ export default function JakToFungujePage() {
               Výzkumy ukazují, že personalizované tréninkové programy vedou k 2–3× lepším výsledkům než obecné plány ve stejném časovém horizontu. Klíčem je přesné nastavení intenzity, objemu a frekven tréninku pro konkrétního jedince.
             </p>
             <p className="text-[#A1A1AA] leading-relaxed mb-4">
-              Shapio kombinuje personalizaci se sledováním pokroku a adaptací — to je přístup, který dříve byl dostupný pouze lidem, kteří si mohli dovolit osobního trenéra. Shapio tuto zkušenost demokratizuje za zlomek ceny.
+              getbeter kombinuje personalizaci se sledováním pokroku a adaptací — to je přístup, který dříve byl dostupný pouze lidem, kteří si mohli dovolit osobního trenéra. getbeter tuto zkušenost demokratizuje za zlomek ceny.
             </p>
             <div className="mt-6 p-4 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-sm text-[#A1A1AA]">
-              <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> Shapio poskytuje obecná fitness a wellness doporučení. Není náhradou za lékařskou péči, fyzioterapii ani individuální konzultaci s certifikovaným trenérem. Výsledky se individuálně liší.
+              <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> getbeter poskytuje obecná fitness a wellness doporučení. Není náhradou za lékařskou péči, fyzioterapii ani individuální konzultaci s certifikovaným trenérem. Výsledky se individuálně liší.
             </div>
           </div>
         </div>
@@ -405,7 +405,7 @@ export default function JakToFungujePage() {
             Začít zdarma →
           </Link>
           <p className="text-sm text-[#A1A1AA]/50 mt-4">
-            Shapio není zdravotnickým prostředkem. Výsledky se individuálně liší.
+            getbeter není zdravotnickým prostředkem. Výsledky se individuálně liší.
           </p>
         </div>
       </section>

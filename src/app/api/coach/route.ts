@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
     // Build conversation history
     const model = getModelForTier(tier);
-    const systemPrompt = `Jsi AI fitness kouč aplikace Shapio. Pomáháš uživatelům s tréninkem, výživou a motivací.
+    const systemPrompt = `Jsi AI fitness kouč aplikace getbeter. Pomáháš uživatelům s tréninkem, výživou a motivací.
 
 Uživatelský profil:
 - Cíl: ${userProfile?.goal || 'general_fitness'}

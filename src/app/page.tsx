@@ -55,7 +55,7 @@ export default function LandingPage() {
 
             {/* Wordmark */}
             <p className="text-sm font-semibold tracking-[0.3em] text-[#A1A1AA] uppercase mb-4">
-              SHAPIO
+              GETBETER
             </p>
 
             {/* Main headline */}
@@ -197,7 +197,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14 scroll-animate">
             <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
-              Jak Shapio funguje?
+              Jak getbeter funguje?
             </h2>
             <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
               Tři jednoduché kroky k tvé transformaci
@@ -268,10 +268,10 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14 scroll-animate">
             <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
-              Pro koho je Shapio?
+              Pro koho je getbeter?
             </h2>
             <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
-              Ať chceš nabrat svaly nebo zpevnit postavu — Shapio funguje pro každého
+              Ať chceš nabrat svaly nebo zpevnit postavu — getbeter funguje pro každého
             </p>
           </div>
 
@@ -540,7 +540,7 @@ export default function LandingPage() {
               {
                 number: '1',
                 title: 'Personalizace na základě tvého těla',
-                text: 'Každý člověk reaguje jinak na trénink a výživu. Shapio vytváří plán pro tvoje specifické tělo, metabolismus, úroveň kondice a cíle — ne pro průměrného uživatele.',
+                text: 'Každý člověk reaguje jinak na trénink a výživu. getbeter vytváří plán pro tvoje specifické tělo, metabolismus, úroveň kondice a cíle — ne pro průměrného uživatele.',
               },
               {
                 number: '2',
@@ -550,7 +550,7 @@ export default function LandingPage() {
               {
                 number: '3',
                 title: 'Kombinace tréninku, výživy a konzistencí',
-                text: 'Výsledky přichází ze synergii správného tréninku, výživy a konzistentního sledování. Shapio integruje vše na jedno místo pro maximální efekt.',
+                text: 'Výsledky přichází ze synergii správného tréninku, výživy a konzistentního sledování. getbeter integruje vše na jedno místo pro maximální efekt.',
               },
             ].map((reason, i) => (
               <div
@@ -652,7 +652,7 @@ export default function LandingPage() {
                 name: 'Tereza',
                 age: 24,
                 role: 'studentka',
-                story: 'Chtěla jsem zpevnit tělo, ale neměla jsem čas ani peníze na trenéra. Shapio mi dal přesný plán a AI kouč odpovídal na všechny otázky.',
+                story: 'Chtěla jsem zpevnit tělo, ale neměla jsem čas ani peníze na trenéra. getbeter mi dal přesný plán a AI kouč odpovídal na všechny otázky.',
                 result: 'Výrazné zpevnění za 10 týdnů',
               },
               {
@@ -660,7 +660,7 @@ export default function LandingPage() {
                 name: 'Martin',
                 age: 35,
                 role: 'manažer',
-                story: 'Po 5 letech bez pohybu jsem potřeboval návrat. Shapio sestavil plán pro moji úroveň a postupně mě vedl zpět do formy bez přetížení.',
+                story: 'Po 5 letech bez pohybu jsem potřeboval návrat. getbeter sestavil plán pro moji úroveň a postupně mě vedl zpět do formy bez přetížení.',
                 result: '+7 kg svalů za 20 týdnů',
               },
               {
@@ -808,7 +808,7 @@ export default function LandingPage() {
 
                 <div className="mt-1 p-3 bg-[#1D1D22] rounded-xl border border-[#2A2A31]">
                   <p className="text-xs text-[#A1A1AA] italic leading-relaxed">
-                    &ldquo;Neměla jsem čas ani peníze na trenéra. Shapio mi dal přesný plán a výsledky jsou vidět.&rdquo;
+                    &ldquo;Neměla jsem čas ani peníze na trenéra. getbeter mi dal přesný plán a výsledky jsou vidět.&rdquo;
                   </p>
                 </div>
               </div>
@@ -816,7 +816,7 @@ export default function LandingPage() {
           </div>
 
           <p className="text-center text-xs text-[#A1A1AA]/40 mt-8">
-            * Ilustrativní příklady výsledků. Výsledky se individuálně liší. Shapio není zdravotnický prostředek.
+            * Ilustrativní příklady výsledků. Výsledky se individuálně liší. getbeter není zdravotnický prostředek.
           </p>
         </div>
       </section>
@@ -926,7 +926,7 @@ export default function LandingPage() {
               Konečně systém místo chaosu
             </h2>
             <p className="text-[#A1A1AA] text-lg max-w-2xl mx-auto">
-              Dost bylo hledání videí na YouTube, obecných plánů z internetu a rad, které si navzájem odporují. Shapio ti řekne přesně co, kdy a proč.
+              Dost bylo hledání videí na YouTube, obecných plánů z internetu a rad, které si navzájem odporují. getbeter ti řekne přesně co, kdy a proč.
             </p>
           </div>
 
@@ -952,9 +952,9 @@ export default function LandingPage() {
               ))}
             </div>
 
-            {/* SHAPIO strana */}
+            {/* GETBETER strana */}
             <div className="scroll-animate bg-[#151518] border border-[#B3263E]/40 rounded-2xl p-6 shadow-[0_0_30px_rgba(179,38,62,0.08)]">
-              <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-4">Se Shapio</p>
+              <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-4">Se getbeter</p>
               {[
                 'Jeden jasný plán šitý na tebe — hned první den',
                 'Přesně víš, co dělat a proč to funguje',
@@ -984,7 +984,7 @@ export default function LandingPage() {
               Co dostaneš hned první den
             </h2>
             <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
-              Žádné čekání, žádné zbytečné intro. Shapio tě nastaví za méně než 5 minut.
+              Žádné čekání, žádné zbytečné intro. getbeter tě nastaví za méně než 5 minut.
             </p>
           </div>
 
@@ -1000,7 +1000,7 @@ export default function LandingPage() {
                 step: '02',
                 time: 'Za 3 minuty',
                 title: 'AI sestaví tvůj plán',
-                desc: 'Shapio zpracuje tvůj profil a vygeneruje tréninkový i výživový plán přesně pro tebe.',
+                desc: 'getbeter zpracuje tvůj profil a vygeneruje tréninkový i výživový plán přesně pro tebe.',
               },
               {
                 step: '03',
@@ -1051,7 +1051,7 @@ export default function LandingPage() {
               Proč to tentokrát vydržíš déle než týden
             </h2>
             <p className="text-[#A1A1AA] text-lg max-w-xl mx-auto">
-              Přestat není selhání tvé vůle. Je to selhání systému, který jsi měl. Shapio to mění.
+              Přestat není selhání tvé vůle. Je to selhání systému, který jsi měl. getbeter to mění.
             </p>
           </div>
 
@@ -1060,7 +1060,7 @@ export default function LandingPage() {
               {
                 icon: '🎯',
                 title: 'Víš přesně, co dělat',
-                desc: 'Nejistota je největší nepřítel konzistentnosti. Shapio odstraní otázku „co dnes cvičit?" jednou provždy. Otevřeš appku — plán je tam.',
+                desc: 'Nejistota je největší nepřítel konzistentnosti. getbeter odstraní otázku „co dnes cvičit?" jednou provždy. Otevřeš appku — plán je tam.',
               },
               {
                 icon: '📈',
@@ -1070,7 +1070,7 @@ export default function LandingPage() {
               {
                 icon: '🤝',
                 title: 'Plán se přizpůsobuje tobě',
-                desc: 'Nestíháš 5 tréninků? Plán se upraví. Máš zranění? Shapio ví. Nejsi vězněm rigidního plánu — plán pracuje pro tebe.',
+                desc: 'Nestíháš 5 tréninků? Plán se upraví. Máš zranění? getbeter ví. Nejsi vězněm rigidního plánu — plán pracuje pro tebe.',
               },
             ].map((card, i) => (
               <div
@@ -1097,13 +1097,13 @@ export default function LandingPage() {
                 Osobní průvodce, ne jen seznam cviků
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-5">
-                Shapio ti neřekne jen co cvičit, ale co dělat dál
+                getbeter ti neřekne jen co cvičit, ale co dělat dál
               </h2>
               <p className="text-[#A1A1AA] leading-relaxed mb-6">
                 Každý druhý plán ti dá seznam cviků. Jenže cviky samotné nestačí — potřebuješ vědět, proč cvičíš právě tohle, co jíst po tréninku, jak reagovat, když tě to přestane bavit, a co udělat příště jinak.
               </p>
               <p className="text-[#A1A1AA] leading-relaxed mb-8">
-                Shapio tě provází celou cestou — od nulového bodu až po výsledky. Každý den, každý týden, každý milestone. Ptáš se, odpovídám.
+                getbeter tě provází celou cestou — od nulového bodu až po výsledky. Každý den, každý týden, každý milestone. Ptáš se, odpovídám.
               </p>
               <div className="flex flex-col gap-3">
                 {[
@@ -1127,7 +1127,7 @@ export default function LandingPage() {
                   <div className="w-6 h-6 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
                     <span className="text-white font-black text-xs">S</span>
                   </div>
-                  <span className="text-sm font-semibold text-[#F5F5F5]">Shapio AI Kouč</span>
+                  <span className="text-sm font-semibold text-[#F5F5F5]">getbeter AI Kouč</span>
                   <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />
                 </div>
                 {[
@@ -1190,7 +1190,7 @@ export default function LandingPage() {
                 I bez posilovny můžeš začít správně
               </h2>
               <p className="text-[#A1A1AA] leading-relaxed mb-5">
-                Nemáš přístup do posilovny? Nevadí. Shapio vytvoří plán přesně pro vybavení, které máš. Nic víc nepotřebuješ.
+                Nemáš přístup do posilovny? Nevadí. getbeter vytvoří plán přesně pro vybavení, které máš. Nic víc nepotřebuješ.
               </p>
               <p className="text-[#A1A1AA] leading-relaxed mb-8">
                 Doma, v parku nebo v plně vybavené posilovně — plán se přizpůsobí. Začít správně nezávisí na místě, kde cvičíš, ale na tom, jestli máš správný systém.
@@ -1253,9 +1253,9 @@ export default function LandingPage() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
               <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
-                <span className="text-white font-black text-sm">S</span>
+                <span className="text-white font-black text-sm">G</span>
               </div>
-              <span className="text-lg font-black text-[#F5F5F5]">Shapio</span>
+              <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
             </Link>
 
             {/* Links */}
@@ -1270,7 +1270,7 @@ export default function LandingPage() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-[#2A2A31] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A1A1AA]/50">
-            <p>© 2025 Shapio. Všechna práva vyhrazena.</p>
+            <p>© 2025 getbeter. Všechna práva vyhrazena.</p>
             <p>Tato aplikace není zdravotnickým prostředkem. Výsledky se individuálně liší.</p>
           </div>
         </div>

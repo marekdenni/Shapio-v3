@@ -52,7 +52,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#B3263E] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(179,38,62,0.3)] animate-pulse">
-            <span className="text-white font-black text-2xl tracking-tight">S</span>
+            <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
           <div className="w-32 h-1 bg-[#1D1D22] rounded-full overflow-hidden">
             <div className="h-full bg-[#B3263E] rounded-full w-2/3 animate-[shimmer_1.5s_ease-in-out_infinite]" />
@@ -102,7 +102,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#B3263E] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(179,38,62,0.3)] animate-pulse">
-            <span className="text-white font-black text-2xl tracking-tight">S</span>
+            <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
           <p className="text-[#A1A1AA] text-sm">Načítám profil...</p>
         </div>

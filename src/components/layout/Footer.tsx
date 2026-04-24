@@ -16,9 +16,9 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 bg-gradient-cta rounded-lg flex items-center justify-center shadow-glow-red">
-                <span className="text-white font-black text-xs">S</span>
+                <span className="text-white font-black text-xs">G</span>
               </div>
-              <span className="text-lg font-black text-text-primary tracking-tight">Shapio</span>
+              <span className="text-lg font-black text-text-primary tracking-tight">getbeter</span>
             </div>
             <p className="text-sm text-text-secondary max-w-xs">{FOOTER.tagline}</p>
           </div>

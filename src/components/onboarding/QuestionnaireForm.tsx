@@ -3,11 +3,19 @@
 // Multi-section questionnaire form for onboarding steps 2-4
 import React from 'react';
 import { Input } from '@/components/ui/Input';
-import { Select } from '@/components/ui/Select';
 import { GoalSelector } from './GoalSelector';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { ONBOARDING } from '@/constants/copy';
-import type { FitnessGoal, Sex, FitnessLevel, Equipment, DietaryPreference } from '@/types';
+import type {
+  FitnessGoal,
+  Sex,
+  FitnessLevel,
+  Equipment,
+  DietaryPreference,
+  ActivityLevel,
+  FrictionPattern,
+  InterestSignal,
+} from '@/types';
 
 interface StepProps {
   step: 2 | 3 | 4;
@@ -112,6 +120,21 @@ function Step3() {
     { id: 'gym_full', label: ONBOARDING.fields.gym_full },
   ];
 
+  const activityOptions: { id: ActivityLevel; label: string }[] = [
+    { id: 'sedentary', label: ONBOARDING.fields.sedentary },
+    { id: 'lightly_active', label: ONBOARDING.fields.lightly_active },
+    { id: 'moderately_active', label: ONBOARDING.fields.moderately_active },
+    { id: 'very_active', label: ONBOARDING.fields.very_active },
+  ];
+
+  const sessionOptions: { value: number; label: string }[] = [
+    { value: 30, label: '30 min' },
+    { value: 45, label: '45 min' },
+    { value: 60, label: '60 min' },
+    { value: 75, label: '75 min' },
+    { value: 90, label: '90+ min' },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       {/* Fitness level */}
@@ -162,6 +185,54 @@ function Step3() {
         </div>
       </div>
 
+      {/* Activity level */}
+      <div>
+        <label className="block text-sm font-medium text-text-secondary mb-2">
+          {ONBOARDING.fields.activityLevel} <span className="text-cta">*</span>
+        </label>
+        <div className="flex flex-col gap-2">
+          {activityOptions.map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => store.setField('activityLevel', id)}
+              className={[
+                'py-3 px-4 rounded-xl border-2 text-sm font-medium text-left transition-all',
+                store.activityLevel === id
+                  ? 'border-cta bg-cta/10 text-text-primary'
+                  : 'border-border bg-surface2 text-text-secondary hover:border-border/60',
+              ].join(' ')}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Session duration */}
+      <div>
+        <label className="block text-sm font-medium text-text-secondary mb-3">
+          {ONBOARDING.fields.sessionDuration} <span className="text-cta">*</span>
+        </label>
+        <div className="flex gap-2 justify-between">
+          {sessionOptions.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => store.setField('sessionDurationMinutes', value)}
+              className={[
+                'flex-1 py-3 rounded-xl border-2 text-xs font-bold transition-all',
+                store.sessionDurationMinutes === value
+                  ? 'border-cta bg-cta/10 text-cta'
+                  : 'border-border bg-surface2 text-text-secondary hover:border-border/60',
+              ].join(' ')}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Workout days per week */}
       <div>
         <label className="block text-sm font-medium text-text-secondary mb-3">
@@ -202,6 +273,43 @@ function Step4() {
     { id: 'low_carb', label: ONBOARDING.fields.low_carb },
   ];
 
+  const frictionOptions: { id: FrictionPattern; label: string }[] = [
+    { id: 'no_time', label: ONBOARDING.fields.friction_no_time },
+    { id: 'no_motivation', label: ONBOARDING.fields.friction_no_motivation },
+    { id: 'no_energy', label: ONBOARDING.fields.friction_no_energy },
+    { id: 'dont_know_what_to_do', label: ONBOARDING.fields.friction_dont_know_what_to_do },
+    { id: 'injury_fear', label: ONBOARDING.fields.friction_injury_fear },
+    { id: 'past_failures', label: ONBOARDING.fields.friction_past_failures },
+    { id: 'social_anxiety', label: ONBOARDING.fields.friction_social_anxiety },
+    { id: 'bad_diet_habits', label: ONBOARDING.fields.friction_bad_diet_habits },
+  ];
+
+  const interestOptions: { id: InterestSignal; label: string }[] = [
+    { id: 'ai_coaching', label: ONBOARDING.fields.interest_ai_coaching },
+    { id: 'progress_tracking', label: ONBOARDING.fields.interest_progress_tracking },
+    { id: 'nutrition_planning', label: ONBOARDING.fields.interest_nutrition_planning },
+    { id: 'community', label: ONBOARDING.fields.interest_community },
+    { id: 'challenges', label: ONBOARDING.fields.interest_challenges },
+    { id: 'team_coaching', label: ONBOARDING.fields.interest_team_coaching },
+    { id: 'corporate_wellness', label: ONBOARDING.fields.interest_corporate_wellness },
+  ];
+
+  const toggleFriction = (id: FrictionPattern) => {
+    const current = store.mainFrictions;
+    const updated = current.includes(id)
+      ? current.filter((f) => f !== id)
+      : [...current, id];
+    store.setField('mainFrictions', updated);
+  };
+
+  const toggleInterest = (id: InterestSignal) => {
+    const current = store.interestSignals;
+    const updated = current.includes(id)
+      ? current.filter((s) => s !== id)
+      : [...current, id];
+    store.setField('interestSignals', updated);
+  };
+
   return (
     <div className="flex flex-col gap-6">
       {/* Dietary preference */}
@@ -237,10 +345,80 @@ function Step4() {
           placeholder={ONBOARDING.fields.injuriesPlaceholder}
           value={store.injuries}
           onChange={(e) => store.setField('injuries', e.target.value)}
-          rows={3}
-          className="w-full px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all resize-none text-base"
+          rows={2}
+          className="w-full px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all resize-none text-sm"
         />
         <p className="text-xs text-text-secondary/60 mt-1">{ONBOARDING.fields.injuriesHelp}</p>
+      </div>
+
+      {/* Frictions — multi-select, optional */}
+      <div>
+        <label className="block text-sm font-medium text-text-secondary mb-1">
+          {ONBOARDING.fields.frictions}
+        </label>
+        <p className="text-xs text-text-secondary/60 mb-2">{ONBOARDING.fields.frictionsHelp}</p>
+        <div className="grid grid-cols-2 gap-2">
+          {frictionOptions.map(({ id, label }) => {
+            const isSelected = store.mainFrictions.includes(id);
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => toggleFriction(id)}
+                className={[
+                  'py-2.5 px-3 rounded-xl border-2 text-xs font-medium text-left transition-all flex items-center gap-2',
+                  isSelected
+                    ? 'border-cta bg-cta/10 text-text-primary'
+                    : 'border-border bg-surface2 text-text-secondary hover:border-border/60',
+                ].join(' ')}
+              >
+                <span className={`w-3.5 h-3.5 rounded shrink-0 border flex items-center justify-center ${isSelected ? 'bg-cta border-cta' : 'border-border/60'}`}>
+                  {isSelected && (
+                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Interest signals — multi-select, optional */}
+      <div>
+        <label className="block text-sm font-medium text-text-secondary mb-1">
+          {ONBOARDING.fields.interests}
+        </label>
+        <p className="text-xs text-text-secondary/60 mb-2">{ONBOARDING.fields.interestsHelp}</p>
+        <div className="grid grid-cols-2 gap-2">
+          {interestOptions.map(({ id, label }) => {
+            const isSelected = store.interestSignals.includes(id);
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => toggleInterest(id)}
+                className={[
+                  'py-2.5 px-3 rounded-xl border-2 text-xs font-medium text-left transition-all flex items-center gap-2',
+                  isSelected
+                    ? 'border-cta bg-cta/10 text-text-primary'
+                    : 'border-border bg-surface2 text-text-secondary hover:border-border/60',
+                ].join(' ')}
+              >
+                <span className={`w-3.5 h-3.5 rounded shrink-0 border flex items-center justify-center ${isSelected ? 'bg-cta border-cta' : 'border-border/60'}`}>
+                  {isSelected && (
+                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                {label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Motivation */}
@@ -252,8 +430,8 @@ function Step4() {
           placeholder={ONBOARDING.fields.motivationPlaceholder}
           value={store.targetMotivation}
           onChange={(e) => store.setField('targetMotivation', e.target.value)}
-          rows={3}
-          className="w-full px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all resize-none text-base"
+          rows={2}
+          className="w-full px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all resize-none text-sm"
         />
       </div>
     </div>

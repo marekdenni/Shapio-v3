@@ -1,10 +1,9 @@
 'use client';
 
-// Free result preview page shown after onboarding AI analysis
+// Results page shown after onboarding AI analysis
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { useAuth } from '@/hooks/useAuth';
 import { RESULTS } from '@/constants/copy';
 import { supabase } from '@/lib/supabase/client';
@@ -23,6 +22,69 @@ interface WorkoutPlanData {
       exercises: Array<{ name: string; sets: number; reps: string }>;
     }>;
   }>;
+}
+
+// Individual analysis row with icon, label, and body text
+function AnalysisRow({
+  icon,
+  label,
+  body,
+  highlight = false,
+}: {
+  icon: string;
+  label: string;
+  body: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="flex gap-3">
+      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${highlight ? 'bg-[#B3263E]/20 border border-[#B3263E]/40' : 'bg-[#1D1D22] border border-[#2A2A31]'}`}>
+        <span className="text-sm">{icon}</span>
+      </div>
+      <div>
+        <p className={`text-xs font-semibold uppercase tracking-wider mb-1 ${highlight ? 'text-[#B3263E]' : 'text-[#71717A]'}`}>
+          {label}
+        </p>
+        <p className="text-sm text-[#A1A1AA] leading-relaxed">{body}</p>
+      </div>
+    </div>
+  );
+}
+
+// Skeleton placeholder while analysis loads
+function AnalysisSkeleton() {
+  return (
+    <div className="flex flex-col gap-4 animate-pulse">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <div key={i} className="flex gap-3">
+          <div className="w-8 h-8 bg-[#2A2A31] rounded-xl shrink-0" />
+          <div className="flex-1 space-y-2">
+            <div className="h-2.5 bg-[#2A2A31] rounded w-1/4" />
+            <div className="h-3 bg-[#2A2A31] rounded w-full" />
+            <div className="h-3 bg-[#2A2A31] rounded w-4/5" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Fallback analysis when AI generation failed or no data yet
+function FallbackAnalysis({ profile }: { profile: { workoutDaysPerWeek?: number } | null }) {
+  const days = profile?.workoutDaysPerWeek || 3;
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="text-[#F5F5F5] font-semibold border-l-2 border-[#B3263E] pl-3">
+        Tvůj profil je nastaven. Začínáme.
+      </p>
+      <AnalysisRow icon="📍" label="Kde začínáš" body="Na základě tvého profilu máme přesný výchozí bod. Úroveň, vybavení i cíl jsou zohledněny v plánu." />
+      <AnalysisRow icon="🎯" label="Hlavní příležitost" body="Konzistence v prvních 4 týdnech je klíčová — to je moment, kdy se z tréninku stane zvyk." />
+      <AnalysisRow icon="💪" label="Tréninkový směr" body="Silový trénink s progresivním přetížením je základ pro jakýkoli cíl — ať chceš hubnout nebo nabírat." />
+      <AnalysisRow icon="🥦" label="Výživový směr" body={`Bílkoviny min. 1,6 g/kg hmotnosti a hydratace 2,5 l denně jsou dvě věci s okamžitým efektem.`} />
+      <AnalysisRow icon="🔁" label="Návyk pro první týden" body="Každý večer si připrav věci na trénink na druhý den. Odstraníš rozhodovací bariéru ráno." />
+      <AnalysisRow icon="▶️" label="Příští krok" body={`Naplánuj si první trénink na konkrétní den a hodinu — ne "brzy". Konkrétní plán zvyšuje dokončení o 40 %.`} />
+    </div>
+  );
 }
 
 export default function ResultsPage() {
@@ -47,7 +109,6 @@ export default function ResultsPage() {
         if (data) {
           setPlanData({ weeks: data.plan_data as WorkoutPlanData['weeks'] });
 
-          // Try to parse structured analysis (new format)
           if (data.assessment_summary) {
             try {
               const parsed = JSON.parse(data.assessment_summary) as ParsedSummary;
@@ -55,12 +116,12 @@ export default function ResultsPage() {
                 setFreeAnalysis(parsed.freeAnalysis);
               }
             } catch {
-              // Old format — plain string, no structured analysis available
+              // old plain-string format — no structured analysis available
             }
           }
         }
       } catch {
-        // No plan yet — show placeholder content
+        // no plan yet — fallback content renders
       } finally {
         setLoading(false);
       }
@@ -69,7 +130,7 @@ export default function ResultsPage() {
     fetchPlan();
   }, [profile?.id]);
 
-  // Sample exercises from plan or defaults
+  // Sample exercises from the generated plan (first non-rest day)
   const firstDay = planData?.weeks?.[0]?.days?.find((d) => !d.isRestDay);
   const sampleExercises = firstDay?.exercises?.slice(0, 3) || [
     { name: 'Bench press', sets: 3, reps: '8-12' },
@@ -84,21 +145,10 @@ export default function ResultsPage() {
     { title: 'Adaptivní plán', description: 'Přizpůsobuje se tvému pokroku', icon: '⚡' },
   ];
 
-  const analysisSection = (icon: string, title: string, content: string) => (
-    <div className="flex gap-3">
-      <div className="w-8 h-8 rounded-xl bg-[#B3263E]/10 border border-[#B3263E]/20 flex items-center justify-center shrink-0 mt-0.5">
-        <span className="text-sm">{icon}</span>
-      </div>
-      <div>
-        <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-1">{title}</p>
-        <p className="text-sm text-[#A1A1AA] leading-relaxed">{content}</p>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-[#0B0B0D] py-8 px-4">
       <div className="max-w-lg mx-auto">
+
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(179,38,62,0.4)] mx-auto mb-5">
@@ -110,67 +160,70 @@ export default function ResultsPage() {
           <p className="text-[#A1A1AA] text-sm">{RESULTS.subtitle}</p>
         </div>
 
-        {/* Free AI Welcome Analysis */}
+        {/* AI Analysis card */}
         <div className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 mb-5">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-5">
             <div className="w-7 h-7 rounded-lg bg-[#B3263E]/20 border border-[#B3263E]/40 flex items-center justify-center">
               <span className="text-sm">🤖</span>
             </div>
-            <span className="text-sm font-semibold text-[#F5F5F5]">Tvoje osobní analýza od Shapio</span>
+            <span className="text-sm font-semibold text-[#F5F5F5]">Tvoje osobní analýza od getbeter</span>
             <span className="ml-auto px-2 py-0.5 bg-green-900/30 border border-green-700/40 rounded-full text-xs text-green-400 font-semibold">
               Zdarma
             </span>
           </div>
 
           {loading ? (
-            <div className="flex flex-col gap-4 animate-pulse">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="w-8 h-8 bg-[#2A2A31] rounded-xl shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 bg-[#2A2A31] rounded w-1/3" />
-                    <div className="h-3 bg-[#2A2A31] rounded w-full" />
-                    <div className="h-3 bg-[#2A2A31] rounded w-4/5" />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <AnalysisSkeleton />
           ) : freeAnalysis ? (
             <div className="flex flex-col gap-4">
-              {/* Greeting */}
-              <p className="text-[#F5F5F5] font-semibold text-base border-l-2 border-[#B3263E] pl-3">
+              {/* Greeting — prominent */}
+              <p className="text-[#F5F5F5] font-semibold text-base border-l-2 border-[#B3263E] pl-3 leading-snug">
                 {freeAnalysis.greeting}
               </p>
 
-              {analysisSection('📍', 'Kde začínáš', freeAnalysis.startingPoint)}
-              {analysisSection('🎯', 'Tvůj hlavní pák', freeAnalysis.mainBottleneck)}
-              {analysisSection('📅', 'Prvních 7 dní', freeAnalysis.sevenDayFocus)}
-              {analysisSection('💪', 'Tréninkový směr', freeAnalysis.trainingDirection)}
-              {analysisSection('🥦', 'Výživový směr', freeAnalysis.nutritionDirection)}
+              <AnalysisRow icon="📍" label="Kde začínáš" body={freeAnalysis.startingPoint} />
+              <AnalysisRow icon="⚠️" label="Hlavní překážka" body={freeAnalysis.mainBottleneck} highlight />
+              <AnalysisRow icon="🎯" label="Klíčová příležitost" body={freeAnalysis.focusArea} highlight />
 
-              {/* Motivational CTA */}
-              <div className="mt-2 p-3 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl">
+              {/* Divider */}
+              <div className="border-t border-[#2A2A31] my-1" />
+
+              <AnalysisRow icon="💪" label="Tréninkový směr" body={freeAnalysis.trainingDirection} />
+              <AnalysisRow icon="🥦" label="Výživový směr" body={freeAnalysis.nutritionDirection} />
+
+              {/* Divider */}
+              <div className="border-t border-[#2A2A31] my-1" />
+
+              <AnalysisRow icon="🔁" label="Návyk pro první týden" body={freeAnalysis.habitFocus} />
+              <AnalysisRow icon="▶️" label="Příští krok" body={freeAnalysis.nextStep} />
+
+              {/* Motivational close */}
+              <div className="mt-1 p-3 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl">
                 <p className="text-sm text-[#D13A52] font-medium leading-relaxed">
                   {freeAnalysis.motivationalCta}
                 </p>
               </div>
+
+              {/* Premium teaser */}
+              {freeAnalysis.premiumTeaser && (
+                <div className="flex items-start gap-2 p-3 bg-[#1D1D22] border border-[#2A2A31] rounded-xl">
+                  <span className="text-base shrink-0 mt-0.5">🔓</span>
+                  <p className="text-xs text-[#71717A] leading-relaxed">
+                    <span className="text-[#A1A1AA] font-semibold">PRO plán: </span>
+                    {freeAnalysis.premiumTeaser}
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
-            <div className="flex flex-col gap-3">
-              <p className="text-[#F5F5F5] font-semibold border-l-2 border-[#B3263E] pl-3">
-                Tvůj plán je připraven. Pojďme na to.
-              </p>
-              {analysisSection('📍', 'Kde začínáš', 'Na základě tvého profilu vidíme jasný výchozí bod pro transformaci. Máš solidní základ, se kterým se dá skvěle pracovat.')}
-              {analysisSection('📅', 'Prvních 7 dní', `Začni s ${profile?.workoutDaysPerWeek || 3} tréninky tento týden. Konzistence v prvním týdnu vytváří zvyk, který pak jede automaticky.`)}
-              {analysisSection('💪', 'Tréninkový směr', 'Kombinace silového tréninku s progresivním přetížením je základ pro každý cíl — ať chceš hubnout nebo nabírat.')}
-              {analysisSection('🥦', 'Výživový směr', 'Dostatečný příjem bílkovin (min. 1,6 g/kg) a hydratace (2,5 l vody denně) jsou dvě věci, které zafungují okamžitě.')}
-            </div>
+            <FallbackAnalysis profile={profile} />
           )}
         </div>
 
         {/* Sample workout preview */}
         <div className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 mb-5">
-          <h3 className="text-sm font-semibold text-[#F5F5F5] mb-4">{RESULTS.sampleWorkout}</h3>
+          <h3 className="text-sm font-semibold text-[#F5F5F5] mb-1">{RESULTS.sampleWorkout}</h3>
+          <p className="text-xs text-[#71717A] mb-4">Ukázka z prvního týdne tvého plánu</p>
           <div className="flex flex-col gap-2">
             {sampleExercises.map((exercise, i) => (
               <div key={i} className="flex items-center justify-between py-2 border-b border-[#2A2A31] last:border-0">
@@ -181,15 +234,15 @@ export default function ResultsPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-[#A1A1AA]/60 mt-3 text-center">
-            + dalších {profile?.workoutDaysPerWeek || 3} dnů tréninků v týdnu — odemkni plný plán
+          <p className="text-xs text-[#71717A] mt-3 text-center">
+            Plný plán na {profile?.workoutDaysPerWeek || 3} dní/týden — odemkni PRO nebo STARTER
           </p>
         </div>
 
         {/* Locked premium sections */}
         <div className="mb-6">
-          <p className="text-xs font-semibold text-[#A1A1AA]/60 uppercase tracking-wider mb-3">
-            Odemkni s PRO nebo STARTER
+          <p className="text-xs font-semibold text-[#71717A] uppercase tracking-wider mb-3">
+            Dostupné s PRO nebo STARTER
           </p>
           <div className="grid grid-cols-2 gap-3">
             {lockedSections.map((section) => (
@@ -197,8 +250,7 @@ export default function ResultsPage() {
                 key={section.title}
                 className="relative bg-[#151518] border border-[#2A2A31] rounded-2xl p-4 overflow-hidden"
               >
-                {/* Lock overlay */}
-                <div className="absolute inset-0 bg-[#0B0B0D]/50 flex items-center justify-center rounded-2xl">
+                <div className="absolute inset-0 bg-[#0B0B0D]/60 flex items-center justify-center rounded-2xl">
                   <svg className="w-5 h-5 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
@@ -211,7 +263,7 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        {/* Main CTA */}
+        {/* Main upgrade CTA */}
         <div className="bg-[#151518] border border-[#B3263E]/30 rounded-2xl p-5 mb-4 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#B3263E]/5 to-transparent pointer-events-none" />
           <div className="relative">
@@ -232,10 +284,10 @@ export default function ResultsPage() {
           </div>
         </div>
 
-        {/* Free continue link */}
+        {/* Free continue */}
         <Link
           href="/dashboard"
-          className="block text-center text-sm text-[#A1A1AA]/60 hover:text-[#A1A1AA] transition-colors py-3"
+          className="block text-center text-sm text-[#71717A] hover:text-[#A1A1AA] transition-colors py-3"
         >
           {RESULTS.freeCta} →
         </Link>

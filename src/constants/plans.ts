@@ -1,4 +1,4 @@
-// Shapio plan definitions and feature gate configuration
+// getbeter plan definitions and feature gate configuration
 import type { SubscriptionTier, PlanDetails } from '@/types';
 
 export const PLANS: Record<SubscriptionTier, PlanDetails> = {

@@ -1,6 +1,6 @@
 'use client';
 
-// Reusable Button component with Shapio design system
+// Reusable Button component with getbeter design system
 import React from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';

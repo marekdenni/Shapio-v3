@@ -1,9 +1,9 @@
-// All Czech UI copy strings for the Shapio application
+// All Czech UI copy strings for the getbeter application
 
 export const HERO = {
   headline: 'Nahraj fotku.\nZísker plán.\nTransformuj se.',
   subheadline:
-    'Shapio analyzuje tvé tělo pomocí AI a vytvoří personalizovaný tréninkový a výživový plán šitý na míru. Bez háčků. Bez dohádů.',
+    'getbeter analyzuje tvé tělo pomocí AI a vytvoří personalizovaný tréninkový a výživový plán šitý na míru. Bez háčků. Bez dohádů.',
   cta: 'Začni zdarma',
   ctaSubtext: 'Bez platební karty • 30 dní zdarma',
   trustLine: 'Více než 12 000 mužů již transformovalo své tělo',
@@ -11,7 +11,7 @@ export const HERO = {
 };
 
 export const HOW_IT_WORKS = {
-  title: 'Jak Shapio funguje?',
+  title: 'Jak getbeter funguje?',
   subtitle: 'Tři jednoduché kroky k tvé transformaci',
   steps: [
     {
@@ -36,13 +36,13 @@ export const HOW_IT_WORKS = {
 };
 
 export const ONBOARDING = {
-  welcomeTitle: 'Vítej v Shapio',
+  welcomeTitle: 'Vítej v getbeter',
   welcomeSubtitle: 'Za pár minut máš svůj první plán',
   welcomeDescription:
     'Odpověz na několik otázek a my vytvoříme plán přesně podle tebe. Žádné generické cvičení – jen to, co funguje pro tvoje tělo a cíl.',
   welcomeCta: 'Začít',
   stepTitles: [
-    'Vítej v Shapio',
+    'Vítej v getbeter',
     'Přidej svou fotku',
     'Tvůj cíl a základní info',
     'Tvoje fyzička',
@@ -61,6 +61,8 @@ export const ONBOARDING = {
     muscle_gain: { label: 'Nabrat svaly', emoji: '💪', description: 'Budovat svalovou hmotu' },
     recomposition: { label: 'Remodelace', emoji: '⚡', description: 'Shodit tuk a nabrat svaly' },
     general_fitness: { label: 'Celková kondice', emoji: '🏃', description: 'Zlepšit zdraví a výkon' },
+    improve_discipline: { label: 'Zlepšit disciplínu', emoji: '🎯', description: 'Vybudovat zdravé návyky a konzistenci' },
+    improve_appearance: { label: 'Zlepšit vzhled', emoji: '✨', description: 'Cítit se lépe ve vlastní kůži' },
   },
   fields: {
     age: 'Věk',
@@ -90,11 +92,36 @@ export const ONBOARDING = {
     vegan: 'Vegan',
     keto: 'Keto',
     low_carb: 'Nízko sacharidová',
+    activityLevel: 'Denní aktivita',
+    sedentary: 'Sedavý (kancelář, minimum pohybu)',
+    lightly_active: 'Lehce aktivní (pravidelná chůze)',
+    moderately_active: 'Středně aktivní (sport 2–3×/týden)',
+    very_active: 'Velmi aktivní (sport denně nebo fyzická práce)',
+    sessionDuration: 'Kolik času máš na trénink?',
     injuries: 'Zranění nebo omezení',
     injuriesPlaceholder: 'Např. bolest kolene, problémy se zády...',
     injuriesHelp: 'Pokud žádná nemáš, nechej prázdné',
     motivation: 'Co tě motivuje?',
     motivationPlaceholder: 'Např. chci vypadat dobře na dovolené, chci mít více energie...',
+    frictions: 'Co tě v minulosti brzdilo?',
+    frictionsHelp: 'Vyber vše, co platí – přeskočitelné',
+    friction_no_time: 'Nedostatek času',
+    friction_no_motivation: 'Nedostatek motivace',
+    friction_no_energy: 'Nedostatek energie',
+    friction_dont_know_what_to_do: 'Nevím, co přesně dělat',
+    friction_injury_fear: 'Strach ze zranění',
+    friction_past_failures: 'Předchozí neúspěchy',
+    friction_social_anxiety: 'Sociální úzkost v posilovně',
+    friction_bad_diet_habits: 'Špatné stravovací návyky',
+    interests: 'Co tě zajímá? (nepovinné)',
+    interestsHelp: 'Pomůže lépe přizpůsobit doporučení',
+    interest_ai_coaching: 'AI kouč',
+    interest_progress_tracking: 'Sledování pokroku',
+    interest_nutrition_planning: 'Plánování výživy',
+    interest_community: 'Komunita a podpora',
+    interest_challenges: 'Výzvy a challenges',
+    interest_team_coaching: 'Týmový trenér nebo coach',
+    interest_corporate_wellness: 'Firemní wellness program',
   },
   nextButton: 'Pokračovat',
   prevButton: 'Zpět',
@@ -126,7 +153,7 @@ export const PAYWALL = {
   popularBadge: 'Nejoblíbenější',
   oneTimeBadge: 'Jednorázová platba',
   ctaText: 'Začít',
-  featureTitle: 'Proč Shapio Pro?',
+  featureTitle: 'Proč getbeter Pro?',
   features: [
     'AI kouč dostupný 24/7',
     'Plán se přizpůsobuje tvému pokroku',
@@ -164,13 +191,13 @@ export const COACH = {
   dailyLimit: (remaining: number) => `${remaining} otázek zbývá dnes`,
   limitReached: 'Denní limit vyčerpán. Zítra budeš mít opět plný přístup.',
   disclaimer:
-    'Shapio AI kouč poskytuje obecné fitness rady. Před zahájením nového tréninkového nebo výživového programu se poraď se svým lékařem. Nejedná se o lékařské poradenství.',
+    'getbeter AI kouč poskytuje obecné fitness rady. Před zahájením nového tréninkového nebo výživového programu se poraď se svým lékařem. Nejedná se o lékařské poradenství.',
   lockedTitle: 'AI Kouč je dostupný v PRO plánu',
   lockedDescription: 'Získej přístup k AI kouči, který odpovídá na tvoje otázky 24/7.',
   lockedCta: 'Odemknout AI Kouče',
   typing: 'Kouč píše...',
   welcomeMessage:
-    'Ahoj! Jsem tvůj AI kouč Shapio. Můžeš se mě zeptat na cokoliv ohledně tréninku, výživy nebo svého plánu. Jak ti mohu pomoci?',
+    'Ahoj! Jsem tvůj AI kouč getbeter. Můžeš se mě zeptat na cokoliv ohledně tréninku, výživy nebo svého plánu. Jak ti mohu pomoci?',
 };
 
 export const ERRORS = {
@@ -203,14 +230,14 @@ export const ERRORS = {
 };
 
 export const DISCLAIMER = {
-  short: 'Shapio není lékařská aplikace. Před zahájením nového programu se poraď s lékařem.',
-  full: `Shapio je aplikace pro obecné fitness a wellness. Obsah a plány poskytované aplikací Shapio mají pouze informační charakter a nepředstavují lékařskou radu, diagnózu ani léčbu.
+  short: 'getbeter není lékařská aplikace. Před zahájením nového programu se poraď s lékařem.',
+  full: `getbeter je aplikace pro obecné fitness a wellness. Obsah a plány poskytované aplikací getbeter mají pouze informační charakter a nepředstavují lékařskou radu, diagnózu ani léčbu.
 
 Před zahájením jakéhokoli nového cvičebního nebo výživového programu, zejména pokud máš zdravotní problémy, zranění nebo jsi na léčení, vždy konzultuj svého lékaře nebo kvalifikovaného zdravotnického pracovníka.
 
-Výsledky se mohou lišit v závislosti na individuálních faktorech jako věk, pohlaví, výchozí kondice a dodržování plánu. Shapio nezaručuje žádné konkrétní výsledky.
+Výsledky se mohou lišit v závislosti na individuálních faktorech jako věk, pohlaví, výchozí kondice a dodržování plánu. getbeter nezaručuje žádné konkrétní výsledky.
 
-Shapio nenese odpovědnost za jakékoli zranění nebo zdravotní komplikace vzniklé v důsledku používání aplikace nebo sledování doporučení.`,
+getbeter nenese odpovědnost za jakékoli zranění nebo zdravotní komplikace vzniklé v důsledku používání aplikace nebo sledování doporučení.`,
 };
 
 export const FOOTER = {
@@ -221,8 +248,8 @@ export const FOOTER = {
     { label: 'Podmínky použití', href: '/podminky-pouziti' },
     { label: 'Kontakt', href: '/kontakt' },
   ],
-  copyright: (year: number) => `© ${year} Shapio. Všechna práva vyhrazena.`,
-  disclaimer: 'Shapio není zdravotnickým prostředkem. Výsledky se individuálně liší.',
+  copyright: (year: number) => `© ${year} getbeter. Všechna práva vyhrazena.`,
+  disclaimer: 'getbeter není zdravotnickým prostředkem. Výsledky se individuálně liší.',
 };
 
 export const RESULTS = {

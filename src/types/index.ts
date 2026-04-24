@@ -1,4 +1,4 @@
-// Core application types for Shapio fitness app
+// Core application types for getbeter
 
 // ─── Enums / Union Types ───────────────────────────────────────────────────
 
@@ -8,7 +8,30 @@ export type FitnessGoal =
   | 'fat_loss'
   | 'muscle_gain'
   | 'recomposition'
-  | 'general_fitness';
+  | 'general_fitness'
+  | 'improve_discipline'
+  | 'improve_appearance';
+
+export type ActivityLevel = 'sedentary' | 'lightly_active' | 'moderately_active' | 'very_active';
+
+export type FrictionPattern =
+  | 'no_time'
+  | 'no_motivation'
+  | 'no_energy'
+  | 'dont_know_what_to_do'
+  | 'injury_fear'
+  | 'past_failures'
+  | 'social_anxiety'
+  | 'bad_diet_habits';
+
+export type InterestSignal =
+  | 'ai_coaching'
+  | 'progress_tracking'
+  | 'nutrition_planning'
+  | 'community'
+  | 'challenges'
+  | 'team_coaching'
+  | 'corporate_wellness';
 
 export type FitnessLevel = 'beginner' | 'intermediate' | 'advanced';
 
@@ -31,6 +54,25 @@ export type OrgType = 'gym' | 'coach' | 'brand' | 'employer' | 'program' | 'othe
 export type OrgPlan = 'free' | 'starter' | 'pro' | 'enterprise';
 export type OrgRole = 'owner' | 'admin' | 'coach' | 'member';
 export type MembershipStatus = 'active' | 'invited' | 'suspended';
+
+export type OrgBusinessGoal =
+  | 'member_retention'
+  | 'premium_upsell'
+  | 'operational_leverage'
+  | 'personalization_at_scale'
+  | 'content_delivery'
+  | 'other';
+
+// Typed workspace configuration stored in organizations.settings (JSONB).
+// All fields are optional for backwards compatibility with existing {} rows.
+export interface OrgSettings {
+  businessGoal?: OrgBusinessGoal;
+  targetAudience?: string;         // free text: who are the end users
+  featureInterests?: string[];     // e.g. ['ai_coaching', 'progress_tracking']
+  brandingColor?: string;          // hex, for future white-label
+  setupCompleted?: boolean;        // true once owner has finished setup wizard
+  trialEndsAt?: string;            // ISO date string if on trial
+}
 
 // ─── Program / Experience ──────────────────────────────────────────────────
 
@@ -185,10 +227,14 @@ export interface OnboardingData {
   fitnessLevel: FitnessLevel | null;
   equipment: Equipment | null;
   workoutDaysPerWeek: number | null;
+  activityLevel: ActivityLevel | null;
+  sessionDurationMinutes: number | null;
   // Step 4: Preferences
   dietaryPreference: DietaryPreference | null;
   injuries: string;
   targetMotivation: string;
+  mainFrictions: FrictionPattern[];
+  interestSignals: InterestSignal[];
 }
 
 // ─── Stripe / Subscriptions ────────────────────────────────────────────────
@@ -295,7 +341,7 @@ export interface Organization {
   type: OrgType;
   logoUrl?: string;
   plan: OrgPlan;
-  settings: Record<string, unknown>;
+  settings: OrgSettings;
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
   createdAt: string;
@@ -334,7 +380,7 @@ export interface OrganizationRow {
   type: OrgType;
   logo_url: string | null;
   plan: OrgPlan;
-  settings: Record<string, unknown>;
+  settings: OrgSettings;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   created_at: string;

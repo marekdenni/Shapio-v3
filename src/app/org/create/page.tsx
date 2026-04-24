@@ -1,6 +1,6 @@
 'use client';
 
-// Create Organization page — simple form to create a new org.
+// Create Organization page — captures name, type, business goal, and target audience.
 // After creation, redirects to the org dashboard.
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,22 +8,14 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card } from '@/components/ui/Card';
 import { useAuthStore } from '@/stores/auth';
-import type { OrgType } from '@/types';
-
-const ORG_TYPES: Array<{ value: OrgType; label: string; emoji: string }> = [
-  { value: 'coach', label: 'Trenér / Koučink', emoji: '🏋️' },
-  { value: 'gym', label: 'Posilovna / Studio', emoji: '🏢' },
-  { value: 'brand', label: 'Wellness značka', emoji: '✨' },
-  { value: 'employer', label: 'Zaměstnavatel', emoji: '🏗️' },
-  { value: 'program', label: 'Transformační program', emoji: '🚀' },
-  { value: 'other', label: 'Jiný typ', emoji: '📁' },
-];
+import { ORG_TYPE_META, ORG_BUSINESS_GOAL_META } from '@/constants/org-plans';
+import type { OrgType, OrgBusinessGoal } from '@/types';
 
 function generateSlug(name: string): string {
   return name
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // strip diacritics
+    .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 48);
@@ -36,6 +28,8 @@ export default function CreateOrgPage() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [type, setType] = useState<OrgType>('coach');
+  const [businessGoal, setBusinessGoal] = useState<OrgBusinessGoal>('member_retention');
+  const [targetAudience, setTargetAudience] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [slugEdited, setSlugEdited] = useState(false);
@@ -70,7 +64,13 @@ export default function CreateOrgPage() {
       const response = await fetch('/api/org/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), slug, type }),
+        body: JSON.stringify({
+          name: name.trim(),
+          slug,
+          type,
+          businessGoal,
+          targetAudience: targetAudience.trim() || undefined,
+        }),
       });
 
       const data = await response.json();
@@ -88,6 +88,9 @@ export default function CreateOrgPage() {
     }
   };
 
+  const orgTypes = Object.entries(ORG_TYPE_META) as Array<[OrgType, { label: string; emoji: string }]>;
+  const businessGoals = Object.entries(ORG_BUSINESS_GOAL_META) as Array<[OrgBusinessGoal, { label: string; description: string; emoji: string }]>;
+
   return (
     <div className="max-w-lg mx-auto">
       {/* Header */}
@@ -96,11 +99,10 @@ export default function CreateOrgPage() {
           Vytvořit organizaci
         </h1>
         <p className="text-text-secondary text-sm">
-          Vytvoř prostor pro svůj tým, klienty nebo členy. Později můžeš pozvat další lidi.
+          Vytvoř prostor pro svůj tým, klienty nebo členy.
         </p>
       </div>
 
-      {/* Error */}
       {error && (
         <div className="mb-5 p-4 bg-red-950/30 border border-red-800/50 rounded-xl text-sm text-red-400 animate-fade-in-up">
           {error}
@@ -108,7 +110,7 @@ export default function CreateOrgPage() {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* Org name */}
+        {/* Name + slug */}
         <Card variant="elevated">
           <div className="flex flex-col gap-4">
             <Input
@@ -125,7 +127,7 @@ export default function CreateOrgPage() {
               </label>
               <div className="flex items-center gap-0">
                 <span className="px-3 py-3 bg-background border border-r-0 border-border rounded-l-xl text-sm text-text-secondary">
-                  shapio.cz/org/
+                  /org/
                 </span>
                 <input
                   type="text"
@@ -149,27 +151,84 @@ export default function CreateOrgPage() {
               Typ organizace
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {ORG_TYPES.map((orgType) => (
+              {orgTypes.map(([value, meta]) => (
                 <button
-                  key={orgType.value}
+                  key={value}
                   type="button"
-                  onClick={() => setType(orgType.value)}
+                  onClick={() => setType(value)}
                   className={[
                     'flex items-center gap-2.5 p-3 rounded-xl border transition-all duration-200 text-left',
-                    type === orgType.value
+                    type === value
                       ? 'bg-[#B3263E]/10 border-[#B3263E]/50 text-[#F5F5F5]'
                       : 'bg-surface2 border-border text-text-secondary hover:border-border/80 hover:text-text-primary',
                   ].join(' ')}
                 >
-                  <span className="text-lg">{orgType.emoji}</span>
-                  <span className="text-sm font-medium">{orgType.label}</span>
+                  <span className="text-lg">{meta.emoji}</span>
+                  <span className="text-sm font-medium">{meta.label}</span>
                 </button>
               ))}
             </div>
           </div>
         </Card>
 
-        {/* Submit */}
+        {/* Business goal */}
+        <Card variant="elevated">
+          <div className="flex flex-col gap-3">
+            <div>
+              <label className="text-sm font-medium text-text-primary">
+                Hlavní obchodní cíl
+              </label>
+              <p className="text-xs text-text-secondary mt-0.5">
+                Co chceš pomocí getbeter primárně dosáhnout?
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              {businessGoals.map(([value, meta]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setBusinessGoal(value)}
+                  className={[
+                    'flex items-center gap-3 p-3 rounded-xl border transition-all duration-200 text-left',
+                    businessGoal === value
+                      ? 'bg-[#B3263E]/10 border-[#B3263E]/50'
+                      : 'bg-surface2 border-border hover:border-border/80',
+                  ].join(' ')}
+                >
+                  <span className="text-xl shrink-0">{meta.emoji}</span>
+                  <div>
+                    <p className={`text-sm font-medium ${businessGoal === value ? 'text-[#F5F5F5]' : 'text-text-primary'}`}>
+                      {meta.label}
+                    </p>
+                    <p className="text-xs text-text-secondary mt-0.5">{meta.description}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* Target audience */}
+        <Card variant="elevated">
+          <div className="flex flex-col gap-3">
+            <div>
+              <label className="text-sm font-medium text-text-primary">
+                Cílová skupina <span className="text-text-secondary font-normal">(nepovinné)</span>
+              </label>
+              <p className="text-xs text-text-secondary mt-0.5">
+                Kdo jsou tví koncoví uživatelé nebo klienti?
+              </p>
+            </div>
+            <textarea
+              value={targetAudience}
+              onChange={(e) => setTargetAudience(e.target.value)}
+              placeholder="Např. muži 25–45 let, kteří chtějí nabrat svalovou hmotu a mají přístup do posilovny..."
+              rows={3}
+              className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-border rounded-xl text-sm placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200 resize-none"
+            />
+          </div>
+        </Card>
+
         <Button
           variant="primary"
           fullWidth

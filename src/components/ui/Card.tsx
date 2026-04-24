@@ -1,6 +1,6 @@
 'use client';
 
-// Card component with Shapio dark design system
+// Card component with getbeter dark design system
 import React from 'react';
 
 type CardVariant = 'default' | 'elevated' | 'premium';

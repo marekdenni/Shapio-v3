@@ -15,10 +15,12 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { name, slug, type = 'other' } = body as {
+    const { name, slug, type = 'other', businessGoal, targetAudience } = body as {
       name: string;
       slug: string;
       type?: string;
+      businessGoal?: string;
+      targetAudience?: string;
     };
 
     // Validate
@@ -53,6 +55,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Build initial settings from setup data
+    const initialSettings: Record<string, unknown> = { setupCompleted: true };
+    if (businessGoal) initialSettings.businessGoal = businessGoal;
+    if (targetAudience?.trim()) initialSettings.targetAudience = targetAudience.trim();
+
     // Create organization
     const { data: org, error: orgError } = await supabase
       .from('organizations')
@@ -61,7 +68,7 @@ export async function POST(request: NextRequest) {
         slug,
         type,
         plan: 'free',
-        settings: {},
+        settings: initialSettings,
       })
       .select()
       .single();

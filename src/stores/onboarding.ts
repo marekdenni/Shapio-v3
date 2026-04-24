@@ -12,6 +12,9 @@ import type {
   Equipment,
   DietaryPreference,
   Sex,
+  ActivityLevel,
+  FrictionPattern,
+  InterestSignal,
   UserProfile,
 } from '@/types';
 
@@ -32,6 +35,12 @@ interface OnboardingState extends OnboardingData {
   // Derived
   canGoNext: () => boolean;
   toProfile: () => Partial<UserProfile>;
+  toOnboardingContext: () => {
+    activityLevel: ActivityLevel | null;
+    sessionDurationMinutes: number | null;
+    mainFrictions: FrictionPattern[];
+    interestSignals: InterestSignal[];
+  };
 }
 
 const initialState: OnboardingData = {
@@ -45,9 +54,13 @@ const initialState: OnboardingData = {
   fitnessLevel: null,
   equipment: null,
   workoutDaysPerWeek: null,
+  activityLevel: null,
+  sessionDurationMinutes: null,
   dietaryPreference: null,
   injuries: '',
   targetMotivation: '',
+  mainFrictions: [],
+  interestSignals: [],
 };
 
 // SSR-safe storage factory
@@ -125,7 +138,9 @@ export const useOnboardingStore = create<OnboardingState>()(
               state.equipment &&
               state.workoutDaysPerWeek &&
               state.workoutDaysPerWeek >= 1 &&
-              state.workoutDaysPerWeek <= 7
+              state.workoutDaysPerWeek <= 7 &&
+              state.activityLevel &&
+              state.sessionDurationMinutes
             );
           }
           case 4: {
@@ -153,9 +168,19 @@ export const useOnboardingStore = create<OnboardingState>()(
           // onboardingCompleted intentionally omitted — set only by generate-plan API
         };
       },
+
+      toOnboardingContext: () => {
+        const state = get();
+        return {
+          activityLevel: state.activityLevel,
+          sessionDurationMinutes: state.sessionDurationMinutes,
+          mainFrictions: state.mainFrictions,
+          interestSignals: state.interestSignals,
+        };
+      },
     }),
     {
-      name: 'shapio-onboarding-v1',
+      name: 'getbeter-onboarding-v1',
       storage: createJSONStorage(getStorage),
       // Persist form data and current step — skip photos (large base64 strings) and actions
       partialize: (state): Partial<OnboardingState> => ({
@@ -168,9 +193,13 @@ export const useOnboardingStore = create<OnboardingState>()(
         fitnessLevel: state.fitnessLevel,
         equipment: state.equipment,
         workoutDaysPerWeek: state.workoutDaysPerWeek,
+        activityLevel: state.activityLevel,
+        sessionDurationMinutes: state.sessionDurationMinutes,
         dietaryPreference: state.dietaryPreference,
         injuries: state.injuries,
         targetMotivation: state.targetMotivation,
+        mainFrictions: state.mainFrictions,
+        interestSignals: state.interestSignals,
         photoConsent: state.photoConsent,
       }),
     }

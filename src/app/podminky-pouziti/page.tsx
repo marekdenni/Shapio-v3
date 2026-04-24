@@ -10,9 +10,9 @@ export default function TermsOfServicePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
-              <span className="text-white font-black text-sm">S</span>
+              <span className="text-white font-black text-sm">G</span>
             </div>
-            <span className="text-lg font-black text-[#F5F5F5]">Shapio</span>
+            <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
           </Link>
           <Link href="/" className="text-sm text-[#A1A1AA] hover:text-[#F5F5F5] transition-colors">
             ← Zpět
@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
 
         {/* Important disclaimer banner */}
         <div className="mb-8 p-4 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-sm text-[#A1A1AA]">
-          <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> Shapio není zdravotnickým prostředkem. Obsah aplikace má pouze informační charakter a nepředstavuje lékařskou radu. Před zahájením nového fitness programu konzultujte svého lékaře.
+          <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> getbeter není zdravotnickým prostředkem. Obsah aplikace má pouze informační charakter a nepředstavuje lékařskou radu. Před zahájením nového fitness programu konzultujte svého lékaře.
         </div>
 
         <div className="flex flex-col gap-8 text-[#A1A1AA] text-sm leading-relaxed">
@@ -37,14 +37,14 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">1. Úvod</h2>
             <p>
-              Tyto podmínky použití upravují vztah mezi uživatelem a provozovatelem aplikace Shapio. Používáním aplikace souhlasíte s těmito podmínkami. Pokud nesouhlasíte, aplikaci nepoužívejte.
+              Tyto podmínky použití upravují vztah mezi uživatelem a provozovatelem aplikace getbeter. Používáním aplikace souhlasíte s těmito podmínkami. Pokud nesouhlasíte, aplikaci nepoužívejte.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">2. Popis služby</h2>
             <p className="mb-3">
-              Shapio je webová aplikace poskytující personalizované fitness a wellness plány generované pomocí umělé inteligence. Služba zahrnuje:
+              getbeter je webová aplikace poskytující personalizované fitness a wellness plány generované pomocí umělé inteligence. Služba zahrnuje:
             </p>
             <ul className="flex flex-col gap-2">
               {[
@@ -70,7 +70,7 @@ export default function TermsOfServicePage() {
                 'Jste zodpovědní za bezpečnost svého hesla a účtu',
                 'Jeden uživatel = jeden účet; sdílení účtu není povoleno',
                 'Poskytnuté informace musí být pravdivé a aktuální',
-                'Shapio si vyhrazuje právo smazat účet porušující podmínky',
+                'getbeter si vyhrazuje právo smazat účet porušující podmínky',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="text-[#B3263E] shrink-0">•</span>
@@ -86,7 +86,7 @@ export default function TermsOfServicePage() {
               {[
                 'Základní funkce jsou zdarma po prvních 30 dní',
                 'Prémiové plány (Starter, Pro, Elite) jsou měsíčně opakující se předplatné',
-                'Platby jsou zpracovávány přes Stripe — Shapio neuchovává platební údaje',
+                'Platby jsou zpracovávány přes Stripe — getbeter neuchovává platební údaje',
                 'Předplatné se automaticky obnovuje, pokud není zrušeno',
                 'Zrušení je možné kdykoliv z nastavení účtu, bez sankcí',
                 'Nabízíme 14denní garanci vrácení peněz pro první předplatné',
@@ -104,13 +104,13 @@ export default function TermsOfServicePage() {
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">5. Omezení odpovědnosti</h2>
             <div className="p-4 bg-[#151518] border border-[#2A2A31] rounded-xl space-y-3">
               <p>
-                <strong className="text-[#F5F5F5]">Shapio není zdravotnickým prostředkem</strong> a neposkytuje lékařské rady, diagnózy ani léčbu. Veškerý obsah má pouze informační a vzdělávací charakter.
+                <strong className="text-[#F5F5F5]">getbeter není zdravotnickým prostředkem</strong> a neposkytuje lékařské rady, diagnózy ani léčbu. Veškerý obsah má pouze informační a vzdělávací charakter.
               </p>
               <p>
-                Shapio nenese odpovědnost za zranění, zdravotní komplikace ani jiné škody vzniklé v důsledku používání aplikace nebo sledování doporučení.
+                getbeter nenese odpovědnost za zranění, zdravotní komplikace ani jiné škody vzniklé v důsledku používání aplikace nebo sledování doporučení.
               </p>
               <p>
-                Výsledky se individuálně liší v závislosti na věku, pohlaví, výchozím stavu, dodržování plánu a dalších faktorech. Shapio nezaručuje konkrétní výsledky.
+                Výsledky se individuálně liší v závislosti na věku, pohlaví, výchozím stavu, dodržování plánu a dalších faktorech. getbeter nezaručuje konkrétní výsledky.
               </p>
               <p>
                 Před zahájením fitness nebo výživového programu, zejména při zdravotních omezeních nebo zraněních, vždy konzultujte lékaře.
@@ -121,7 +121,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">6. Obsah vytvořený uživatelem</h2>
             <p>
-              Nahráváním fotek a jiného obsahu do Shapio udělujete provozovateli licenci k uložení, zobrazení a zpracování tohoto obsahu výhradně za účelem poskytování služby. Obsah nesmí být nelegální, urážlivý nebo porušovat práva třetích stran.
+              Nahráváním fotek a jiného obsahu do getbeter udělujete provozovateli licenci k uložení, zobrazení a zpracování tohoto obsahu výhradně za účelem poskytování služby. Obsah nesmí být nelegální, urážlivý nebo porušovat práva třetích stran.
             </p>
           </section>
 
@@ -142,7 +142,7 @@ export default function TermsOfServicePage() {
           <section>
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">9. Změny podmínek</h2>
             <p>
-              Shapio si vyhrazuje právo tyto podmínky měnit. O podstatných změnách budete informováni e-mailem nebo oznámením v aplikaci. Pokračující používání aplikace po oznámení změn představuje souhlas s novými podmínkami.
+              getbeter si vyhrazuje právo tyto podmínky měnit. O podstatných změnách budete informováni e-mailem nebo oznámením v aplikaci. Pokračující používání aplikace po oznámení změn představuje souhlas s novými podmínkami.
             </p>
           </section>
 

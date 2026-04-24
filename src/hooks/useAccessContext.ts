@@ -11,7 +11,10 @@
 import { useAuthStore } from '@/stores/auth';
 import { useOrgStore } from '@/stores/organization';
 import { useSubscriptionStore } from '@/stores/subscription';
-import { resolveEffectiveTier, canAccess, hasPaidAccess, hasProAccess } from '@/lib/entitlements';
+import {
+  resolveEffectiveTier, canAccess, hasPaidAccess, hasProAccess,
+  getOrgMemberLimit, getOrgStaffLimit, canOrgAccessFeature,
+} from '@/lib/entitlements';
 import type { SubscriptionTier, OrgRole, OrgPlan } from '@/types';
 import type { EntitlementContext } from '@/lib/entitlements';
 
@@ -48,6 +51,12 @@ export interface AccessContext {
   canManageMembers: boolean;
   canEditOrg: boolean;
   canViewAnalytics: boolean;
+
+  // B2B plan limits for the current org (null if not in org context)
+  orgMemberLimit: number | null;
+  orgStaffLimit: number | null;
+  /** Check if the current org plan has access to a B2B-specific feature */
+  canOrgFeature: (feature: string) => boolean;
 
   // The raw entitlement context (for passing to lib/entitlements functions)
   entitlementContext: EntitlementContext;
@@ -119,6 +128,10 @@ export function useAccessContext(): AccessContext {
     canManageMembers: hasRoleLevel('admin'),
     canEditOrg: hasRoleLevel('admin'),
     canViewAnalytics: hasRoleLevel('coach'),
+    orgMemberLimit: orgPlan ? getOrgMemberLimit(orgPlan, isPlatformAdmin) : null,
+    orgStaffLimit:  orgPlan ? getOrgStaffLimit(orgPlan, isPlatformAdmin)  : null,
+    canOrgFeature: (feature: string) =>
+      orgPlan ? canOrgAccessFeature(orgPlan, feature, isPlatformAdmin) : false,
     entitlementContext,
     loading,
   };

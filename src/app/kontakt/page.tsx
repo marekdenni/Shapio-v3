@@ -14,7 +14,7 @@ export default function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Mailto fallback — opens email client
-    const subject = encodeURIComponent(`Shapio kontakt: ${category === 'technicke' ? 'Technický problém' : category === 'fakturace' ? 'Fakturace' : 'Obecný dotaz'}`);
+    const subject = encodeURIComponent(`getbeter kontakt: ${category === 'technicke' ? 'Technický problém' : category === 'fakturace' ? 'Fakturace' : 'Obecný dotaz'}`);
     const body = encodeURIComponent(`Jméno: ${name}\nE-mail: ${email}\n\nZpráva:\n${message}`);
     window.location.href = `mailto:jedlicekm@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
@@ -27,9 +27,9 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
-              <span className="text-white font-black text-sm">S</span>
+              <span className="text-white font-black text-sm">G</span>
             </div>
-            <span className="text-lg font-black text-[#F5F5F5]">Shapio</span>
+            <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
           </Link>
           <Link href="/" className="text-sm text-[#A1A1AA] hover:text-[#F5F5F5] transition-colors">
             ← Zpět

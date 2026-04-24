@@ -1,4 +1,4 @@
-// Unified entitlement resolution for Shapio
+// Unified entitlement resolution for getbeter
 //
 // Resolves feature access by considering BOTH the user's personal subscription
 // tier AND the organization's plan (if the user is operating in org context).
@@ -15,6 +15,7 @@
 
 import type { SubscriptionTier, OrgPlan } from '@/types';
 import { FEATURE_GATES } from '@/constants/plans';
+import { ORG_PLAN_LIMITS, ORG_FEATURE_GATES, type OrgPlanLimits } from '@/constants/org-plans';
 
 // ─── Tier hierarchy ─────────────────────────────────────────────────────────
 
@@ -109,4 +110,50 @@ export function hasProAccess(ctx: EntitlementContext): boolean {
   if (ctx.isPlatformAdmin) return true;
   const effectiveTier = resolveEffectiveTier(ctx);
   return USER_TIER_LEVELS[effectiveTier] >= USER_TIER_LEVELS.pro;
+}
+
+// ─── B2B org-level limits ────────────────────────────────────────────────────
+
+/**
+ * Returns the plan limits for a given org plan.
+ * Platform admins get enterprise-level limits.
+ */
+export function getOrgLimits(orgPlan: OrgPlan, isPlatformAdmin = false): OrgPlanLimits {
+  if (isPlatformAdmin) return ORG_PLAN_LIMITS.enterprise;
+  return ORG_PLAN_LIMITS[orgPlan] ?? ORG_PLAN_LIMITS.free;
+}
+
+/**
+ * Returns the maximum number of active members for an org plan.
+ * -1 means unlimited.
+ */
+export function getOrgMemberLimit(orgPlan: OrgPlan, isPlatformAdmin = false): number {
+  return getOrgLimits(orgPlan, isPlatformAdmin).maxMembers;
+}
+
+/**
+ * Returns the maximum number of staff seats (coaches + admins) for an org plan.
+ * -1 means unlimited.
+ */
+export function getOrgStaffLimit(orgPlan: OrgPlan, isPlatformAdmin = false): number {
+  return getOrgLimits(orgPlan, isPlatformAdmin).maxStaffSeats;
+}
+
+/**
+ * Checks whether an org plan has access to a specific B2B feature.
+ * Platform admins always have access.
+ */
+export function canOrgAccessFeature(orgPlan: OrgPlan, feature: string, isPlatformAdmin = false): boolean {
+  if (isPlatformAdmin) return true;
+  const allowed = ORG_FEATURE_GATES[feature];
+  if (!allowed) return true; // Feature not gated
+  return allowed.includes(orgPlan);
+}
+
+/**
+ * Returns true if the given member/staff count is within the plan limit.
+ * -1 (unlimited) always returns true.
+ */
+export function isWithinOrgLimit(count: number, limit: number): boolean {
+  return limit === -1 || count < limit;
 }

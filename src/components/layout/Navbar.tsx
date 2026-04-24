@@ -37,10 +37,10 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-gradient-cta rounded-lg flex items-center justify-center shadow-glow-red">
-              <span className="text-white font-black text-sm">S</span>
+              <span className="text-white font-black text-sm">G</span>
             </div>
             <span className="text-xl font-black text-text-primary tracking-tight">
-              Shapio
+              getbeter
             </span>
           </Link>
 

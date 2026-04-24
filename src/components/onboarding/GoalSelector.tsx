@@ -35,6 +35,18 @@ const goals: { id: FitnessGoal; label: string; emoji: string; description: strin
     emoji: ONBOARDING.goals.general_fitness.emoji,
     description: ONBOARDING.goals.general_fitness.description,
   },
+  {
+    id: 'improve_discipline',
+    label: ONBOARDING.goals.improve_discipline.label,
+    emoji: ONBOARDING.goals.improve_discipline.emoji,
+    description: ONBOARDING.goals.improve_discipline.description,
+  },
+  {
+    id: 'improve_appearance',
+    label: ONBOARDING.goals.improve_appearance.label,
+    emoji: ONBOARDING.goals.improve_appearance.emoji,
+    description: ONBOARDING.goals.improve_appearance.description,
+  },
 ];
 
 export function GoalSelector({ value, onChange }: GoalSelectorProps) {

@@ -60,7 +60,7 @@ interface AuthState {
   initialize: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string, name: string) => Promise<{ error: string | null; needsConfirmation?: boolean }>;
-  signInWithGoogle: () => Promise<{ error: string | null }>;
+  signInWithGoogle: (next?: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   loadProfile: (userId: string) => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<{ error: string | null }>;
@@ -117,8 +117,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         return;
       }
 
-      // Only reload profile on meaningful events (not every token refresh)
-      if (user && (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED')) {
+      // Only reload on meaningful auth changes — TOKEN_REFRESHED is excluded
+      // because it fires every ~60 min and the profile data hasn't changed.
+      if (user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
         await get().loadProfile(user.id);
       }
 
@@ -204,13 +205,16 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
     }
   },
 
-  signInWithGoogle: async () => {
+  signInWithGoogle: async (next?: string) => {
     try {
+      const base = `${getAppUrl()}/auth/callback`;
+      const redirectTo = next && next.startsWith('/') && !next.startsWith('//')
+        ? `${base}?next=${encodeURIComponent(next)}`
+        : base;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: {
-          redirectTo: `${getAppUrl()}/auth/callback`,
-        },
+        options: { redirectTo },
       });
 
       if (error) return { error: 'Přihlášení přes Google selhalo.' };

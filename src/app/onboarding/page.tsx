@@ -73,7 +73,7 @@ export default function OnboardingPage() {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-14 h-14 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-red animate-pulse">
-            <span className="text-white font-black text-2xl tracking-tight">S</span>
+            <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
           <p className="text-text-secondary text-sm">Načítám...</p>
         </div>
@@ -91,7 +91,7 @@ export default function OnboardingPage() {
         return (
           <div className="flex flex-col items-center text-center py-8">
             <div className="w-20 h-20 bg-gradient-cta rounded-3xl flex items-center justify-center shadow-glow-red-lg mb-6">
-              <span className="text-white font-black text-4xl">S</span>
+              <span className="text-white font-black text-4xl">G</span>
             </div>
             <h1 className="text-3xl font-black text-text-primary mb-4">
               {ONBOARDING.welcomeTitle}

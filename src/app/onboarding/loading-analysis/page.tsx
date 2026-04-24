@@ -53,12 +53,14 @@ export default function LoadingAnalysisPage() {
     const generatePlan = async () => {
       try {
         const profileData = store.toProfile();
+        const onboardingContext = store.toOnboardingContext();
 
         const response = await fetch('/api/onboarding/generate-plan', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             profile: { ...profileData, ...profile },
+            onboardingContext,
           }),
         });
 
@@ -108,7 +110,7 @@ export default function LoadingAnalysisPage() {
       <div className="relative z-10 flex flex-col items-center text-center max-w-md w-full">
         {/* Logo */}
         <div className="w-16 h-16 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-red-lg mb-8">
-          <span className="text-white font-black text-2xl">S</span>
+          <span className="text-white font-black text-2xl">G</span>
         </div>
 
         {/* Title */}

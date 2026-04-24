@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { generateWorkoutPlan, generateNutritionPlan, generateAssessmentSummary, generateFreeWelcomeAnalysis } from '@/lib/openai';
 import type { UserProfile } from '@/types';
+import type { OnboardingContext } from '@/lib/openai';
 
 // POST /api/onboarding/generate-plan
 // Generates AI workout and nutrition plans for authenticated users.
@@ -19,7 +20,10 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const { profile } = body as { profile: Partial<UserProfile> };
+    const { profile, onboardingContext } = body as {
+      profile: Partial<UserProfile>;
+      onboardingContext?: OnboardingContext;
+    };
 
     if (!profile) {
       return NextResponse.json({ error: 'Profil je povinný.' }, { status: 400 });
@@ -39,19 +43,19 @@ export async function POST(request: NextRequest) {
     // does not block the others or crash the response.
     const [workoutPlanData, nutritionPlanData, assessmentSummary, freeWelcomeAnalysis] =
       await Promise.all([
-        generateWorkoutPlan(profileWithTier, tier).catch((err) => {
+        generateWorkoutPlan(profileWithTier, tier, onboardingContext).catch((err) => {
           console.error('[route] generateWorkoutPlan threw unexpectedly:', err);
           return { tier, durationDays: 30, weeks: [], assessmentSummary: '', focusAreas: [] };
         }),
-        generateNutritionPlan(profileWithTier, tier).catch((err) => {
+        generateNutritionPlan(profileWithTier, tier, onboardingContext).catch((err) => {
           console.error('[route] generateNutritionPlan threw unexpectedly:', err);
           return { tier, dailyTargets: { calories: 2000, proteinG: 150, carbsG: 200, fatG: 60 }, meals: [], hydrationLiters: 2.5, generalGuidelines: [], supplementSuggestions: [] };
         }),
-        generateAssessmentSummary(profileWithTier).catch((err) => {
+        generateAssessmentSummary(profileWithTier, onboardingContext).catch((err) => {
           console.error('[route] generateAssessmentSummary threw unexpectedly:', err);
           return 'Tvůj plán je připraven. Začínáme transformaci.';
         }),
-        generateFreeWelcomeAnalysis(profileWithTier).catch((err) => {
+        generateFreeWelcomeAnalysis(profileWithTier, onboardingContext).catch((err) => {
           console.error('[route] generateFreeWelcomeAnalysis threw unexpectedly:', err);
           return null;
         }),
