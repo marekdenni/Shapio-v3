@@ -243,8 +243,12 @@ export default function PlanPage() {
           </div>
         </div>
       ) : (
-        <Card variant="elevated" className="text-center py-8">
-          <p className="text-text-secondary">Plán se načítá nebo ještě nebyl vygenerován.</p>
+        <Card variant="elevated" className="text-center py-10">
+          <div className="text-3xl mb-3">📋</div>
+          <p className="text-sm font-semibold text-text-primary mb-1">Tréninkový plán není k dispozici</p>
+          <p className="text-xs text-text-secondary">
+            Dokonči onboarding a AI vytvoří plán přesně pro tebe.
+          </p>
         </Card>
       )}
     </div>

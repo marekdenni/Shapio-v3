@@ -18,7 +18,7 @@ interface ChatMessage {
 
 export default function CoachPage() {
   const { profile } = useAuth();
-  const { canAccess, isProOrAbove } = useSubscription();
+  const { canAccess, isElite } = useSubscription();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
@@ -27,7 +27,7 @@ export default function CoachPage() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const hasAccess = canAccess('ai_coach');
-  const dailyLimit = isProOrAbove ? AI_LIMITS.PRO_DAILY : AI_LIMITS.ELITE_DAILY;
+  const dailyLimit = isElite ? AI_LIMITS.ELITE_DAILY : AI_LIMITS.PRO_DAILY;
 
   // Initialize with welcome message
   useEffect(() => {

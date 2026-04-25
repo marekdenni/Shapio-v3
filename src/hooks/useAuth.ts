@@ -4,9 +4,10 @@
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
 import type { UserProfile } from '@/types';
+import type { User } from '@supabase/supabase-js';
 
 interface UseAuthReturn {
-  user: any; 
+  user: User | null;
   profile: UserProfile | null;
   loading: boolean;
   isAuthenticated: boolean;

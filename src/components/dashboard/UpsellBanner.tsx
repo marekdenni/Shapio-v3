@@ -1,33 +1,42 @@
 'use client';
 
-// Subtle upsell banner for free users - dismissable
+// Dismissible upsell banner for free and starter tier users.
+// Free users → upgrade to Pro.
+// Starter users → upgrade to Pro (AI coach unlock).
+// Pro/Elite users → banner is hidden.
+// Price copy is derived from PLANS constant — never hardcoded.
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useSubscription } from '@/hooks/useSubscription';
+import { PLANS } from '@/constants/plans';
 
 export function UpsellBanner() {
   const [dismissed, setDismissed] = useState(false);
   const { tier } = useSubscription();
 
-  // Only show for free tier
-  if (tier !== 'free' || dismissed) return null;
+  if ((tier !== 'free' && tier !== 'starter') || dismissed) return null;
+
+  const headline =
+    tier === 'starter'
+      ? 'Přejdi na Pro a odemkni AI kouče'
+      : 'Odemkni plný plán a AI kouče';
+
+  const sub = `Pro od ${PLANS.pro.priceLabel} · 14denní garance`;
 
   return (
     <div className="relative bg-gradient-to-r from-primary/20 via-cta/15 to-primary/20 border border-cta/30 rounded-2xl p-4 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-radial from-cta/5 to-transparent pointer-events-none" />
 
       <div className="relative flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          {/* Icon */}
           <div className="w-9 h-9 rounded-xl bg-cta/20 border border-cta/40 flex items-center justify-center shrink-0">
-            <svg className="w-4.5 h-4.5 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-cta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
           <div>
-            <p className="text-sm font-semibold text-text-primary">Odemkni plný plán a AI kouče</p>
-            <p className="text-xs text-text-secondary">PRO od 349 Kč/měs • 14denní garance</p>
+            <p className="text-sm font-semibold text-text-primary">{headline}</p>
+            <p className="text-xs text-text-secondary">{sub}</p>
           </div>
         </div>
 

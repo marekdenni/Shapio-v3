@@ -18,13 +18,22 @@ export function TodayWorkoutCard({
   currentDay = 1,
   totalDays = 30,
 }: TodayWorkoutCardProps) {
-  // If no workout data, show placeholder
+  // No workout for the current plan day (plan exists but day not scheduled).
+  // Parent already handles the loading state — this is a genuine "no data" case.
   if (!workout) {
     return (
-      <Card variant="elevated" className="animate-pulse">
-        <div className="h-4 bg-border rounded w-1/3 mb-3" />
-        <div className="h-6 bg-border rounded w-2/3 mb-2" />
-        <div className="h-4 bg-border rounded w-1/2" />
+      <Card variant="elevated">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-surface border border-border flex items-center justify-center text-2xl shrink-0">
+            📋
+          </div>
+          <div>
+            <h3 className="text-base font-semibold text-text-primary">Žádný trénink naplánován</h3>
+            <p className="text-sm text-text-secondary mt-0.5">
+              Otevři plán a zkontroluj svůj rozvrh.
+            </p>
+          </div>
+        </div>
       </Card>
     );
   }

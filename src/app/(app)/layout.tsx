@@ -18,8 +18,7 @@ import { useSubscriptionStore } from '@/stores/subscription';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, profile, loading, profileFailed, retryProfile } = useRequireAuth();
-  const { updateProfile } = useAuthStore();
-  const { loadProfile } = useAuthStore();
+  const { updateProfile, loadProfile } = useAuthStore();
   const loadSubscription = useSubscriptionStore((s) => s.loadSubscription);
 
   // Load subscription once we have a user

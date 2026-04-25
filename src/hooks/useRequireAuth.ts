@@ -6,14 +6,16 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/stores/auth';
+import type { User } from '@supabase/supabase-js';
+import type { UserProfile } from '@/types';
 
 const MAX_PROFILE_RETRIES = 2;
 
 export interface RequireAuthState {
   /** Supabase user object (null while loading or if unauthenticated). */
-  user: ReturnType<typeof useAuthStore>['user'];
+  user: User | null;
   /** Mapped profile from user_profiles (null if not yet loaded). */
-  profile: ReturnType<typeof useAuthStore>['profile'];
+  profile: UserProfile | null;
   /** True while initial auth or profile is resolving. */
   loading: boolean;
   /** True when profile load failed after all retry attempts. */

@@ -1,7 +1,7 @@
 'use client';
 
 // Organization dashboard — overview page for org owners, admins, and coaches.
-// Shows org info, member count, quick actions, and plan status.
+// Shows org info, member count, quick actions, engagement metrics, and plan status.
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { useOrgStore } from '@/stores/organization';
+import { supabase } from '@/lib/supabase/client';
+import { getOrgEngagementSummary, type OrgEngagementSummary } from '@/lib/analytics';
 import type { OrgMembership } from '@/types';
 
 const ORG_TYPE_LABELS: Record<string, string> = {
@@ -34,6 +36,8 @@ export default function OrgDashboardPage() {
 
   const { currentOrg, membership, members, loading, loadOrg, loadMembers } = useOrgStore();
   const [statsLoading, setStatsLoading] = useState(true);
+  const [engagement, setEngagement] = useState<OrgEngagementSummary | null>(null);
+  const [engagementLoading, setEngagementLoading] = useState(false);
 
   useEffect(() => {
     if (slug) {
@@ -46,6 +50,16 @@ export default function OrgDashboardPage() {
       loadMembers(currentOrg.id).then(() => setStatsLoading(false));
     }
   }, [currentOrg?.id, loadMembers]);
+
+  useEffect(() => {
+    if (!currentOrg?.id) return;
+    const role = membership?.role;
+    if (role !== 'owner' && role !== 'admin') return;
+    setEngagementLoading(true);
+    getOrgEngagementSummary(supabase, currentOrg.id)
+      .then(setEngagement)
+      .finally(() => setEngagementLoading(false));
+  }, [currentOrg?.id, membership?.role]);
 
   // Not a member — show access denied
   if (!loading && currentOrg && !membership) {
@@ -174,6 +188,86 @@ export default function OrgDashboardPage() {
               </div>
             </Link>
           </div>
+        </Card>
+      )}
+
+      {/* Engagement metrics (admin/owner only) */}
+      {isAdminOrOwner && (
+        <Card variant="elevated">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base font-semibold text-text-primary">Zapojení členů</h2>
+            {engagementLoading && (
+              <span className="text-xs text-text-secondary/50">Načítám...</span>
+            )}
+          </div>
+
+          {engagementLoading || !engagement ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-20 bg-surface2 rounded-xl animate-shimmer border border-border" />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="bg-surface2 border border-border rounded-xl p-3">
+                  <p className="text-xs text-text-secondary uppercase tracking-wider mb-1">Celkem členů</p>
+                  <p className="text-2xl font-black text-text-primary">{engagement.totalMembers}</p>
+                </div>
+                <div className="bg-surface2 border border-border rounded-xl p-3">
+                  <p className="text-xs text-text-secondary uppercase tracking-wider mb-1">Noví (30 dní)</p>
+                  <p className="text-2xl font-black text-text-primary">{engagement.newMembersLast30Days}</p>
+                </div>
+                <div className="bg-surface2 border border-border rounded-xl p-3">
+                  <p className="text-xs text-text-secondary uppercase tracking-wider mb-1">Onboarding</p>
+                  <p className="text-2xl font-black text-cta">
+                    {engagement.onboardingCompleted}
+                    <span className="text-sm font-medium text-text-secondary ml-1">/ {engagement.totalMembers}</span>
+                  </p>
+                </div>
+                <div className="bg-surface2 border border-border rounded-xl p-3">
+                  <p className="text-xs text-text-secondary uppercase tracking-wider mb-1">Analýza hotova</p>
+                  <p className="text-2xl font-black text-cta">
+                    {engagement.analysisCompleted}
+                    <span className="text-sm font-medium text-text-secondary ml-1">/ {engagement.totalMembers}</span>
+                  </p>
+                </div>
+              </div>
+
+              {engagement.totalMembers > 0 && (
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-text-secondary">Dokončení onboardingu</span>
+                      <span className="text-xs font-semibold text-text-primary">
+                        {Math.round(engagement.onboardingRate * 100)}%
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-surface rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-cta rounded-full transition-all duration-500"
+                        style={{ width: `${Math.round(engagement.onboardingRate * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs text-text-secondary">Aktivace (AI analýza)</span>
+                      <span className="text-xs font-semibold text-text-primary">
+                        {Math.round(engagement.activationRate * 100)}%
+                      </span>
+                    </div>
+                    <div className="w-full h-1.5 bg-surface rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-cta/60 rounded-full transition-all duration-500"
+                        style={{ width: `${Math.round(engagement.activationRate * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </Card>
       )}
 

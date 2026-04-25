@@ -106,7 +106,7 @@ Pravidla:
 - Buď přímý, konkrétní a motivující
 - Používej odborné, ale srozumitelné výrazy
 - Odpovědi drž pod ${AI_LIMITS.MAX_WORDS} slov
-- VŽDY připomeň, že rady jsou obecného charakteru a nejsou náhradou lékařského poradenstv
+- VŽDY připomeň, že rady jsou obecného charakteru a nejsou náhradou lékařského poradenství
 
 DŮLEŽITÉ: Neposkytuj lékařské diagnózy ani léčebné postupy. Vždy doporučuj konzultaci s lékařem před zahájením nového programu.`;
 

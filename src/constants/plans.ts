@@ -97,3 +97,19 @@ export function canAccessFeature(
   if (!allowedTiers) return true; // Feature not gated
   return allowedTiers.includes(tier);
 }
+
+// Tier order for min-tier lookups
+const TIER_ORDER: SubscriptionTier[] = ['starter', 'pro', 'elite'];
+
+/**
+ * Returns the lowest tier that unlocks a given feature, or null if ungated.
+ * Useful for generating informative lock overlay descriptions.
+ */
+export function getFeatureMinTier(feature: string): SubscriptionTier | null {
+  const allowed = FEATURE_GATES[feature];
+  if (!allowed || allowed.length === 0) return null;
+  for (const t of TIER_ORDER) {
+    if (allowed.includes(t)) return t;
+  }
+  return null;
+}

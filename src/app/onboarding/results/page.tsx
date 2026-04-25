@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/hooks/useAuth';
 import { RESULTS } from '@/constants/copy';
+import { PLANS } from '@/constants/plans';
 import { supabase } from '@/lib/supabase/client';
 import type { FreeWelcomeAnalysis } from '@/lib/openai';
 
@@ -271,13 +272,15 @@ export default function ResultsPage() {
               <span className="text-xl">🔥</span>
               <span className="text-sm font-semibold text-[#B3263E]">Nejoblíbenější volba</span>
             </div>
-            <h3 className="text-xl font-black text-[#F5F5F5] mb-1">PRO plán — 349 Kč/měs</h3>
+            <h3 className="text-xl font-black text-[#F5F5F5] mb-1">
+              PRO plán — {PLANS.pro.priceLabel}
+            </h3>
             <p className="text-[#A1A1AA] text-sm mb-4">
-              90 dní · AI kouč · Adaptivní plán · Přesná makra
+              {PLANS.pro.duration} dní · AI kouč · Adaptivní plán · Přesná makra
             </p>
             <Link href="/paywall">
               <Button variant="primary" fullWidth size="lg">
-                {RESULTS.proCta}
+                Odemknout PRO →
               </Button>
             </Link>
             <p className="text-xs text-[#A1A1AA]/60 text-center mt-2">{RESULTS.proCtaSubtext}</p>

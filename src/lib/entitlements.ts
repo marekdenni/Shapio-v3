@@ -112,6 +112,26 @@ export function hasProAccess(ctx: EntitlementContext): boolean {
   return USER_TIER_LEVELS[effectiveTier] >= USER_TIER_LEVELS.pro;
 }
 
+/**
+ * Checks if the context has starter-level access or above.
+ */
+export function hasStarterAccess(ctx: EntitlementContext): boolean {
+  if (ctx.isPlatformAdmin) return true;
+  const effectiveTier = resolveEffectiveTier(ctx);
+  return USER_TIER_LEVELS[effectiveTier] >= USER_TIER_LEVELS.starter;
+}
+
+/**
+ * Returns the next upgrade target tier for a given effective tier.
+ * Returns null if already at the highest tier.
+ */
+export function getUpgradeTarget(ctx: EntitlementContext): SubscriptionTier | null {
+  const effective = resolveEffectiveTier(ctx);
+  const level = USER_TIER_LEVELS[effective];
+  const next = Object.entries(USER_TIER_LEVELS).find(([, l]) => l === level + 1);
+  return next ? (next[0] as SubscriptionTier) : null;
+}
+
 // ─── B2B org-level limits ────────────────────────────────────────────────────
 
 /**

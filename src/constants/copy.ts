@@ -264,7 +264,6 @@ export const RESULTS = {
     aiCoach: 'AI Kouč',
   },
   freeCta: 'Pokračovat zdarma',
-  proCta: 'Odemknout PRO — 349 Kč/měs',
   proCtaSubtext: '14denní garance vrácení peněz',
 };
 
