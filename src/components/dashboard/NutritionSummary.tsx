@@ -67,7 +67,7 @@ export function NutritionSummary({
             <svg viewBox="0 0 44 44" className="w-full h-full -rotate-90">
               <circle cx="22" cy="22" r="18" fill="none" stroke="#2A2A31" strokeWidth="4" />
               <circle
-                cx="22" cy="22" r="18" fill="none" stroke="#B3263E" strokeWidth="4"
+                cx="22" cy="22" r="18" fill="none" stroke="#3B82F6" strokeWidth="4"
                 strokeDasharray={`${2 * Math.PI * 18}`}
                 strokeDashoffset={`${2 * Math.PI * 18 * (1 - Math.min(1, (consumed!.calories ?? 0) / targets.calories))}`}
                 strokeLinecap="round"

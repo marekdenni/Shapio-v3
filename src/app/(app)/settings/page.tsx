@@ -18,8 +18,8 @@ import type { UserProfile } from '@/types';
 export default function SettingsPage() {
   const router = useRouter();
   const { profile, updateProfile, signOut } = useAuth();
-  // @ts-expect-error
-  const { tier, stripeCustomerId } = useSubscription();
+  const { tier } = useSubscription();
+  const stripeCustomerId = profile?.stripeCustomerId;
 
   const [name, setName] = useState(profile?.name || '');
   const [saving, setSaving] = useState(false);
@@ -151,7 +151,7 @@ export default function SettingsPage() {
             ) : (
               <button
                 onClick={handleManageSubscription}
-                className="w-full py-3 border border-[#B3263E]/40 hover:border-[#B3263E] text-[#B3263E] hover:text-[#D13A52] font-semibold rounded-xl transition-all duration-200 text-sm hover:bg-[#B3263E]/5"
+                className="w-full py-3 border border-cta/40 hover:border-cta text-cta hover:text-highlight font-semibold rounded-xl transition-all duration-200 text-sm hover:bg-cta/5 active:scale-[0.98]"
               >
                 Spravovat předplatné
               </button>

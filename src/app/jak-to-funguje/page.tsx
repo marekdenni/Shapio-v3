@@ -11,11 +11,11 @@ export default function JakToFungujePage() {
       {/* ── HERO ─────────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-20 sm:py-28">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#B3263E]/5 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#3B82F6]/5 rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
-            <span className="w-2 h-2 rounded-full bg-[#B3263E]" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-sm text-[#7C3AED] mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
             Průvodce aplikací
           </div>
           <h1 className="text-4xl sm:text-5xl font-black text-[#F5F5F5] mb-6 leading-tight">
@@ -26,7 +26,7 @@ export default function JakToFungujePage() {
           </p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-2xl transition-all duration-200 hover:shadow-[0_0_25px_rgba(179,38,62,0.4)]"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-2xl transition-all duration-200 hover:shadow-[0_0_25px_rgba(59,130,246,0.4)]"
           >
             Začít zdarma →
           </Link>
@@ -114,11 +114,11 @@ export default function JakToFungujePage() {
               <div key={step.step} className="flex gap-6 items-start">
                 {/* Step number */}
                 <div className="shrink-0">
-                  <div className="w-12 h-12 rounded-2xl bg-[#B3263E] flex items-center justify-center text-white font-black text-lg shadow-[0_0_20px_rgba(179,38,62,0.3)]">
+                  <div className="w-12 h-12 rounded-2xl bg-[#3B82F6] flex items-center justify-center text-white font-black text-lg shadow-[0_0_20px_rgba(59,130,246,0.3)]">
                     {step.step}
                   </div>
                   {step.step < 5 && (
-                    <div className="w-px h-8 bg-[#B3263E]/30 mx-auto mt-2" />
+                    <div className="w-px h-8 bg-[#3B82F6]/30 mx-auto mt-2" />
                   )}
                 </div>
 
@@ -135,7 +135,7 @@ export default function JakToFungujePage() {
                   <ul className="flex flex-col gap-2 mb-4">
                     {step.details.map((detail, i) => (
                       <li key={i} className="flex items-start gap-2 text-sm">
-                        <svg className="w-4 h-4 text-[#B3263E] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#3B82F6] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
                         <span className="text-[#A1A1AA]">{detail}</span>
@@ -201,7 +201,7 @@ export default function JakToFungujePage() {
                 result: 'Rekompozice těla za 16 týdnů. Lepší energetická hladina a spánek.',
               },
             ].map((study, i) => (
-              <div key={i} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#B3263E]/30 transition-all duration-300">
+              <div key={i} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#3B82F6]/30 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#2A2A31] shrink-0">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -224,7 +224,7 @@ export default function JakToFungujePage() {
                     <p className="text-[#A1A1AA]">{study.solution}</p>
                   </div>
                   <div className="pt-3 border-t border-[#2A2A31]">
-                    <div className="px-3 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-xs text-[#B3263E] font-semibold">
+                    <div className="px-3 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xl text-xs text-[#3B82F6] font-semibold">
                       Výsledek: {study.result}
                     </div>
                   </div>
@@ -281,7 +281,7 @@ export default function JakToFungujePage() {
               },
             ].map((pillar, i) => (
               <div key={i} className="bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-6">
-                <div className="w-12 h-12 bg-[#B3263E]/10 border border-[#B3263E]/20 rounded-xl flex items-center justify-center text-[#B3263E] mb-4">
+                <div className="w-12 h-12 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-xl flex items-center justify-center text-[#3B82F6] mb-4">
                   {pillar.icon}
                 </div>
                 <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">{pillar.title}</h3>
@@ -384,7 +384,7 @@ export default function JakToFungujePage() {
             <p className="text-[#A1A1AA] leading-relaxed mb-4">
               getbeter kombinuje personalizaci se sledováním pokroku a adaptací — to je přístup, který dříve byl dostupný pouze lidem, kteří si mohli dovolit osobního trenéra. getbeter tuto zkušenost demokratizuje za zlomek ceny.
             </p>
-            <div className="mt-6 p-4 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-sm text-[#A1A1AA]">
+            <div className="mt-6 p-4 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xl text-sm text-[#A1A1AA]">
               <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> getbeter poskytuje obecná fitness a wellness doporučení. Není náhradou za lékařskou péči, fyzioterapii ani individuální konzultaci s certifikovaným trenérem. Výsledky se individuálně liší.
             </div>
           </div>
@@ -400,7 +400,7 @@ export default function JakToFungujePage() {
           </p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-2xl transition-all duration-200 hover:shadow-[0_0_25px_rgba(179,38,62,0.4)] hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-2xl transition-all duration-200 hover:shadow-[0_0_25px_rgba(59,130,246,0.4)] hover:scale-105"
           >
             Začít zdarma →
           </Link>

@@ -9,7 +9,7 @@ export default function TermsOfServicePage() {
       <header className="border-b border-[#2A2A31] bg-[#151518]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] rounded-lg flex items-center justify-center">
               <span className="text-white font-black text-sm">G</span>
             </div>
             <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
@@ -28,7 +28,7 @@ export default function TermsOfServicePage() {
         </div>
 
         {/* Important disclaimer banner */}
-        <div className="mb-8 p-4 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-sm text-[#A1A1AA]">
+        <div className="mb-8 p-4 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xl text-sm text-[#A1A1AA]">
           <strong className="text-[#F5F5F5]">Důležité upozornění:</strong> getbeter není zdravotnickým prostředkem. Obsah aplikace má pouze informační charakter a nepředstavuje lékařskou radu. Před zahájením nového fitness programu konzultujte svého lékaře.
         </div>
 
@@ -55,7 +55,7 @@ export default function TermsOfServicePage() {
                 'Uživatelský profil a správu předplatného',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -73,7 +73,7 @@ export default function TermsOfServicePage() {
                 'getbeter si vyhrazuje právo smazat účet porušující podmínky',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -93,7 +93,7 @@ export default function TermsOfServicePage() {
                 'Ceny jsou uváděny v českých korunách včetně DPH',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -150,7 +150,7 @@ export default function TermsOfServicePage() {
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">10. Kontakt</h2>
             <p>
               Pro dotazy ohledně podmínek použití:{' '}
-              <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E] hover:text-[#D13A52]">
+              <a href="mailto:jedlicekm@gmail.com" className="text-[#3B82F6] hover:text-[#7C3AED]">
                 jedlicekm@gmail.com
               </a>
             </p>

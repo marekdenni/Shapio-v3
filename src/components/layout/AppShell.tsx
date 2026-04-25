@@ -1,8 +1,11 @@
 'use client';
 
-// App shell wrapper for authenticated pages
+// App shell wrapper for authenticated pages.
+// Desktop: fixed Sidebar (240px) + main content area.
+// Mobile:  sticky AppHeader + main content + fixed BottomNav.
 import React from 'react';
-import { Navbar } from './Navbar';
+import { Sidebar } from './Sidebar';
+import { AppHeader } from './AppHeader';
 import { BottomNav } from './BottomNav';
 
 interface AppShellProps {
@@ -12,18 +15,25 @@ interface AppShellProps {
 
 export function AppShell({ children, hideBottomNav = false }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
+    <div className="min-h-screen bg-background">
+      {/* ── Desktop sidebar (hidden on mobile) ── */}
+      <Sidebar />
 
-      {/* Main content with bottom padding for mobile bottom nav */}
-      <main className={`flex-1 ${hideBottomNav ? 'pb-0' : 'pb-20 md:pb-0'}`}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          {children}
-        </div>
-      </main>
+      {/* ── Content column: offset by sidebar width on desktop ── */}
+      <div className="md:pl-60 flex flex-col min-h-screen">
+        {/* Mobile-only top header */}
+        <AppHeader />
 
-      {/* Mobile bottom navigation */}
-      {!hideBottomNav && <BottomNav />}
+        {/* Page content */}
+        <main className={`flex-1 px-4 sm:px-6 md:px-8 py-6 md:py-8 ${hideBottomNav ? '' : 'pb-24 md:pb-8'}`}>
+          <div className="max-w-4xl mx-auto">
+            {children}
+          </div>
+        </main>
+
+        {/* Mobile-only bottom navigation */}
+        {!hideBottomNav && <BottomNav />}
+      </div>
     </div>
   );
 }

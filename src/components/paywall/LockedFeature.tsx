@@ -72,7 +72,7 @@ export function LockedFeature({
         {/* CTA */}
         <Link
           href="/paywall"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-cta hover:bg-highlight text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-glow-red hover:shadow-glow-red-lg"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-cta hover:bg-highlight text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-glow-blue hover:shadow-glow-blue-lg"
         >
           {ctaText}
         </Link>

@@ -108,7 +108,7 @@ export function ComparisonSlider({
           draggable={false}
         />
         {/* After label */}
-        <div className="absolute top-4 right-4 px-3 py-1.5 bg-[#B3263E]/80 rounded-lg text-white text-xs font-semibold backdrop-blur-sm">
+        <div className="absolute top-4 right-4 px-3 py-1.5 bg-[#3B82F6]/80 rounded-lg text-white text-xs font-semibold backdrop-blur-sm">
           {afterLabel}
         </div>
       </div>
@@ -122,7 +122,7 @@ export function ComparisonSlider({
         <div className="absolute inset-y-0 w-0.5 bg-white/80 shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
 
         {/* Circle handle */}
-        <div className="absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#B3263E] border-2 border-white shadow-[0_0_20px_rgba(179,38,62,0.6)] flex items-center justify-center">
+        <div className="absolute top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#3B82F6] border-2 border-white shadow-[0_0_20px_rgba(59,130,246,0.6)] flex items-center justify-center">
           {/* Left/right arrows */}
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 9l-3 3m0 0l3 3m-3-3h14M16 9l3 3m0 0l-3 3" />

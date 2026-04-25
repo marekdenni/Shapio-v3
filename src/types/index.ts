@@ -257,6 +257,8 @@ export interface PlanDetails {
   limitations?: string[];
   isPopular?: boolean;
   isOneTime?: boolean;
+  tagline?: string;
+  trackFit?: string;
 }
 
 // ─── Database Row Types (snake_case, matching Supabase schema) ─────────────

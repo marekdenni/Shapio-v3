@@ -17,7 +17,7 @@ const variantClasses: Record<CardVariant, string> = {
   default: 'bg-surface border border-border',
   elevated: 'bg-surface2 border border-border shadow-card',
   premium:
-    'bg-surface2 border border-cta/50 shadow-glow-red ring-1 ring-cta/20',
+    'bg-surface2 border border-cta/50 shadow-glow-blue ring-1 ring-cta/20',
 };
 
 const paddingClasses = {
@@ -41,7 +41,7 @@ export function Card({
         'rounded-2xl',
         variantClasses[variant],
         paddingClasses[padding],
-        onClick ? 'cursor-pointer hover:border-border/80 transition-all duration-200' : '',
+        onClick ? 'cursor-pointer hover:border-cta/25 hover:-translate-y-0.5 hover:shadow-card-hover active:scale-[0.99] transition-all duration-200' : '',
         className,
       ]
         .filter(Boolean)

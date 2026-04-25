@@ -30,7 +30,7 @@ export default function OrgLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-[#8B1E2D] to-[#B3263E] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(179,38,62,0.3)] animate-pulse">
+          <div className="w-14 h-14 bg-gradient-to-br from-[#1E40AF] to-[#3B82F6] rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)] animate-pulse">
             <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
           <p className="text-[#A1A1AA] text-sm">Načítám...</p>
@@ -56,7 +56,7 @@ export default function OrgLayout({ children }: { children: React.ReactNode }) {
           <div className="flex flex-col gap-3">
             <button
               onClick={retryProfile}
-              className="w-full py-3 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200"
+              className="w-full py-3 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200"
             >
               Zkusit znovu
             </button>

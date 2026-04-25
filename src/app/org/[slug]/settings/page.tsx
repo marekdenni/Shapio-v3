@@ -147,7 +147,7 @@ export default function OrgSettingsPage() {
                     className={[
                       'flex items-center gap-2 p-2.5 rounded-xl border transition-all duration-200 text-left text-sm',
                       type === value
-                        ? 'bg-[#B3263E]/10 border-[#B3263E]/50 text-[#F5F5F5]'
+                        ? 'bg-[#3B82F6]/10 border-[#3B82F6]/50 text-[#F5F5F5]'
                         : 'bg-surface2 border-border text-text-secondary hover:border-border/80',
                     ].join(' ')}
                   >
@@ -181,7 +181,7 @@ export default function OrgSettingsPage() {
                     className={[
                       'flex items-center gap-3 p-2.5 rounded-xl border transition-all duration-200 text-left',
                       businessGoal === value
-                        ? 'bg-[#B3263E]/10 border-[#B3263E]/50'
+                        ? 'bg-[#3B82F6]/10 border-[#3B82F6]/50'
                         : 'bg-surface2 border-border hover:border-border/80',
                     ].join(' ')}
                   >
@@ -207,7 +207,7 @@ export default function OrgSettingsPage() {
                 onChange={(e) => setTargetAudience(e.target.value)}
                 placeholder="Kdo jsou vaši koncoví uživatelé nebo klienti?"
                 rows={2}
-                className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-border rounded-xl text-sm placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200 resize-none"
+                className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-border rounded-xl text-sm placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 resize-none"
               />
             </div>
           </div>

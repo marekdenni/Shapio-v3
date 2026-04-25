@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CSS Variables for Shapio color tokens */
+/* CSS Variables for getbeter color tokens — blue + purple system */
 :root {
   --color-background: #0B0B0D;
   --color-surface: #151518;
   --color-surface2: #1D1D22;
-  --color-primary: #8B1E2D;
-  --color-cta: #B3263E;
-  --color-highlight: #D13A52;
+  --color-primary: #1E40AF;
+  --color-cta: #3B82F6;
+  --color-highlight: #7C3AED;
   --color-border: #2A2A31;
   --color-text-primary: #F5F5F5;
   --color-text-secondary: #A1A1AA;
@@ -48,13 +48,13 @@
 
   /* Focus ring */
   *:focus-visible {
-    outline: 2px solid #B3263E;
+    outline: 2px solid #3B82F6;
     outline-offset: 2px;
   }
 
   /* Selection color */
   ::selection {
-    background: rgba(179, 38, 62, 0.3);
+    background: rgba(59, 130, 246, 0.25);
     color: #F5F5F5;
   }
 
@@ -80,15 +80,24 @@
     padding-top: env(safe-area-inset-top, 0px);
   }
 
+  /* Primary gradient text — blue to purple */
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Legacy alias kept for any existing text-gradient-red usage */
   .text-gradient-red {
-    background: linear-gradient(135deg, #B3263E 0%, #D13A52 100%);
+    background: linear-gradient(135deg, #3B82F6 0%, #7C3AED 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gradient-cta {
-    background: linear-gradient(135deg, #8B1E2D 0%, #B3263E 50%, #D13A52 100%);
+    background: linear-gradient(135deg, #1E40AF 0%, #3B82F6 50%, #7C3AED 100%);
   }
 
   .glass-card {
@@ -98,10 +107,12 @@
     border: 1px solid rgba(42, 42, 49, 0.6);
   }
 
-  .scrollbar-none::-webkit-scrollbar {
+  .scrollbar-none::-webkit-scrollbar,
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .scrollbar-none {
+  .scrollbar-none,
+  .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
@@ -109,6 +120,11 @@
 
 /* Component styles */
 @layer components {
+  .getbeter-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6;
+  }
+
+  /* Legacy alias */
   .shapio-container {
     @apply max-w-6xl mx-auto px-4 sm:px-6;
   }
@@ -143,12 +159,21 @@
   animation: shimmer 2s infinite;
 }
 
-/* ── Premium hover glow effect ── */
+/* ── Premium hover glow — blue ── */
+.hover-blue-glow {
+  transition: all 0.2s ease;
+}
+.hover-blue-glow:hover {
+  box-shadow: 0 0 0 1px #3B82F6, 0 0 20px rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Legacy alias */
 .hover-red-glow {
   transition: all 0.2s ease;
 }
 .hover-red-glow:hover {
-  box-shadow: 0 0 0 1px #B3263E, 0 0 20px rgba(179, 38, 62, 0.15);
+  box-shadow: 0 0 0 1px #3B82F6, 0 0 20px rgba(59, 130, 246, 0.15);
   transform: translateY(-1px);
 }
 
@@ -167,22 +192,22 @@
 .animate-fade-in-up-3 { animation: fadeInUp 0.5s ease 0.3s both; }
 .animate-fade-in-up-4 { animation: fadeInUp 0.5s ease 0.4s both; }
 
-/* ── Subtle CTA pulse ── */
+/* ── Subtle CTA pulse — blue ── */
 @keyframes ctaPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(179, 38, 62, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(179, 38, 62, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
 }
 .animate-cta-pulse {
   animation: ctaPulse 2s infinite;
 }
 
-/* ── Card hover with red glow ── */
+/* ── Card hover with blue/purple glow ── */
 .card-hover {
   transition: all 0.2s ease;
 }
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 1px #B3263E, 0 0 30px rgba(179, 38, 62, 0.1);
+  box-shadow: 0 0 0 1px #3B82F6, 0 0 30px rgba(59, 130, 246, 0.1);
 }
 
 /* ── Section entrance animation via IntersectionObserver ── */

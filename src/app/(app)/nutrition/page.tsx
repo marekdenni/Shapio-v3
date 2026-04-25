@@ -1,6 +1,5 @@
 'use client';
 
-// Nutrition page with daily calories and meal plan
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
@@ -9,6 +8,15 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/lib/supabase/client';
 import type { NutritionPlan, Meal, MacroTargets } from '@/types';
+
+const GOAL_APPROACH: Record<string, { icon: string; label: string; approach: string; accentBorder: string; accentBg: string; accentText: string }> = {
+  fat_loss:          { icon: '🔥', label: 'Hubnutí', approach: 'Kalorický deficit 300–500 kcal · vysoké bílkoviny · 4–5 jídel denně', accentBorder: 'border-orange-500/25', accentBg: 'bg-orange-500/5', accentText: 'text-orange-400' },
+  muscle_gain:       { icon: '💪', label: 'Svalový růst', approach: 'Kalorický přebytek 200–400 kcal · 2g bílkovin/kg · jídlo po tréninku', accentBorder: 'border-cta/25', accentBg: 'bg-cta/5', accentText: 'text-cta' },
+  recomposition:     { icon: '⚖️', label: 'Rekompozice', approach: 'Maintenace kalorie · max. bílkoviny · cyklování sacharidů dle tréninku', accentBorder: 'border-highlight/25', accentBg: 'bg-highlight/5', accentText: 'text-highlight' },
+  improve_appearance:{ icon: '✨', label: 'Vzhled & kondice', approach: 'Mírný deficit · vysoký příjem bílkovin · omega-3 a kolagen', accentBorder: 'border-highlight/25', accentBg: 'bg-highlight/5', accentText: 'text-highlight' },
+  improve_discipline:{ icon: '🎯', label: 'Disciplína & návyky', approach: 'Konzistentní jídelní okno · jednoduchá jídla · meal prep strategie', accentBorder: 'border-cta/25', accentBg: 'bg-cta/5', accentText: 'text-cta' },
+  general_fitness:   { icon: '🌿', label: 'Celková kondice', approach: 'Vyvážený příjem · 80/20 přístup · trvalá udržitelnost', accentBorder: 'border-green-500/25', accentBg: 'bg-green-500/5', accentText: 'text-green-400' },
+};
 
 export default function NutritionPage() {
   const { profile } = useAuth();
@@ -108,6 +116,8 @@ export default function NutritionPage() {
     };
   }
 
+  const goalInfo = GOAL_APPROACH[profile?.goal ?? 'general_fitness'] ?? GOAL_APPROACH.general_fitness;
+
   const plan = nutritionPlan;
   const targets = plan?.dailyTargets;
 
@@ -125,6 +135,23 @@ export default function NutritionPage() {
       <div>
         <h1 className="text-2xl font-black text-text-primary">Výživa</h1>
         <p className="text-text-secondary text-sm mt-1">Tvůj denní výživový plán</p>
+      </div>
+
+      {/* Goal-based approach banner */}
+      <div className={`relative overflow-hidden bg-surface border ${goalInfo.accentBorder} rounded-2xl p-4`}>
+        <div className={`absolute inset-0 ${goalInfo.accentBg} pointer-events-none rounded-2xl`} />
+        <div className="relative flex items-start gap-3">
+          <div className="w-9 h-9 bg-surface2 border border-border rounded-xl flex items-center justify-center text-lg shrink-0">
+            {goalInfo.icon}
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className={`text-xs font-bold uppercase tracking-wide ${goalInfo.accentText}`}>{goalInfo.label}</p>
+              <span className="text-[9px] font-bold text-text-secondary/40 uppercase px-1.5 py-0.5 bg-surface2 border border-border rounded">Tvůj přístup</span>
+            </div>
+            <p className="text-xs text-text-secondary leading-relaxed">{goalInfo.approach}</p>
+          </div>
+        </div>
       </div>
 
       {/* Calorie overview */}

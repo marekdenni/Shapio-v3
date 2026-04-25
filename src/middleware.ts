@@ -23,7 +23,8 @@ export async function middleware(req: NextRequest) {
     pathname.startsWith('/onboarding') ||
     pathname.startsWith('/progress') ||
     pathname.startsWith('/nutrition') ||
-    pathname.startsWith('/org');
+    pathname.startsWith('/org') ||
+    pathname.startsWith('/admin');
 
   // Auth routes — should redirect away if already authenticated
   const isAuthRoute =

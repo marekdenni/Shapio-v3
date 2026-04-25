@@ -81,7 +81,7 @@ function RegisterForm() {
         </p>
         <Link
           href="/login"
-          className="inline-block w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 text-center"
+          className="inline-block w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 text-center"
         >
           Přejít na přihlášení
         </Link>
@@ -116,7 +116,7 @@ function RegisterForm() {
         type="button"
         onClick={handleGoogle}
         disabled={isGoogleLoading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#B3263E]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mb-4"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#3B82F6]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mb-4"
       >
         <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -142,7 +142,7 @@ function RegisterForm() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200 ${errors.name ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.name ? 'border-red-600' : 'border-[#2A2A31]'}`}
           />
           {errors.name && <p className="text-xs text-red-400">{errors.name}</p>}
         </div>
@@ -155,7 +155,7 @@ function RegisterForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200 ${errors.email ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.email ? 'border-red-600' : 'border-[#2A2A31]'}`}
           />
           {errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
         </div>
@@ -168,7 +168,7 @@ function RegisterForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200 ${errors.password ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.password ? 'border-red-600' : 'border-[#2A2A31]'}`}
           />
           {errors.password
             ? <p className="text-xs text-red-400">{errors.password}</p>
@@ -178,7 +178,7 @@ function RegisterForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)] active:scale-[0.98] mt-1"
+          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
         >
           {isSubmitting ? 'Vytvářím účet...' : 'Vytvořit účet'}
         </button>
@@ -197,7 +197,7 @@ function RegisterForm() {
 
       <p className="text-center text-sm text-[#A1A1AA] mt-5">
         Již máš účet?{' '}
-        <Link href="/login" className="text-[#B3263E] hover:text-[#D13A52] font-semibold transition-colors">
+        <Link href="/login" className="text-[#3B82F6] hover:text-[#7C3AED] font-semibold transition-colors">
           Přihlásit se
         </Link>
       </p>

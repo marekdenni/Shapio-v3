@@ -18,7 +18,7 @@ const variantClasses: Record<BadgeVariant, string> = {
   starter: 'bg-blue-900/40 text-blue-400 border border-blue-700/50',
   pro: 'bg-primary/30 text-highlight border border-primary/50',
   elite: 'bg-yellow-900/30 text-yellow-400 border border-yellow-700/40',
-  popular: 'bg-gradient-cta text-white border-0 shadow-glow-red',
+  popular: 'bg-gradient-cta text-white border-0 shadow-glow-blue',
   new: 'bg-green-900/40 text-green-400 border border-green-700/50',
   'one-time': 'bg-purple-900/40 text-purple-400 border border-purple-700/50',
   default: 'bg-surface2 text-text-secondary border border-border',

@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
         </p>
         <Link
           href="/login"
-          className="inline-block w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 text-center"
+          className="inline-block w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 text-center"
         >
           Zpět na přihlášení
         </Link>
@@ -89,14 +89,14 @@ export default function ForgotPasswordPage() {
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
             autoFocus
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200"
+            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
           />
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)] active:scale-[0.98]"
+          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98]"
         >
           {isSubmitting ? 'Odesílám...' : 'Odeslat odkaz'}
         </button>
@@ -106,7 +106,7 @@ export default function ForgotPasswordPage() {
         Vzpomněl sis?{' '}
         <Link
           href="/login"
-          className="text-[#B3263E] hover:text-[#D13A52] font-semibold transition-colors"
+          className="text-[#3B82F6] hover:text-[#7C3AED] font-semibold transition-colors"
         >
           Přihlásit se
         </Link>

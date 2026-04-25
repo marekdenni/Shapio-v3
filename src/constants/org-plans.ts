@@ -62,7 +62,7 @@ export interface OrgPlanMeta {
 export const ORG_PLAN_META: Record<OrgPlan, OrgPlanMeta> = {
   free:       { name: 'Free',       description: 'Základní přístup, vhodný pro menší týmy',           color: 'bg-surface2 text-text-secondary border-border'              },
   starter:    { name: 'Starter',    description: 'Pro rostoucí koučinky a studia',                    color: 'bg-blue-900/40 text-blue-400 border-blue-700/40'            },
-  pro:        { name: 'Pro',        description: 'Pro profesionální organizace a větší týmy',          color: 'bg-[#B3263E]/20 text-[#B3263E] border-[#B3263E]/40'        },
+  pro:        { name: 'Pro',        description: 'Pro profesionální organizace a větší týmy',          color: 'bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/40'        },
   enterprise: { name: 'Enterprise', description: 'Neomezené možnosti, dedikovaná podpora',            color: 'bg-yellow-900/40 text-yellow-400 border-yellow-700/40'     },
 };
 

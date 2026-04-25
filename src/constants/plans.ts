@@ -7,10 +7,12 @@ export const PLANS: Record<SubscriptionTier, PlanDetails> = {
     price: 0,
     priceLabel: 'Zdarma',
     duration: 30,
+    tagline: 'Vyzkoušej bez závazků',
+    trackFit: 'Základní start pro každý cíl',
     features: [
       '30denní startovní plán',
       'Základní tréninkový plán',
-      'Omezené tipy ke stravě',
+      'AI analýza profilu (1×)',
       'Přístup k aplikaci',
     ],
     limitations: [
@@ -25,11 +27,14 @@ export const PLANS: Record<SubscriptionTier, PlanDetails> = {
     price: 149,
     priceLabel: '149 Kč/měs',
     duration: 60,
+    tagline: 'Kompletní základ pro transformaci',
+    trackFit: 'Ideální pro začátečníky a středně pokročilé',
     features: [
       '60denní transformační plán',
       'Kompletní tréninkový plán',
       'Makra a kalorický plán',
       'Týdenní check-in',
+      'Fotogalerie pokroku',
       'Přístup k aplikaci',
     ],
     limitations: [
@@ -43,12 +48,14 @@ export const PLANS: Record<SubscriptionTier, PlanDetails> = {
     priceLabel: '349 Kč/měs',
     duration: 90,
     isPopular: true,
+    tagline: 'Kompletní transformace s AI',
+    trackFit: 'Pro vážné výsledky — tělo i vzhled',
     features: [
       '90denní transformační plán',
-      'Adaptivní tréninkový plán',
+      'Adaptivní plán dle pokroku',
       'Detailní výživový plán s makry',
       'AI kouč (10 zpráv/den)',
-      'Porovnání před/po fotek',
+      'Porovnání fotek před/po',
       'Pokročilá analýza pokroku',
       'Týdenní check-in',
       'Prioritní podpora',
@@ -59,7 +66,8 @@ export const PLANS: Record<SubscriptionTier, PlanDetails> = {
     price: 1499,
     priceLabel: '1 499 Kč/měs',
     duration: 180,
-    // Monthly recurring subscription (was one-time, now monthly)
+    tagline: 'Maximální výsledky bez kompromisů',
+    trackFit: 'Pro ty, kdo to myslí vážně',
     features: [
       '180denní transformační plán',
       'Plně adaptivní trénink',
@@ -67,7 +75,7 @@ export const PLANS: Record<SubscriptionTier, PlanDetails> = {
       'AI kouč bez omezení (50 zpráv/den)',
       'Prioritní porovnání fotek',
       'Detailní analýza každý týden',
-      'Doživotní přístup k výsledkům',
+      'Přístup k budoucím prémiovým funkcím',
     ],
   },
 };

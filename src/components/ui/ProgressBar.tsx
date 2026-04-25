@@ -8,7 +8,7 @@ interface ProgressBarProps {
   max?: number;
   label?: string;
   showPercentage?: boolean;
-  color?: 'red' | 'blue' | 'green' | 'yellow';
+  color?: 'red' | 'blue' | 'green' | 'yellow' | 'gradient';
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   animated?: boolean;
@@ -19,6 +19,7 @@ const colorClasses = {
   blue: 'bg-blue-500',
   green: 'bg-green-500',
   yellow: 'bg-yellow-500',
+  gradient: 'bg-gradient-cta',
 };
 
 const heightClasses = {

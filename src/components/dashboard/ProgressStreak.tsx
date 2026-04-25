@@ -44,7 +44,7 @@ export function ProgressStreak({
                 className={[
                   'w-full aspect-square rounded-lg flex items-center justify-center transition-all',
                   isCompleted
-                    ? 'bg-cta shadow-glow-red'
+                    ? 'bg-cta shadow-glow-blue'
                     : isToday
                     ? 'border-2 border-cta/60 bg-cta/10'
                     : isPast

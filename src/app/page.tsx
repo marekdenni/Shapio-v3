@@ -40,16 +40,16 @@ export default function LandingPage() {
       <section className="relative overflow-hidden">
         {/* Background gradients */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[#B3263E]/6 rounded-full blur-3xl" />
-          <div className="absolute top-40 right-0 w-[500px] h-[500px] bg-[#8B1E2D]/8 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#B3263E]/4 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[#3B82F6]/6 rounded-full blur-3xl" />
+          <div className="absolute top-40 right-0 w-[500px] h-[500px] bg-[#1E40AF]/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#3B82F6]/4 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
           <div className="text-center max-w-3xl mx-auto">
             {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-8 animate-fade-in-up">
-              <span className="w-2 h-2 rounded-full bg-[#B3263E] animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-sm text-[#7C3AED] mb-8 animate-fade-in-up">
+              <span className="w-2 h-2 rounded-full bg-[#3B82F6] animate-pulse" />
               Více než 2 400 uživatelů transformuje své tělo
             </div>
 
@@ -64,7 +64,7 @@ export default function LandingPage() {
               <br className="hidden sm:block" />
               Získej plán.{' '}
               <br />
-              <span className="bg-gradient-to-r from-[#B3263E] to-[#D13A52] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] to-[#7C3AED] bg-clip-text text-transparent">
                 Transformuj se.
               </span>
             </h1>
@@ -78,13 +78,13 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
               <Link
                 href="/register"
-                className="w-full sm:w-auto px-8 py-4 bg-[#B3263E] hover:bg-[#D13A52] text-white text-lg font-black rounded-2xl transition-all duration-200 shadow-[0_0_30px_rgba(179,38,62,0.4)] hover:shadow-[0_0_40px_rgba(179,38,62,0.6)] hover:scale-105 active:scale-100 animate-cta-pulse"
+                className="w-full sm:w-auto px-8 py-4 bg-[#3B82F6] hover:bg-[#7C3AED] text-white text-lg font-black rounded-2xl transition-all duration-200 shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-100 animate-cta-pulse"
               >
                 Začni svou transformaci →
               </Link>
               <Link
                 href="#jak-to-funguje"
-                className="w-full sm:w-auto px-8 py-4 bg-[#151518] hover:bg-[#1D1D22] text-[#F5F5F5] text-lg font-semibold rounded-2xl border border-[#2A2A31] hover:border-[#B3263E]/40 transition-all duration-200"
+                className="w-full sm:w-auto px-8 py-4 bg-[#151518] hover:bg-[#1D1D22] text-[#F5F5F5] text-lg font-semibold rounded-2xl border border-[#2A2A31] hover:border-[#3B82F6]/40 transition-all duration-200"
               >
                 Jak to funguje?
               </Link>
@@ -99,18 +99,18 @@ export default function LandingPage() {
           {/* Hero app mockup — styled preview card */}
           <div className="mt-16 max-w-2xl mx-auto scroll-animate">
             <div className="bg-[#151518] border border-[#2A2A31] rounded-3xl p-6 shadow-[0_4px_40px_rgba(0,0,0,0.5)] relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B3263E]/40 to-transparent" />
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent" />
 
               {/* Mock header */}
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] flex items-center justify-center text-white font-black text-sm">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] flex items-center justify-center text-white font-black text-sm">
                   JN
                 </div>
                 <div>
                   <p className="font-bold text-[#F5F5F5] text-sm">Jan Novák • AI analýza</p>
                   <p className="text-xs text-[#A1A1AA]">Dokončeno před chvílí</p>
                 </div>
-                <div className="ml-auto px-3 py-1 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-xs text-[#B3263E] font-semibold">
+                <div className="ml-auto px-3 py-1 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-xs text-[#3B82F6] font-semibold">
                   PRO
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function LandingPage() {
               {/* Stats bars */}
               <div className="flex flex-col gap-3 mb-5">
                 {[
-                  { label: 'Spalování tuku', value: 87, color: '#B3263E' },
+                  { label: 'Spalování tuku', value: 87, color: '#3B82F6' },
                   { label: 'Svalový rozvoj', value: 74, color: '#3B82F6' },
                   { label: 'Celková kondice', value: 61, color: '#10B981' },
                 ].map((stat) => (
@@ -150,18 +150,18 @@ export default function LandingPage() {
                     key={item}
                     className="flex items-center gap-2 py-2 px-3 bg-[#1D1D22] rounded-xl border border-[#2A2A31]"
                   >
-                    <svg className="w-4 h-4 text-[#B3263E]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-[#3B82F6]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                     <span className="text-sm text-[#A1A1AA]/60 blur-sm select-none flex-1">{item}</span>
-                    <span className="text-xs text-[#B3263E] font-semibold shrink-0">PRO</span>
+                    <span className="text-xs text-[#3B82F6] font-semibold shrink-0">PRO</span>
                   </div>
                 ))}
               </div>
 
               <Link
                 href="/register"
-                className="mt-4 block w-full text-center py-3 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 text-sm"
+                className="mt-4 block w-full text-center py-3 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 text-sm"
               >
                 Odemknout PRO →
               </Link>
@@ -181,7 +181,7 @@ export default function LandingPage() {
               { value: '12+', label: 'týdnů průměrný program' },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center">
-                <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-[#B3263E] to-[#D13A52] bg-clip-text text-transparent">
+                <p className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-[#3B82F6] to-[#7C3AED] bg-clip-text text-transparent">
                   {stat.value}
                 </p>
                 <p className="text-sm text-[#A1A1AA] mt-1">{stat.label}</p>
@@ -209,7 +209,7 @@ export default function LandingPage() {
               {
                 number: '01',
                 icon: (
-                  <svg className="w-7 h-7 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
@@ -220,7 +220,7 @@ export default function LandingPage() {
               {
                 number: '02',
                 icon: (
-                  <svg className="w-7 h-7 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H4a2 2 0 01-2-2V5a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2h-1" />
                   </svg>
                 ),
@@ -230,7 +230,7 @@ export default function LandingPage() {
               {
                 number: '03',
                 icon: (
-                  <svg className="w-7 h-7 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-7 h-7 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                   </svg>
                 ),
@@ -240,13 +240,13 @@ export default function LandingPage() {
             ].map((step, i) => (
               <div
                 key={i}
-                className="scroll-animate relative bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#B3263E]/40 transition-all duration-300 group card-hover"
+                className="scroll-animate relative bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#3B82F6]/40 transition-all duration-300 group card-hover"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-5xl font-black text-[#B3263E]/20 group-hover:text-[#B3263E]/30 transition-colors leading-none">
+                  <span className="text-5xl font-black text-[#3B82F6]/20 group-hover:text-[#3B82F6]/30 transition-colors leading-none">
                     {step.number}
                   </span>
-                  <div className="w-12 h-12 bg-[#B3263E]/10 border border-[#B3263E]/20 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-xl flex items-center justify-center">
                     {step.icon}
                   </div>
                 </div>
@@ -277,7 +277,7 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pro muže */}
-            <div className="scroll-animate relative overflow-hidden rounded-2xl border border-[#2A2A31] hover:border-[#B3263E]/40 transition-all duration-300 group card-hover">
+            <div className="scroll-animate relative overflow-hidden rounded-2xl border border-[#2A2A31] hover:border-[#3B82F6]/40 transition-all duration-300 group card-hover">
               <div className="aspect-[4/3] relative overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -288,7 +288,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0D] via-[#0B0B0D]/40 to-transparent" />
               </div>
               <div className="p-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-xs text-[#B3263E] font-semibold mb-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-xs text-[#3B82F6] font-semibold mb-3">
                   Pro muže
                 </div>
                 <h3 className="text-xl font-black text-[#F5F5F5] mb-2">
@@ -301,7 +301,7 @@ export default function LandingPage() {
             </div>
 
             {/* Pro ženy */}
-            <div className="scroll-animate relative overflow-hidden rounded-2xl border border-[#2A2A31] hover:border-[#B3263E]/40 transition-all duration-300 group card-hover">
+            <div className="scroll-animate relative overflow-hidden rounded-2xl border border-[#2A2A31] hover:border-[#3B82F6]/40 transition-all duration-300 group card-hover">
               <div className="aspect-[4/3] relative overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -312,7 +312,7 @@ export default function LandingPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0D] via-[#0B0B0D]/40 to-transparent" />
               </div>
               <div className="p-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-xs text-[#B3263E] font-semibold mb-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-xs text-[#3B82F6] font-semibold mb-3">
                   Pro ženy
                 </div>
                 <h3 className="text-xl font-black text-[#F5F5F5] mb-2">
@@ -340,26 +340,26 @@ export default function LandingPage() {
           </div>
 
           <div className="max-w-2xl mx-auto scroll-animate">
-            <div className="bg-[#151518] border border-[#B3263E]/30 rounded-3xl p-6 shadow-[0_0_40px_rgba(179,38,62,0.1)]">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#B3263E]/40 to-transparent rounded-t-3xl" />
+            <div className="bg-[#151518] border border-[#3B82F6]/30 rounded-3xl p-6 shadow-[0_0_40px_rgba(59,130,246,0.1)]">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/40 to-transparent rounded-t-3xl" />
 
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <h3 className="font-black text-[#F5F5F5]">Tvoje osobní hodnocení</h3>
                   <p className="text-xs text-[#A1A1AA]">Vygenerováno AI na základě tvého profilu</p>
                 </div>
-                <span className="px-3 py-1 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-xs text-[#B3263E] font-semibold">
+                <span className="px-3 py-1 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-xs text-[#3B82F6] font-semibold">
                   PRO PLAN
                 </span>
               </div>
 
-              <p className="text-[#A1A1AA] text-sm leading-relaxed mb-5 border-l-2 border-[#B3263E] pl-4">
+              <p className="text-[#A1A1AA] text-sm leading-relaxed mb-5 border-l-2 border-[#3B82F6] pl-4">
                 Tvůj profil ukazuje skvělý potenciál pro rychlou transformaci. Doporučuji zaměřit se na kombinaci silového tréninku 4× týdně s kalorickým deficitem 15%. Při dodržení plánu lze očekávat viditelné výsledky do 6–8 týdnů.
               </p>
 
               <div className="grid grid-cols-3 gap-3 mb-5">
                 {[
-                  { label: 'Spalování tuku', value: '87%', color: 'text-[#B3263E]' },
+                  { label: 'Spalování tuku', value: '87%', color: 'text-[#3B82F6]' },
                   { label: 'Svalový rozvoj', value: '74%', color: 'text-blue-400' },
                   { label: 'Kondice', value: '61%', color: 'text-green-400' },
                 ].map((stat) => (
@@ -382,8 +382,8 @@ export default function LandingPage() {
                     { name: 'Kabel přetahy', sets: '3×15', rest: '45s' },
                   ].map((ex) => (
                     <div key={ex.name} className="flex items-center gap-3 p-2.5 bg-[#1D1D22] rounded-xl border border-[#2A2A31] text-sm">
-                      <div className="w-5 h-5 rounded bg-[#B3263E]/20 border border-[#B3263E]/30 flex items-center justify-center">
-                        <span className="text-[#B3263E] text-xs">✓</span>
+                      <div className="w-5 h-5 rounded bg-[#3B82F6]/20 border border-[#3B82F6]/30 flex items-center justify-center">
+                        <span className="text-[#3B82F6] text-xs">✓</span>
                       </div>
                       <span className="text-[#F5F5F5] flex-1">{ex.name}</span>
                       <span className="text-[#A1A1AA] text-xs font-mono">{ex.sets}</span>
@@ -402,18 +402,18 @@ export default function LandingPage() {
                   'Adaptivní přeplánování',
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2 py-2 px-3 bg-[#1D1D22]/60 rounded-xl border border-[#2A2A31]">
-                    <svg className="w-4 h-4 text-[#B3263E]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-[#3B82F6]/60 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                     <span className="text-sm text-[#A1A1AA]/50 blur-sm select-none flex-1">{item}</span>
-                    <span className="text-xs text-[#B3263E] font-semibold shrink-0">PRO</span>
+                    <span className="text-xs text-[#3B82F6] font-semibold shrink-0">PRO</span>
                   </div>
                 ))}
               </div>
 
               <Link
                 href="/register"
-                className="block w-full text-center py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)]"
+                className="block w-full text-center py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
               >
                 Odemknout PRO →
               </Link>
@@ -478,7 +478,7 @@ export default function LandingPage() {
                 title: 'Pokrok a srovnání fotek',
                 description: 'Vizualizuj svou transformaci v čase. Nahraj fotky a sleduj, jak se tvé tělo mění týden po týdnu.',
                 badge: 'PRO',
-                badgeClass: 'bg-[#B3263E]/20 text-[#B3263E]',
+                badgeClass: 'bg-[#3B82F6]/20 text-[#3B82F6]',
               },
               {
                 icon: (
@@ -489,7 +489,7 @@ export default function LandingPage() {
                 title: 'AI kouč k dispozici',
                 description: 'Osobní AI asistent odpovídá na tvé otázky o tréninku a výživě kdykoli — ve dne i v noci.',
                 badge: 'PRO',
-                badgeClass: 'bg-[#B3263E]/20 text-[#B3263E]',
+                badgeClass: 'bg-[#3B82F6]/20 text-[#3B82F6]',
               },
               {
                 icon: (
@@ -500,15 +500,15 @@ export default function LandingPage() {
                 title: 'Adaptivní přeplánování',
                 description: 'Plán se automaticky přizpůsobuje tvým výsledkům a pokroku — každý týden je optimalizovaný pro tebe.',
                 badge: 'PRO',
-                badgeClass: 'bg-[#B3263E]/20 text-[#B3263E]',
+                badgeClass: 'bg-[#3B82F6]/20 text-[#3B82F6]',
               },
             ].map((feature, i) => (
               <div
                 key={i}
-                className="scroll-animate bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-6 transition-all duration-300 group hover-red-glow"
+                className="scroll-animate bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-6 transition-all duration-300 group hover-blue-glow"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-[#B3263E]/10 border border-[#B3263E]/20 rounded-xl flex items-center justify-center text-[#B3263E]">
+                  <div className="w-12 h-12 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-xl flex items-center justify-center text-[#3B82F6]">
                     {feature.icon}
                   </div>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${feature.badgeClass}`}>
@@ -555,9 +555,9 @@ export default function LandingPage() {
             ].map((reason, i) => (
               <div
                 key={i}
-                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#B3263E]/30 transition-all duration-300"
+                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#3B82F6]/30 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-xl bg-[#B3263E]/10 border border-[#B3263E]/20 flex items-center justify-center text-[#B3263E] font-black text-lg mb-4">
+                <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/10 border border-[#3B82F6]/20 flex items-center justify-center text-[#3B82F6] font-black text-lg mb-4">
                   {reason.number}
                 </div>
                 <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">{reason.title}</h3>
@@ -612,9 +612,9 @@ export default function LandingPage() {
             ].map((pillar, i) => (
               <div
                 key={i}
-                className="scroll-animate bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-6 text-center hover:border-[#B3263E]/30 transition-all duration-300"
+                className="scroll-animate bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-6 text-center hover:border-[#3B82F6]/30 transition-all duration-300"
               >
-                <div className="w-14 h-14 bg-[#B3263E]/10 border border-[#B3263E]/20 rounded-2xl flex items-center justify-center text-[#B3263E] mx-auto mb-4">
+                <div className="w-14 h-14 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-2xl flex items-center justify-center text-[#3B82F6] mx-auto mb-4">
                   {pillar.icon}
                 </div>
                 <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">{pillar.title}</h3>
@@ -674,7 +674,7 @@ export default function LandingPage() {
             ].map((story, i) => (
               <div
                 key={i}
-                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 flex flex-col hover-red-glow"
+                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 flex flex-col hover-blue-glow"
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#2A2A31] shrink-0">
@@ -691,7 +691,7 @@ export default function LandingPage() {
                   &ldquo;{story.story}&rdquo;
                 </p>
 
-                <div className="px-3 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-xl text-xs text-[#B3263E] font-semibold text-center">
+                <div className="px-3 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-xl text-xs text-[#3B82F6] font-semibold text-center">
                   {story.result}
                 </div>
               </div>
@@ -728,7 +728,7 @@ export default function LandingPage() {
                   <p className="text-xs text-[#A1A1AA]">Spalování tuku · IT konzultant</p>
                 </div>
                 <div className="ml-auto">
-                  <span className="text-xs px-2 py-1 bg-[#8B1E2D]/30 border border-[#B3263E]/30 rounded-lg text-[#D13A52] font-semibold">12 týdnů</span>
+                  <span className="text-xs px-2 py-1 bg-[#1E40AF]/30 border border-[#3B82F6]/30 rounded-lg text-[#7C3AED] font-semibold">12 týdnů</span>
                 </div>
               </div>
 
@@ -746,12 +746,12 @@ export default function LandingPage() {
                       <div className="flex items-center gap-2 text-xs">
                         <span className="text-[#A1A1AA]/60 line-through">{stat.before}</span>
                         <span className="font-bold text-[#F5F5F5]">{stat.after}</span>
-                        <span className="text-[#D13A52] font-bold">{stat.delta}</span>
+                        <span className="text-[#7C3AED] font-bold">{stat.delta}</span>
                       </div>
                     </div>
                     <div className="h-1.5 bg-[#1D1D22] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#8B1E2D] to-[#D13A52] rounded-full"
+                        className="h-full bg-gradient-to-r from-[#1E40AF] to-[#7C3AED] rounded-full"
                         style={{ width: `${stat.progress}%` }}
                       />
                     </div>
@@ -776,7 +776,7 @@ export default function LandingPage() {
                   <p className="text-xs text-[#A1A1AA]">Zpevnění postavy · studentka</p>
                 </div>
                 <div className="ml-auto">
-                  <span className="text-xs px-2 py-1 bg-[#8B1E2D]/30 border border-[#B3263E]/30 rounded-lg text-[#D13A52] font-semibold">10 týdnů</span>
+                  <span className="text-xs px-2 py-1 bg-[#1E40AF]/30 border border-[#3B82F6]/30 rounded-lg text-[#7C3AED] font-semibold">10 týdnů</span>
                 </div>
               </div>
 
@@ -794,12 +794,12 @@ export default function LandingPage() {
                       <div className="flex items-center gap-2 text-xs">
                         <span className="text-[#A1A1AA]/60 line-through">{stat.before}</span>
                         <span className="font-bold text-[#F5F5F5]">{stat.after}</span>
-                        <span className="text-[#D13A52] font-bold">{stat.delta}</span>
+                        <span className="text-[#7C3AED] font-bold">{stat.delta}</span>
                       </div>
                     </div>
                     <div className="h-1.5 bg-[#1D1D22] rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-[#8B1E2D] to-[#D13A52] rounded-full"
+                        className="h-full bg-gradient-to-r from-[#1E40AF] to-[#7C3AED] rounded-full"
                         style={{ width: `${stat.progress}%` }}
                       />
                     </div>
@@ -871,7 +871,7 @@ export default function LandingPage() {
             ].map((review, i) => (
               <div
                 key={i}
-                className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 hover-red-glow shrink-0 w-72 md:w-auto"
+                className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5 hover-blue-glow shrink-0 w-72 md:w-auto"
               >
                 {/* Stars */}
                 <div className="flex gap-0.5 mb-3">
@@ -893,7 +893,7 @@ export default function LandingPage() {
 
                 <div className="flex items-center justify-between pt-3 border-t border-[#2A2A31]">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#B3263E]/20 border border-[#B3263E]/30 flex items-center justify-center text-[#B3263E] text-xs font-bold">
+                    <div className="w-8 h-8 rounded-full bg-[#3B82F6]/20 border border-[#3B82F6]/30 flex items-center justify-center text-[#3B82F6] text-xs font-bold">
                       {review.initials}
                     </div>
                     <div>
@@ -918,8 +918,8 @@ export default function LandingPage() {
       <section className="py-20 sm:py-28 bg-[#0B0B0D]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14 scroll-animate">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#B3263E]" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-sm text-[#7C3AED] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
               Pro lidi, kteří to zkusili, ale nevydrželi
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-[#F5F5F5] mb-4">
@@ -953,8 +953,8 @@ export default function LandingPage() {
             </div>
 
             {/* GETBETER strana */}
-            <div className="scroll-animate bg-[#151518] border border-[#B3263E]/40 rounded-2xl p-6 shadow-[0_0_30px_rgba(179,38,62,0.08)]">
-              <p className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider mb-4">Se getbeter</p>
+            <div className="scroll-animate bg-[#151518] border border-[#3B82F6]/40 rounded-2xl p-6 shadow-[0_0_30px_rgba(59,130,246,0.08)]">
+              <p className="text-xs font-semibold text-[#3B82F6] uppercase tracking-wider mb-4">Se getbeter</p>
               {[
                 'Jeden jasný plán šitý na tebe — hned první den',
                 'Přesně víš, co dělat a proč to funguje',
@@ -963,8 +963,8 @@ export default function LandingPage() {
                 'Vidíš pokrok → chceš pokračovat',
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2.5 mb-3 last:mb-0">
-                  <div className="w-5 h-5 rounded-full bg-[#B3263E]/20 border border-[#B3263E]/40 flex items-center justify-center shrink-0 mt-0.5">
-                    <svg className="w-3 h-3 text-[#D13A52]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-5 h-5 rounded-full bg-[#3B82F6]/20 border border-[#3B82F6]/40 flex items-center justify-center shrink-0 mt-0.5">
+                    <svg className="w-3 h-3 text-[#7C3AED]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
@@ -1017,13 +1017,13 @@ export default function LandingPage() {
             ].map((item, i) => (
               <div key={i} className="scroll-animate flex gap-4 mb-6 last:mb-0">
                 <div className="flex flex-col items-center">
-                  <div className="w-10 h-10 rounded-xl bg-[#B3263E]/10 border border-[#B3263E]/30 flex items-center justify-center shrink-0">
-                    <span className="text-xs font-black text-[#B3263E]">{item.step}</span>
+                  <div className="w-10 h-10 rounded-xl bg-[#3B82F6]/10 border border-[#3B82F6]/30 flex items-center justify-center shrink-0">
+                    <span className="text-xs font-black text-[#3B82F6]">{item.step}</span>
                   </div>
                   {i < 3 && <div className="w-px flex-1 bg-[#2A2A31] mt-2" />}
                 </div>
                 <div className="pb-6">
-                  <span className="text-xs font-semibold text-[#B3263E] uppercase tracking-wider">{item.time}</span>
+                  <span className="text-xs font-semibold text-[#3B82F6] uppercase tracking-wider">{item.time}</span>
                   <h3 className="text-base font-bold text-[#F5F5F5] mt-1 mb-1">{item.title}</h3>
                   <p className="text-sm text-[#A1A1AA] leading-relaxed">{item.desc}</p>
                 </div>
@@ -1034,7 +1034,7 @@ export default function LandingPage() {
           <div className="text-center mt-10 scroll-animate">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#B3263E] hover:bg-[#D13A52] text-white font-black rounded-2xl transition-all duration-200 hover:shadow-[0_0_30px_rgba(179,38,62,0.4)] hover:scale-105"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-black rounded-2xl transition-all duration-200 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:scale-105"
             >
               Začít hned →
             </Link>
@@ -1075,7 +1075,7 @@ export default function LandingPage() {
             ].map((card, i) => (
               <div
                 key={i}
-                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#B3263E]/40 transition-all duration-300 group"
+                className="scroll-animate bg-[#151518] border border-[#2A2A31] rounded-2xl p-6 hover:border-[#3B82F6]/40 transition-all duration-300 group"
               >
                 <div className="text-3xl mb-4">{card.icon}</div>
                 <h3 className="text-lg font-bold text-[#F5F5F5] mb-3">{card.title}</h3>
@@ -1092,7 +1092,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Text */}
             <div className="scroll-animate">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-sm text-[#7C3AED] mb-6">
                 <span className="text-base">🧠</span>
                 Osobní průvodce, ne jen seznam cviků
               </div>
@@ -1113,7 +1113,7 @@ export default function LandingPage() {
                   'Za 3 měsíce: vybudoval sis návyk, který drží',
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#B3263E] shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] shrink-0" />
                     <span className="text-sm text-[#F5F5F5]">{item}</span>
                   </div>
                 ))}
@@ -1124,10 +1124,10 @@ export default function LandingPage() {
             <div className="scroll-animate">
               <div className="bg-[#0B0B0D] border border-[#2A2A31] rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-6 h-6 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
-                    <span className="text-white font-black text-xs">S</span>
+                  <div className="w-6 h-6 bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] rounded-lg flex items-center justify-center">
+                    <span className="text-white font-black text-xs">G</span>
                   </div>
-                  <span className="text-sm font-semibold text-[#F5F5F5]">getbeter AI Kouč</span>
+                  <span className="text-sm font-semibold text-[#F5F5F5]">Get Beter AI Kouč</span>
                   <span className="ml-auto w-2 h-2 rounded-full bg-green-500" />
                 </div>
                 {[
@@ -1143,7 +1143,7 @@ export default function LandingPage() {
                     <div
                       className={`max-w-[85%] px-3.5 py-2.5 rounded-xl text-sm leading-relaxed ${
                         msg.from === 'user'
-                          ? 'bg-[#B3263E]/20 border border-[#B3263E]/30 text-[#F5F5F5]'
+                          ? 'bg-[#3B82F6]/20 border border-[#3B82F6]/30 text-[#F5F5F5]'
                           : 'bg-[#1D1D22] border border-[#2A2A31] text-[#A1A1AA]'
                       }`}
                     >
@@ -1171,7 +1171,7 @@ export default function LandingPage() {
                   { icon: '🏋️', title: 'Posilovna', desc: 'Plný přístup ke všemu vybavení = plán na maximum výsledků.' },
                   { icon: '🌳', title: 'Venku', desc: 'Parkoury, lavičky, příroda. Kardio i silový trénink ve volné přírodě.' },
                 ].map((opt) => (
-                  <div key={opt.icon} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-4 hover:border-[#B3263E]/40 transition-all duration-200">
+                  <div key={opt.icon} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-4 hover:border-[#3B82F6]/40 transition-all duration-200">
                     <div className="text-2xl mb-2">{opt.icon}</div>
                     <p className="text-sm font-bold text-[#F5F5F5] mb-1">{opt.title}</p>
                     <p className="text-xs text-[#A1A1AA] leading-relaxed">{opt.desc}</p>
@@ -1182,7 +1182,7 @@ export default function LandingPage() {
 
             {/* Text */}
             <div className="scroll-animate order-1 lg:order-2">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#B3263E]/10 border border-[#B3263E]/30 rounded-full text-sm text-[#D13A52] mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#3B82F6]/10 border border-[#3B82F6]/30 rounded-full text-sm text-[#7C3AED] mb-6">
                 <span>🏠</span>
                 Posilovna není podmínka
               </div>
@@ -1197,7 +1197,7 @@ export default function LandingPage() {
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)]"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
               >
                 Začít hned zdarma →
               </Link>
@@ -1218,12 +1218,12 @@ export default function LandingPage() {
       {/* ── SECTION 13: FINAL CTA ───────────────────────────────────────────── */}
       <section className="py-20 sm:py-28 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#B3263E]/6 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-[#3B82F6]/6 rounded-full blur-3xl" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center scroll-animate">
           <h2 className="text-4xl sm:text-5xl font-black text-[#F5F5F5] mb-6">
             Začni svou transformaci{' '}
-            <span className="bg-gradient-to-r from-[#B3263E] to-[#D13A52] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#3B82F6] to-[#7C3AED] bg-clip-text text-transparent">
               dnes
             </span>
           </h2>
@@ -1233,7 +1233,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 px-10 py-5 bg-[#B3263E] hover:bg-[#D13A52] text-white text-xl font-black rounded-2xl transition-all duration-200 shadow-[0_0_30px_rgba(179,38,62,0.4)] hover:shadow-[0_0_50px_rgba(179,38,62,0.6)] hover:scale-105 active:scale-100 animate-cta-pulse"
+            className="inline-flex items-center gap-2 px-10 py-5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white text-xl font-black rounded-2xl transition-all duration-200 shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_50px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-100 animate-cta-pulse"
           >
             Začít svou transformaci
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1252,10 +1252,10 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] rounded-lg flex items-center justify-center">
                 <span className="text-white font-black text-sm">G</span>
               </div>
-              <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
+              <span className="text-lg font-black text-[#F5F5F5]">Get Beter</span>
             </Link>
 
             {/* Links */}

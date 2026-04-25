@@ -25,7 +25,7 @@ const ORG_TYPE_LABELS: Record<string, string> = {
 const PLAN_LABELS: Record<string, { label: string; color: string }> = {
   free: { label: 'FREE', color: 'bg-surface2 text-text-secondary border-border' },
   starter: { label: 'STARTER', color: 'bg-blue-900/40 text-blue-400 border-blue-700/40' },
-  pro: { label: 'PRO', color: 'bg-[#B3263E]/20 text-[#B3263E] border-[#B3263E]/40' },
+  pro: { label: 'PRO', color: 'bg-[#3B82F6]/20 text-[#3B82F6] border-[#3B82F6]/40' },
   enterprise: { label: 'ENTERPRISE', color: 'bg-yellow-900/40 text-yellow-400 border-yellow-700/40' },
 };
 

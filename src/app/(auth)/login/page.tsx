@@ -119,7 +119,7 @@ function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
             required
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200"
+            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
           />
         </div>
 
@@ -132,7 +132,7 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
             required
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200"
+            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
           />
         </div>
 
@@ -149,7 +149,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting || loading}
-          className="w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)] active:scale-[0.98] mt-1"
+          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
         >
           {isSubmitting ? 'Přihlašuji...' : 'Přihlásit se'}
         </button>
@@ -167,7 +167,7 @@ function LoginForm() {
         type="button"
         onClick={handleGoogle}
         disabled={isGoogleLoading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#B3263E]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 hover:bg-[#1D1D22]/80 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#3B82F6]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 hover:bg-[#1D1D22]/80 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {/* Google icon SVG */}
         <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
@@ -184,7 +184,7 @@ function LoginForm() {
         Nemáš účet?{' '}
         <Link
           href="/register"
-          className="text-[#B3263E] hover:text-[#D13A52] font-semibold transition-colors"
+          className="text-[#3B82F6] hover:text-[#7C3AED] font-semibold transition-colors"
         >
           Zaregistruj se
         </Link>

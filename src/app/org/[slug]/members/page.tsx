@@ -282,7 +282,7 @@ export default function MembersPage() {
                   className={[
                     'flex-1 py-2 px-3 rounded-xl border text-sm font-medium transition-all duration-200',
                     inviteRole === r
-                      ? 'bg-[#B3263E]/10 border-[#B3263E]/50 text-[#F5F5F5]'
+                      ? 'bg-[#3B82F6]/10 border-[#3B82F6]/50 text-[#F5F5F5]'
                       : 'bg-surface2 border-border text-text-secondary hover:border-border/80',
                   ].join(' ')}
                 >

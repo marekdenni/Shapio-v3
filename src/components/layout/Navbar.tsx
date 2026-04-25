@@ -36,11 +36,11 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-cta rounded-lg flex items-center justify-center shadow-glow-red">
+            <div className="w-8 h-8 bg-gradient-cta rounded-lg flex items-center justify-center shadow-glow-blue">
               <span className="text-white font-black text-sm">G</span>
             </div>
             <span className="text-xl font-black text-text-primary tracking-tight">
-              getbeter
+              Get Beter
             </span>
           </Link>
 
@@ -53,7 +53,7 @@ export function Navbar() {
                   href="/dashboard"
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     pathname === '/dashboard'
-                      ? 'text-white bg-[#B3263E]/20 border border-[#B3263E]/40'
+                      ? 'text-white bg-cta/20 border border-cta/40'
                       : 'text-text-secondary hover:text-text-primary hover:bg-surface2'
                   }`}
                 >
@@ -63,7 +63,7 @@ export function Navbar() {
                   href="/plan"
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     pathname === '/plan'
-                      ? 'text-white bg-[#B3263E]/20 border border-[#B3263E]/40'
+                      ? 'text-white bg-cta/20 border border-cta/40'
                       : 'text-text-secondary hover:text-text-primary hover:bg-surface2'
                   }`}
                 >
@@ -73,7 +73,7 @@ export function Navbar() {
                   href="/coach"
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                     pathname === '/coach'
-                      ? 'text-white bg-[#B3263E]/20 border border-[#B3263E]/40'
+                      ? 'text-white bg-cta/20 border border-cta/40'
                       : 'text-text-secondary hover:text-text-primary hover:bg-surface2'
                   }`}
                 >
@@ -83,7 +83,7 @@ export function Navbar() {
                   {/* Tier badge with color coding */}
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                     tier === 'elite' ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700/40' :
-                    tier === 'pro' ? 'bg-[#B3263E]/20 text-[#B3263E] border border-[#B3263E]/40' :
+                    tier === 'pro' ? 'bg-cta/20 text-cta border border-cta/40' :
                     tier === 'starter' ? 'bg-blue-900/40 text-blue-400 border border-blue-700/40' :
                     'bg-surface2 text-text-secondary border border-border'
                   }`}>
@@ -122,7 +122,7 @@ export function Navbar() {
                 ) : (
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-[#B3263E] hover:bg-[#D13A52] text-white text-sm font-semibold rounded-xl transition-all duration-200 hover:shadow-[0_0_15px_rgba(179,38,62,0.4)]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-cta hover:bg-highlight text-white text-sm font-semibold rounded-xl transition-all duration-200 hover:shadow-glow-blue"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

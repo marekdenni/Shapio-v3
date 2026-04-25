@@ -64,7 +64,7 @@ export default function ResetPasswordPage() {
           Tvoje heslo bylo úspěšně aktualizováno. Přesměrovávám tě do aplikace…
         </p>
         <div className="w-full h-1 bg-[#1D1D22] rounded-full overflow-hidden">
-          <div className="h-full bg-[#B3263E] rounded-full animate-[loading_2.5s_linear_forwards]" />
+          <div className="h-full bg-[#3B82F6] rounded-full animate-[loading_2.5s_linear_forwards]" />
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ export default function ResetPasswordPage() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
             autoFocus
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200"
+            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
           />
         </div>
 
@@ -107,14 +107,14 @@ export default function ResetPasswordPage() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             autoComplete="new-password"
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all duration-200"
+            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
           />
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting || loading}
-          className="w-full py-3.5 bg-[#B3263E] hover:bg-[#D13A52] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)] active:scale-[0.98] mt-1"
+          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
         >
           {isSubmitting ? 'Ukládám...' : 'Uložit nové heslo'}
         </button>

@@ -6,7 +6,9 @@
       "Bash(python3 -c ' *)",
       "Bash(node -e ' *)",
       "Bash(xargs grep *)",
-      "Bash(git -C \"c:/Users/becka/shapio\" diff --stat HEAD)"
+      "Bash(git -C \"c:/Users/becka/shapio\" diff --stat HEAD)",
+      "Bash(grep -v \"glow-red.*//\\\\|//.*glow-red\")",
+      "Bash(xargs sed *)"
     ]
   }
 }

@@ -26,7 +26,7 @@ export default function ContactPage() {
       <header className="border-b border-[#2A2A31] bg-[#151518]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] rounded-lg flex items-center justify-center">
               <span className="text-white font-black text-sm">G</span>
             </div>
             <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
@@ -79,12 +79,12 @@ export default function ContactPage() {
             },
           ].map((item, i) => (
             <div key={i} className="bg-[#151518] border border-[#2A2A31] rounded-2xl p-5">
-              <div className="w-10 h-10 bg-[#B3263E]/10 border border-[#B3263E]/20 rounded-xl flex items-center justify-center text-[#B3263E] mb-3">
+              <div className="w-10 h-10 bg-[#3B82F6]/10 border border-[#3B82F6]/20 rounded-xl flex items-center justify-center text-[#3B82F6] mb-3">
                 {item.icon}
               </div>
               <p className="text-sm font-semibold text-[#F5F5F5] mb-1">{item.title}</p>
               {item.href ? (
-                <a href={item.href} className="text-sm text-[#B3263E] hover:text-[#D13A52] transition-colors">
+                <a href={item.href} className="text-sm text-[#3B82F6] hover:text-[#7C3AED] transition-colors">
                   {item.text}
                 </a>
               ) : (
@@ -108,8 +108,8 @@ export default function ContactPage() {
                 onClick={() => setCategory(cat.id)}
                 className={`p-4 rounded-xl border text-left transition-all duration-200 ${
                   category === cat.id
-                    ? 'border-[#B3263E] bg-[#B3263E]/10'
-                    : 'border-[#2A2A31] bg-[#151518] hover:border-[#B3263E]/40'
+                    ? 'border-[#3B82F6] bg-[#3B82F6]/10'
+                    : 'border-[#2A2A31] bg-[#151518] hover:border-[#3B82F6]/40'
                 }`}
               >
                 <p className="text-sm font-semibold text-[#F5F5F5]">{cat.label}</p>
@@ -133,7 +133,7 @@ export default function ContactPage() {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Jan Novák"
                     required
-                    className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all"
+                    className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all"
                   />
                 </div>
                 <div className="flex flex-col gap-1.5">
@@ -144,7 +144,7 @@ export default function ContactPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="tvuj@email.cz"
                     required
-                    className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all"
+                    className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all"
                   />
                 </div>
               </div>
@@ -157,13 +157,13 @@ export default function ContactPage() {
                   placeholder="Popiš svůj dotaz nebo problém..."
                   required
                   rows={5}
-                  className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#B3263E]/40 focus:border-[#B3263E]/60 transition-all resize-none"
+                  className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all resize-none"
                 />
               </div>
 
               <button
                 type="submit"
-                className="py-3.5 bg-[#B3263E] hover:bg-[#D13A52] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(179,38,62,0.4)]"
+                className="py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
               >
                 Odeslat zprávu
               </button>
@@ -174,16 +174,16 @@ export default function ContactPage() {
             </form>
           </div>
         ) : (
-          <div className="bg-[#151518] border border-[#B3263E]/30 rounded-2xl p-8 text-center">
-            <div className="w-12 h-12 bg-[#B3263E]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-[#B3263E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-[#151518] border border-[#3B82F6]/30 rounded-2xl p-8 text-center">
+            <div className="w-12 h-12 bg-[#3B82F6]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-[#3B82F6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
             <h3 className="text-lg font-bold text-[#F5F5F5] mb-2">Zpráva připravena</h3>
             <p className="text-[#A1A1AA] text-sm">
               Tvůj e-mailový klient by se měl otevřít s předvyplněnou zprávou. Pokud se nespustil, pošli nám e-mail přímo na{' '}
-              <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E]">jedlicekm@gmail.com</a>.
+              <a href="mailto:jedlicekm@gmail.com" className="text-[#3B82F6]">jedlicekm@gmail.com</a>.
             </p>
           </div>
         )}

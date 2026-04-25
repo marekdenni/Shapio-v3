@@ -43,7 +43,7 @@ export function UpsellBanner() {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/paywall"
-            className="px-4 py-2 bg-cta hover:bg-highlight text-white text-sm font-semibold rounded-xl transition-colors shadow-glow-red"
+            className="px-4 py-2 bg-cta hover:bg-highlight text-white text-sm font-semibold rounded-xl transition-colors shadow-glow-blue"
           >
             Upgrade
           </Link>

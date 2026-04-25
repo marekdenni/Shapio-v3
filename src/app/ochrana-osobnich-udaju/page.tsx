@@ -9,7 +9,7 @@ export default function PrivacyPolicyPage() {
       <header className="border-b border-[#2A2A31] bg-[#151518]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#8B1E2D] to-[#D13A52] rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-gradient-to-br from-[#1E40AF] to-[#7C3AED] rounded-lg flex items-center justify-center">
               <span className="text-white font-black text-sm">G</span>
             </div>
             <span className="text-lg font-black text-[#F5F5F5]">getbeter</span>
@@ -33,7 +33,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">1. Správce osobních údajů</h2>
             <p>
               Správcem osobních údajů je provozovatel aplikace getbeter. Kontaktní e-mail:{' '}
-              <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E] hover:text-[#D13A52]">
+              <a href="mailto:jedlicekm@gmail.com" className="text-[#3B82F6] hover:text-[#7C3AED]">
                 jedlicekm@gmail.com
               </a>
             </p>
@@ -51,7 +51,7 @@ export default function PrivacyPolicyPage() {
                 'Komunikační data: zprávy s AI koučem',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
                 'Plnění zákonných povinností',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -98,14 +98,14 @@ export default function PrivacyPolicyPage() {
                 'Právo podat stížnost u dozorového úřadu (ÚOOÚ)',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
             </ul>
             <p className="mt-3">
               Pro uplatnění práv kontaktujte:{' '}
-              <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E] hover:text-[#D13A52]">
+              <a href="mailto:jedlicekm@gmail.com" className="text-[#3B82F6] hover:text-[#7C3AED]">
                 jedlicekm@gmail.com
               </a>
             </p>
@@ -125,7 +125,7 @@ export default function PrivacyPolicyPage() {
                 'Volitelné — nahrání fotek je dobrovolné',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#B3263E] shrink-0">•</span>
+                  <span className="text-[#3B82F6] shrink-0">•</span>
                   {item}
                 </li>
               ))}
@@ -161,7 +161,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-bold text-[#F5F5F5] mb-3">9. Kontakt</h2>
             <p>
               Pro otázky ohledně ochrany osobních údajů nás kontaktujte:{' '}
-              <a href="mailto:jedlicekm@gmail.com" className="text-[#B3263E] hover:text-[#D13A52]">
+              <a href="mailto:jedlicekm@gmail.com" className="text-[#3B82F6] hover:text-[#7C3AED]">
                 jedlicekm@gmail.com
               </a>
               <br />

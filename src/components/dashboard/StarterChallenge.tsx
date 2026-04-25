@@ -80,7 +80,7 @@ export function StarterChallenge({ planCreatedAt, workoutDaysPerWeek }: StarterC
                 className={[
                   'w-full aspect-square rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-200',
                   isPast && isWorkoutDay
-                    ? 'bg-cta text-white shadow-[0_0_8px_rgba(179,38,62,0.4)]'
+                    ? 'bg-cta text-white shadow-[0_0_8px_rgba(59,130,246,0.4)]'
                     : isPast
                     ? 'bg-surface2 border border-border text-text-secondary/30'
                     : isToday && isWorkoutDay
