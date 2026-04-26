@@ -97,6 +97,11 @@ export interface UserProfile {
   dietaryPreference: DietaryPreference;
   injuries?: string;
   targetMotivation?: string;
+  activityLevel?: ActivityLevel | null;
+  sessionDurationMinutes?: number | null;
+  mainFrictions: FrictionPattern[];
+  interestSignals: InterestSignal[];
+  selectedTrack?: string | null;
   onboardingCompleted: boolean;
   subscriptionTier: SubscriptionTier;
   stripeCustomerId?: string;
@@ -213,7 +218,8 @@ export interface AIDailyUsage {
 // ─── Onboarding ───────────────────────────────────────────────────────────
 
 export interface OnboardingData {
-  // Step 0: Welcome (no data)
+  // Step 0: Track selection
+  selectedTrack: string | null;
   // Step 1: Photos
   photos: File[];
   photoConsent: boolean;
@@ -278,6 +284,11 @@ export interface UserProfileRow {
   dietary_preference: DietaryPreference | null;
   injuries: string | null;
   target_motivation: string | null;
+  activity_level: ActivityLevel | null;
+  session_duration_minutes: number | null;
+  main_frictions: FrictionPattern[] | null;
+  interest_signals: InterestSignal[] | null;
+  selected_track: string | null;
   onboarding_completed: boolean;
   subscription_tier: SubscriptionTier;
   stripe_customer_id: string | null;

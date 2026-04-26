@@ -19,6 +19,11 @@ interface UserDetailProfile {
   dietary_preference: string | null;
   injuries: string | null;
   target_motivation: string | null;
+  activity_level: string | null;
+  session_duration_minutes: number | null;
+  main_frictions: string[] | null;
+  interest_signals: string[] | null;
+  selected_track: string | null;
   onboarding_completed: boolean;
   subscription_tier: string;
   stripe_customer_id: string | null;
@@ -36,7 +41,10 @@ interface UserDetailData {
     progressPhotos: number;
     aiMessages: number;
   };
+  latestAssessment: { text: string; freeAnalysis: unknown } | null;
 }
+
+// ─── Label maps ──────────────────────────────────────────────────────────────
 
 const TIER_BADGE: Record<string, { label: string; cls: string }> = {
   free:    { label: 'Free',    cls: 'bg-surface2 border-border text-text-secondary' },
@@ -74,6 +82,57 @@ const DIET_LABELS: Record<string, string> = {
   low_carb:      'Nízko sacharidová',
 };
 
+const ACTIVITY_LABELS: Record<string, string> = {
+  sedentary:        'Sedavý (kancelář)',
+  lightly_active:   'Mírně aktivní',
+  moderately_active:'Středně aktivní',
+  very_active:      'Velmi aktivní',
+};
+
+const FRICTION_LABELS: Record<string, string> = {
+  no_time:              'Nedostatek času',
+  no_motivation:        'Chybí motivace',
+  no_energy:            'Nedostatek energie',
+  dont_know_what_to_do: 'Neví, co dělat',
+  injury_fear:          'Strach ze zranění',
+  past_failures:        'Předchozí neúspěchy',
+  social_anxiety:       'Sociální úzkost',
+  bad_diet_habits:      'Špatné stravovací návyky',
+};
+
+const SIGNAL_LABELS: Record<string, string> = {
+  ai_coaching:           'AI coaching',
+  progress_tracking:     'Sledování pokroku',
+  nutrition_planning:    'Plánování výživy',
+  community:             'Komunita',
+  challenges:            'Výzvy',
+  team_coaching:         'Týmový coaching',
+  corporate_wellness:    'Firemní wellness',
+};
+
+const TRACK_META: Record<string, { label: string; icon: string; desc: string; accentClass: string }> = {
+  physique: {
+    label: 'Tělesná transformace',
+    icon: '💪',
+    desc: 'Hubnutí, svalový růst nebo rekompozice.',
+    accentClass: 'border-cta/30 bg-cta/5',
+  },
+  looks: {
+    label: 'Vzhled & Sebeobraz',
+    icon: '✨',
+    desc: 'Estetická transformace a sebedůvěra.',
+    accentClass: 'border-highlight/30 bg-highlight/5',
+  },
+  habits: {
+    label: 'Disciplína & Návyky',
+    icon: '🎯',
+    desc: 'Konzistentnost a zdravý životní styl.',
+    accentClass: 'border-blue-500/30 bg-blue-500/5',
+  },
+};
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
 function ProfileField({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
@@ -84,6 +143,17 @@ function ProfileField({ label, value }: { label: string; value: React.ReactNode 
     </div>
   );
 }
+
+function SectionHeader({ accent, children }: { accent: string; children: React.ReactNode }) {
+  return (
+    <h2 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
+      <div className={`w-1 h-4 rounded-full ${accent}`} />
+      {children}
+    </h2>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function AdminUserDetailPage() {
   const params = useParams();
@@ -108,7 +178,7 @@ export default function AdminUserDetailPage() {
     return (
       <div className="flex flex-col gap-4">
         <div className="h-5 w-20 bg-surface rounded border border-border animate-shimmer" />
-        {Array.from({ length: 4 }).map((_, i) => (
+        {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="h-32 bg-surface rounded-2xl border border-border animate-shimmer" />
         ))}
       </div>
@@ -126,12 +196,21 @@ export default function AdminUserDetailPage() {
     );
   }
 
-  const { profile, activity } = data;
+  const { profile, activity, latestAssessment } = data;
   const tier = TIER_BADGE[profile.subscription_tier] ?? TIER_BADGE.free;
   const initials = (profile.name ?? profile.email ?? '?')[0]?.toUpperCase() ?? '?';
+  const track = profile.selected_track ? TRACK_META[profile.selected_track] : null;
+  const frictions: string[] = Array.isArray(profile.main_frictions) ? profile.main_frictions : [];
+  const signals: string[] = Array.isArray(profile.interest_signals) ? profile.interest_signals : [];
 
   const formattedDate = (iso: string) =>
     new Date(iso).toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Parse freeAnalysis if present
+  let freeAnalysis: Record<string, string> | null = null;
+  if (latestAssessment?.freeAnalysis && typeof latestAssessment.freeAnalysis === 'object') {
+    freeAnalysis = latestAssessment.freeAnalysis as Record<string, string>;
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -150,7 +229,7 @@ export default function AdminUserDetailPage() {
       {/* Identity card */}
       <div className="bg-surface border border-border rounded-2xl p-5">
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 bg-cta/12 border border-cta/20 rounded-2xl flex items-center justify-center text-xl font-black text-cta shrink-0">
+          <div className="w-14 h-14 bg-cta/10 border border-cta/20 rounded-2xl flex items-center justify-center text-xl font-black text-cta shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
@@ -168,7 +247,7 @@ export default function AdminUserDetailPage() {
               )}
               <span className={`ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
                 profile.onboarding_completed
-                  ? 'bg-green-500/8 border-green-500/20 text-green-400'
+                  ? 'bg-green-500/10 border-green-500/20 text-green-400'
                   : 'bg-surface2 border-border text-text-secondary/50'
               }`}>
                 {profile.onboarding_completed ? '✓ Onboarding dokončen' : '○ Onboarding nedokončen'}
@@ -200,12 +279,69 @@ export default function AdminUserDetailPage() {
         ))}
       </div>
 
+      {/* Transformation track */}
+      {track ? (
+        <div className={`border rounded-2xl p-5 ${track.accentClass}`}>
+          <SectionHeader accent="bg-cta">Transformační cesta</SectionHeader>
+          <div className="flex items-center gap-3">
+            <div className="text-3xl">{track.icon}</div>
+            <div>
+              <p className="text-sm font-bold text-text-primary">{track.label}</p>
+              <p className="text-xs text-text-secondary mt-0.5">{track.desc}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-surface border border-border rounded-2xl p-4">
+          <SectionHeader accent="bg-border">Transformační cesta</SectionHeader>
+          <p className="text-xs text-text-secondary/40">Uživatel nevybral cestu (onboarding nedokončen nebo starší účet).</p>
+        </div>
+      )}
+
+      {/* Friction patterns + interest signals */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Frictions */}
+        <div className="bg-surface border border-border rounded-2xl p-5">
+          <SectionHeader accent="bg-red-500">Překážky & problémy</SectionHeader>
+          {frictions.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {frictions.map((f) => (
+                <span
+                  key={f}
+                  className="px-2.5 py-1 bg-red-950/30 border border-red-800/30 rounded-lg text-xs text-red-400 font-medium"
+                >
+                  {FRICTION_LABELS[f] ?? f}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-text-secondary/40">Žádné překážky nezaznamenány.</p>
+          )}
+        </div>
+
+        {/* Interest signals */}
+        <div className="bg-surface border border-border rounded-2xl p-5">
+          <SectionHeader accent="bg-green-500">Zájem o funkce</SectionHeader>
+          {signals.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {signals.map((s) => (
+                <span
+                  key={s}
+                  className="px-2.5 py-1 bg-green-950/30 border border-green-800/30 rounded-lg text-xs text-green-400 font-medium"
+                >
+                  {SIGNAL_LABELS[s] ?? s}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-text-secondary/40">Žádné signály nezaznamenány.</p>
+          )}
+        </div>
+      </div>
+
       {/* Onboarding profile */}
       <div className="bg-surface border border-border rounded-2xl p-5">
-        <h2 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
-          <div className="w-1 h-4 bg-cta rounded-full" />
-          Onboarding profil
-        </h2>
+        <SectionHeader accent="bg-cta">Onboarding profil</SectionHeader>
         <div className="grid grid-cols-2 gap-x-8 gap-y-4">
           <ProfileField
             label="Cíl transformace"
@@ -220,8 +356,16 @@ export default function AdminUserDetailPage() {
             value={profile.equipment ? EQUIPMENT_LABELS[profile.equipment] : null}
           />
           <ProfileField
-            label="Tréninkové dny"
-            value={profile.workout_days_per_week ? `${profile.workout_days_per_week}× týdně` : null}
+            label="Tréninkové dny / týden"
+            value={profile.workout_days_per_week ? `${profile.workout_days_per_week}×` : null}
+          />
+          <ProfileField
+            label="Délka tréninku"
+            value={profile.session_duration_minutes ? `${profile.session_duration_minutes} min` : null}
+          />
+          <ProfileField
+            label="Aktivita (lifestyle)"
+            value={profile.activity_level ? ACTIVITY_LABELS[profile.activity_level] : null}
           />
           <ProfileField
             label="Věk"
@@ -250,25 +394,49 @@ export default function AdminUserDetailPage() {
         </div>
       </div>
 
-      {/* Motivation — only shown if filled */}
+      {/* Motivation */}
       {profile.target_motivation && (
         <div className="bg-surface border border-cta/15 rounded-2xl p-5">
-          <h2 className="text-sm font-bold text-text-primary mb-2 flex items-center gap-2">
-            <div className="w-1 h-4 bg-cta rounded-full" />
-            Motivace vlastními slovy
-          </h2>
+          <SectionHeader accent="bg-cta">Motivace vlastními slovy</SectionHeader>
           <p className="text-sm text-text-secondary leading-relaxed italic">
             „{profile.target_motivation}"
           </p>
         </div>
       )}
 
+      {/* AI Assessment summary */}
+      {latestAssessment && (
+        <div className="bg-surface border border-highlight/15 rounded-2xl p-5">
+          <SectionHeader accent="bg-highlight">AI analýza (nejnovější plán)</SectionHeader>
+          {latestAssessment.text && (
+            <p className="text-sm text-text-secondary leading-relaxed mb-4">
+              {latestAssessment.text}
+            </p>
+          )}
+          {freeAnalysis && Object.keys(freeAnalysis).length > 0 && (
+            <div className="flex flex-col gap-3 mt-3 pt-3 border-t border-border/50">
+              {Object.entries(freeAnalysis).map(([key, val]) => {
+                if (typeof val !== 'string' || !val) return null;
+                const keyLabel = key
+                  .replace(/_/g, ' ')
+                  .replace(/\b\w/g, (c) => c.toUpperCase());
+                return (
+                  <div key={key}>
+                    <p className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest mb-0.5">
+                      {keyLabel}
+                    </p>
+                    <p className="text-sm text-text-secondary leading-relaxed">{val}</p>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Account & billing */}
       <div className="bg-surface border border-border rounded-2xl p-5">
-        <h2 className="text-sm font-bold text-text-primary mb-4 flex items-center gap-2">
-          <div className="w-1 h-4 bg-highlight rounded-full" />
-          Účet & Předplatné
-        </h2>
+        <SectionHeader accent="bg-highlight">Účet & Předplatné</SectionHeader>
         <div className="grid grid-cols-2 gap-x-8 gap-y-4">
           <ProfileField
             label="Subscription tier"

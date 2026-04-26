@@ -7,6 +7,7 @@ interface AdminStats {
   total: number;
   byTier: Record<string, number>;
   byGoal: Record<string, number>;
+  byTrack: Record<string, number>;
   onboardingCompleted: number;
   onboardingRate: number;
   recentSignups: number;
@@ -27,6 +28,12 @@ const GOAL_LABELS: Record<string, string> = {
   general_fitness:    'Kondice',
   improve_discipline: 'Disciplína',
   improve_appearance: 'Vzhled',
+};
+
+const TRACK_META: Record<string, { label: string; icon: string; barClass: string; textClass: string }> = {
+  physique: { label: 'Fyzická transformace', icon: '💪', barClass: 'bg-cta',       textClass: 'text-cta' },
+  looks:    { label: 'Vzhled & Sebeobraz',   icon: '✨', barClass: 'bg-highlight', textClass: 'text-highlight' },
+  habits:   { label: 'Disciplína & Návyky',  icon: '🎯', barClass: 'bg-blue-500', textClass: 'text-blue-400' },
 };
 
 function StatCard({ label, value, sub, accentClass }: { label: string; value: string | number; sub: string; accentClass: string }) {
@@ -65,6 +72,7 @@ export default function AdminDashboard() {
           ))}
         </div>
         <div className="h-48 bg-surface rounded-2xl border border-border animate-shimmer" />
+        <div className="h-48 bg-surface rounded-2xl border border-border animate-shimmer" />
       </div>
     );
   }
@@ -78,6 +86,7 @@ export default function AdminDashboard() {
   }
 
   const conversionRate = stats.total > 0 ? Math.round((stats.paidUsers / stats.total) * 100) : 0;
+  const trackTotal = Object.values(stats.byTrack).reduce((a, b) => a + b, 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -144,6 +153,41 @@ export default function AdminDashboard() {
           })}
         </div>
       </div>
+
+      {/* Transformation track distribution */}
+      {trackTotal > 0 && (
+        <div className="bg-surface border border-border rounded-2xl p-5">
+          <h2 className="text-sm font-bold text-text-primary mb-4">Transformační cesty</h2>
+          <div className="flex flex-col gap-3">
+            {(['physique', 'looks', 'habits'] as const).map((trackKey) => {
+              const count = stats.byTrack[trackKey] ?? 0;
+              const pct = trackTotal > 0 ? Math.round((count / trackTotal) * 100) : 0;
+              const meta = TRACK_META[trackKey];
+              return (
+                <div key={trackKey} className="flex items-center gap-3">
+                  <span className="w-5 text-sm shrink-0">{meta.icon}</span>
+                  <span className={`w-32 text-xs font-semibold shrink-0 ${meta.textClass}`}>{meta.label}</span>
+                  <div className="flex-1 h-2 bg-surface2 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-700 ${meta.barClass}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <div className="w-20 text-right shrink-0">
+                    <span className="text-xs font-semibold text-text-primary">{count}</span>
+                    <span className="text-[10px] text-text-secondary/40 ml-1">({pct}%)</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {trackTotal < stats.onboardingCompleted && (
+            <p className="text-[10px] text-text-secondary/35 mt-3">
+              {stats.onboardingCompleted - trackTotal} uživatelů dokončilo onboarding před přidáním výběru cesty.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Goal distribution */}
       {Object.keys(stats.byGoal).length > 0 && (

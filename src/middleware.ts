@@ -10,7 +10,17 @@ export async function middleware(req: NextRequest) {
 
   // getUser() makes a server call to verify the JWT — more reliable than getSession()
   // which only reads from cookies/localStorage without validation.
-  const { data: { user } } = await supabase.auth.getUser();
+  // Wrapped in try/catch: if Supabase is unreachable, we treat the user as unauthenticated
+  // rather than crashing the middleware and returning 500 for every request.
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Auth service unreachable — fail open for public routes, protected routes will
+    // redirect to login. Better than crashing the entire middleware.
+    user = null;
+  }
 
   const { pathname } = req.nextUrl;
 

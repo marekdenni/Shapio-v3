@@ -35,6 +35,11 @@ function mapRowToProfile(row: Record<string, any>): UserProfile {
     dietaryPreference: row.dietary_preference ?? 'no_preference',
     injuries: row.injuries ?? '',
     targetMotivation: row.target_motivation ?? '',
+    activityLevel: row.activity_level ?? null,
+    sessionDurationMinutes: row.session_duration_minutes ?? null,
+    mainFrictions: row.main_frictions ?? [],
+    interestSignals: row.interest_signals ?? [],
+    selectedTrack: row.selected_track ?? null,
     onboardingCompleted: row.onboarding_completed ?? false,
     subscriptionTier: row.subscription_tier ?? 'free',
     stripeCustomerId: row.stripe_customer_id ?? undefined,
@@ -117,10 +122,18 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         return;
       }
 
-      // Only reload on meaningful auth changes — TOKEN_REFRESHED is excluded
-      // because it fires every ~60 min and the profile data hasn't changed.
-      if (user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
-        await get().loadProfile(user.id);
+      if (event === 'USER_UPDATED') {
+        // Always reload profile on user update (email change, metadata update, etc.)
+        if (user) await get().loadProfile(user.id);
+      } else if (event === 'SIGNED_IN') {
+        // For email/password sign-in: signIn() already awaited loadProfile() before
+        // this event fires — skip if we already have the profile to avoid a wasteful
+        // duplicate DB query. For Google OAuth: profile is never loaded before this
+        // event (OAuth redirect bypasses signIn()), so always load in that case.
+        const currentProfile = get().profile;
+        if (user && (!currentProfile || currentProfile.id !== user.id)) {
+          await get().loadProfile(user.id);
+        }
       }
 
       // Always exit loading after any auth event
@@ -346,6 +359,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       if (updates.dietaryPreference !== undefined) dbUpdates.dietary_preference = updates.dietaryPreference;
       if (updates.injuries !== undefined) dbUpdates.injuries = updates.injuries;
       if (updates.targetMotivation !== undefined) dbUpdates.target_motivation = updates.targetMotivation;
+      if (updates.activityLevel !== undefined) dbUpdates.activity_level = updates.activityLevel;
+      if (updates.sessionDurationMinutes !== undefined) dbUpdates.session_duration_minutes = updates.sessionDurationMinutes;
+      if (updates.mainFrictions !== undefined) dbUpdates.main_frictions = updates.mainFrictions;
+      if (updates.interestSignals !== undefined) dbUpdates.interest_signals = updates.interestSignals;
+      if (updates.selectedTrack !== undefined) dbUpdates.selected_track = updates.selectedTrack;
       if (updates.onboardingCompleted !== undefined) dbUpdates.onboarding_completed = updates.onboardingCompleted;
       if (updates.subscriptionTier !== undefined) dbUpdates.subscription_tier = updates.subscriptionTier;
       if (updates.activeOrgId !== undefined) dbUpdates.active_org_id = updates.activeOrgId;

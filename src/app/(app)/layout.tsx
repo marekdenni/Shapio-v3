@@ -48,15 +48,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   // Show loading spinner while auth is resolving or profile is still loading
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-14 h-14 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-blue animate-pulse">
             <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
-          <div className="w-32 h-1 bg-[#1D1D22] rounded-full overflow-hidden">
+          <div className="w-32 h-1 bg-surface2 rounded-full overflow-hidden">
             <div className="h-full bg-cta rounded-full w-2/3 animate-[shimmer_1.5s_ease-in-out_infinite]" />
           </div>
-          <p className="text-[#A1A1AA] text-sm">Načítám...</p>
+          <p className="text-text-secondary text-sm">Načítám...</p>
         </div>
       </div>
     );
@@ -65,27 +65,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   // Profile load failed after retries — show recoverable error instead of infinite spinner
   if (profileFailed) {
     return (
-      <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-[#151518] border border-[#2A2A31] rounded-2xl p-8 text-center">
-          <div className="w-14 h-14 bg-[#1D1D22] border border-[#2A2A31] rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-surface border border-border rounded-2xl p-8 text-center">
+          <div className="w-14 h-14 bg-surface2 border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
             ⚠️
           </div>
-          <h2 className="text-lg font-bold text-[#F5F5F5] mb-2">
+          <h2 className="text-lg font-bold text-text-primary mb-2">
             Nepodařilo se načíst profil
           </h2>
-          <p className="text-sm text-[#A1A1AA] mb-6">
+          <p className="text-sm text-text-secondary mb-6">
             Zkontroluj připojení k internetu a zkus to znovu.
           </p>
           <div className="flex flex-col gap-3">
             <button
               onClick={retryProfile}
-              className="w-full py-3 bg-cta hover:bg-highlight text-white font-bold rounded-xl transition-all duration-200"
+              className="w-full py-3 bg-cta hover:bg-highlight text-white font-bold rounded-xl transition-all duration-200 hover:shadow-glow-blue active:scale-[0.98]"
             >
               Zkusit znovu
             </button>
             <button
               onClick={() => useAuthStore.getState().signOut()}
-              className="w-full py-3 bg-[#1D1D22] border border-[#2A2A31] text-[#A1A1AA] hover:text-[#F5F5F5] rounded-xl transition-all duration-200"
+              className="w-full py-3 bg-surface2 border border-border text-text-secondary hover:text-text-primary rounded-xl transition-all duration-200 active:scale-[0.98]"
             >
               Odhlásit se
             </button>
@@ -98,12 +98,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   // Profile still loading (within retry budget) — show spinner
   if (user && !profile) {
     return (
-      <div className="min-h-screen bg-[#0B0B0D] flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-14 h-14 bg-gradient-cta rounded-2xl flex items-center justify-center shadow-glow-blue animate-pulse">
             <span className="text-white font-black text-2xl tracking-tight">G</span>
           </div>
-          <p className="text-[#A1A1AA] text-sm">Načítám profil...</p>
+          <p className="text-text-secondary text-sm">Načítám profil...</p>
         </div>
       </div>
     );

@@ -65,7 +65,7 @@ export function PricingSection({
             Vyberte svůj plán
           </h2>
           <p className="text-text-secondary max-w-xl mx-auto">
-            Začni zdarma nebo odemkni plný potenciál s prémiových plánem.
+            Začni zdarma nebo odemkni plný potenciál s prémiovým plánem.
           </p>
         </div>
       )}

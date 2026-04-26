@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { StepProgress } from '@/components/onboarding/StepProgress';
@@ -97,7 +97,6 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { profile, updateProfile, loading, isAuthenticated } = useAuth();
   const store = useOnboardingStore();
-  const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) router.replace('/login');
@@ -177,13 +176,13 @@ export default function OnboardingPage() {
             {/* Track cards */}
             <div className="flex flex-col gap-3 mb-8">
               {TRACKS.map((track) => {
-                const isSelected = selectedTrack === track.id;
+                const isSelected = store.selectedTrack === track.id;
                 return (
                   <button
                     key={track.id}
                     type="button"
                     onClick={() => {
-                      setSelectedTrack(track.id);
+                      store.setField('selectedTrack', track.id);
                       store.setField('goal', track.defaultGoal);
                     }}
                     className={[

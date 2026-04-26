@@ -1,7 +1,7 @@
 'use client';
 
 // Navbar component - adapts between landing and app modes
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Badge } from '@/components/ui/Badge';
@@ -14,6 +14,13 @@ export function Navbar() {
   const { isAuthenticated, profile, signOut } = useAuth();
   const { tier } = useSubscription();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Determine if we're in the app or on a landing/auth page
   const isAppPage =
@@ -31,7 +38,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-background/95 backdrop-blur-md border-b border-border">
+    <nav className={`sticky top-0 z-40 w-full backdrop-blur-xl border-b transition-all duration-300 ${scrolled ? 'bg-background/98 border-border shadow-[0_1px_24px_rgba(0,0,0,0.55)]' : 'bg-background/70 border-border/30'}`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}

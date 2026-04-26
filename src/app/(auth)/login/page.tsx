@@ -10,9 +10,11 @@ import { useAuthStore } from '@/stores/auth';
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { signIn, signInWithGoogle, loading } = useAuthStore();
+  const { signIn, signInWithGoogle, loading, initialized } = useAuthStore();
   // Used to read profile state after signIn resolves
   const getState = useAuthStore.getState;
+  // True only during the initial async session check — not during form submissions
+  const isInitializing = !initialized && loading;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -86,10 +88,10 @@ function LoginForm() {
     <div>
       {/* Header */}
       <div className="mb-7">
-        <h1 className="text-2xl font-black text-[#F5F5F5] mb-2">
+        <h1 className="text-2xl font-black text-text-primary mb-2">
           Přihlásit se do getbeter
         </h1>
-        <p className="text-[#A1A1AA] text-sm">
+        <p className="text-text-secondary text-sm">
           Vítej zpět! Zadej své přihlašovací údaje.
         </p>
       </div>
@@ -111,7 +113,7 @@ function LoginForm() {
       {/* Login form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">E-mail</label>
+          <label className="text-sm font-medium text-text-primary">E-mail</label>
           <input
             type="email"
             placeholder="tvuj@email.cz"
@@ -119,12 +121,12 @@ function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
             required
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
+            className="px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">Heslo</label>
+          <label className="text-sm font-medium text-text-primary">Heslo</label>
           <input
             type="password"
             placeholder="••••••••"
@@ -132,7 +134,7 @@ function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
             required
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
+            className="px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200"
           />
         </div>
 
@@ -140,7 +142,7 @@ function LoginForm() {
         <div className="flex justify-end -mt-2">
           <Link
             href="/forgot-password"
-            className="text-xs text-[#A1A1AA]/70 hover:text-[#A1A1AA] transition-colors"
+            className="text-xs text-text-secondary/70 hover:text-text-secondary transition-colors"
           >
             Zapomenuté heslo?
           </Link>
@@ -148,18 +150,18 @@ function LoginForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting || loading}
-          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
+          disabled={isSubmitting}
+          className="w-full py-3.5 bg-cta hover:bg-highlight disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-glow-blue active:scale-[0.98] mt-1"
         >
-          {isSubmitting ? 'Přihlašuji...' : 'Přihlásit se'}
+          {isSubmitting ? 'Přihlašuji...' : isInitializing ? 'Načítám...' : 'Přihlásit se'}
         </button>
       </form>
 
       {/* Divider */}
       <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px bg-[#2A2A31]" />
-        <span className="text-xs text-[#A1A1AA]/60">nebo</span>
-        <div className="flex-1 h-px bg-[#2A2A31]" />
+        <div className="flex-1 h-px bg-border" />
+        <span className="text-xs text-text-secondary/60">nebo</span>
+        <div className="flex-1 h-px bg-border" />
       </div>
 
       {/* Google OAuth button */}
@@ -167,7 +169,7 @@ function LoginForm() {
         type="button"
         onClick={handleGoogle}
         disabled={isGoogleLoading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#3B82F6]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 hover:bg-[#1D1D22]/80 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-surface2 border border-border hover:border-cta/50 rounded-xl text-sm text-text-primary font-medium transition-all duration-200 hover:bg-surface2/80 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {/* Google icon SVG */}
         <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
@@ -180,11 +182,11 @@ function LoginForm() {
       </button>
 
       {/* Register link */}
-      <p className="text-center text-sm text-[#A1A1AA] mt-6">
+      <p className="text-center text-sm text-text-secondary mt-6">
         Nemáš účet?{' '}
         <Link
           href="/register"
-          className="text-[#3B82F6] hover:text-[#7C3AED] font-semibold transition-colors"
+          className="text-cta hover:text-highlight font-semibold transition-colors"
         >
           Zaregistruj se
         </Link>
@@ -196,7 +198,7 @@ function LoginForm() {
 // Main export wrapped in Suspense for useSearchParams
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="text-[#A1A1AA] text-center p-10">Načítání...</div>}>
+    <Suspense fallback={<div className="text-text-secondary text-center p-10">Načítání...</div>}>
       <LoginForm />
     </Suspense>
   );

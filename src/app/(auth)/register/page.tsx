@@ -69,25 +69,25 @@ function RegisterForm() {
   if (confirmationSent) {
     return (
       <div className="text-center">
-        <div className="w-16 h-16 bg-[#1D1D22] border border-[#2A2A31] rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
+        <div className="w-16 h-16 bg-surface2 border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
           📧
         </div>
-        <h1 className="text-2xl font-black text-[#F5F5F5] mb-3">Potvrď svůj e-mail</h1>
-        <p className="text-[#A1A1AA] text-sm leading-relaxed mb-6">
+        <h1 className="text-2xl font-black text-text-primary mb-3">Potvrď svůj e-mail</h1>
+        <p className="text-text-secondary text-sm leading-relaxed mb-6">
           Poslali jsme ti potvrzovací odkaz na{' '}
-          <span className="text-[#F5F5F5] font-medium">{email}</span>.
+          <span className="text-text-primary font-medium">{email}</span>.
           <br />
           Klikni na odkaz v e-mailu a poté se přihlas.
         </p>
         <Link
           href="/login"
-          className="inline-block w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] text-white font-bold rounded-xl transition-all duration-200 text-center"
+          className="inline-block w-full py-3.5 bg-cta hover:bg-highlight text-white font-bold rounded-xl transition-all duration-200 text-center hover:shadow-glow-blue active:scale-[0.98]"
         >
           Přejít na přihlášení
         </Link>
         <button
           onClick={() => setConfirmationSent(false)}
-          className="mt-3 text-sm text-[#A1A1AA]/60 hover:text-[#A1A1AA] transition-colors"
+          className="mt-3 text-sm text-text-secondary/60 hover:text-text-secondary transition-colors"
         >
           ← Zpět
         </button>
@@ -98,8 +98,8 @@ function RegisterForm() {
   return (
     <div>
       <div className="mb-7">
-        <h1 className="text-2xl font-black text-[#F5F5F5] mb-2">Vytvoř si účet</h1>
-        <p className="text-[#A1A1AA] text-sm">
+        <h1 className="text-2xl font-black text-text-primary mb-2">Vytvoř si účet</h1>
+        <p className="text-text-secondary text-sm">
           {selectedPlan
             ? `Registruj se a pokračuj k plánu ${selectedPlan.toUpperCase()}`
             : 'Začni svou transformaci ještě dnes.'}
@@ -116,7 +116,7 @@ function RegisterForm() {
         type="button"
         onClick={handleGoogle}
         disabled={isGoogleLoading}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-[#1D1D22] border border-[#2A2A31] hover:border-[#3B82F6]/50 rounded-xl text-sm text-[#F5F5F5] font-medium transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mb-4"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-surface2 border border-border hover:border-cta/50 rounded-xl text-sm text-text-primary font-medium transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mb-4"
       >
         <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -128,76 +128,76 @@ function RegisterForm() {
       </button>
 
       <div className="flex items-center gap-3 mb-4">
-        <div className="flex-1 h-px bg-[#2A2A31]" />
-        <span className="text-xs text-[#A1A1AA]/60">nebo e-mailem</span>
-        <div className="flex-1 h-px bg-[#2A2A31]" />
+        <div className="flex-1 h-px bg-border" />
+        <span className="text-xs text-text-secondary/60">nebo e-mailem</span>
+        <div className="flex-1 h-px bg-border" />
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">Jméno</label>
+          <label className="text-sm font-medium text-text-primary">Jméno</label>
           <input
             type="text"
             placeholder="Jan Novák"
             value={name}
             onChange={(e) => setName(e.target.value)}
             autoComplete="name"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.name ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-surface2 text-text-primary border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200 ${errors.name ? 'border-red-600' : 'border-border'}`}
           />
           {errors.name && <p className="text-xs text-red-400">{errors.name}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">E-mail</label>
+          <label className="text-sm font-medium text-text-primary">E-mail</label>
           <input
             type="email"
             placeholder="tvuj@email.cz"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="email"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.email ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-surface2 text-text-primary border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200 ${errors.email ? 'border-red-600' : 'border-border'}`}
           />
           {errors.email && <p className="text-xs text-red-400">{errors.email}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">Heslo</label>
+          <label className="text-sm font-medium text-text-primary">Heslo</label>
           <input
             type="password"
             placeholder="Alespoň 6 znaků"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
-            className={`px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200 ${errors.password ? 'border-red-600' : 'border-[#2A2A31]'}`}
+            className={`px-4 py-3 bg-surface2 text-text-primary border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200 ${errors.password ? 'border-red-600' : 'border-border'}`}
           />
           {errors.password
             ? <p className="text-xs text-red-400">{errors.password}</p>
-            : <p className="text-xs text-[#A1A1AA]/60">Minimum 6 znaků</p>}
+            : <p className="text-xs text-text-secondary/60">Minimum 6 znaků</p>}
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
+          className="w-full py-3.5 bg-cta hover:bg-highlight disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-glow-blue active:scale-[0.98] mt-1"
         >
           {isSubmitting ? 'Vytvářím účet...' : 'Vytvořit účet'}
         </button>
       </form>
 
-      <p className="text-xs text-[#A1A1AA]/60 text-center mt-4 leading-relaxed">
+      <p className="text-xs text-text-secondary/60 text-center mt-4 leading-relaxed">
         Registrací souhlasíš s{' '}
-        <Link href="/podminky-pouziti" className="text-[#A1A1AA]/80 hover:text-[#A1A1AA] underline underline-offset-2 transition-colors">
+        <Link href="/podminky-pouziti" className="text-text-secondary/80 hover:text-text-secondary underline underline-offset-2 transition-colors">
           Podmínkami použití
         </Link>{' '}
         a{' '}
-        <Link href="/ochrana-osobnich-udaju" className="text-[#A1A1AA]/80 hover:text-[#A1A1AA] underline underline-offset-2 transition-colors">
+        <Link href="/ochrana-osobnich-udaju" className="text-text-secondary/80 hover:text-text-secondary underline underline-offset-2 transition-colors">
           Ochranou osobních údajů
         </Link>.
       </p>
 
-      <p className="text-center text-sm text-[#A1A1AA] mt-5">
+      <p className="text-center text-sm text-text-secondary mt-5">
         Již máš účet?{' '}
-        <Link href="/login" className="text-[#3B82F6] hover:text-[#7C3AED] font-semibold transition-colors">
+        <Link href="/login" className="text-cta hover:text-highlight font-semibold transition-colors">
           Přihlásit se
         </Link>
       </p>
@@ -208,7 +208,7 @@ function RegisterForm() {
 // 2. Hlavní export, který Next.js vyžaduje pro build
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="text-[#A1A1AA] text-center p-10">Načítání...</div>}>
+    <Suspense fallback={<div className="text-text-secondary text-center p-10">Načítání...</div>}>
       <RegisterForm />
     </Suspense>
   );

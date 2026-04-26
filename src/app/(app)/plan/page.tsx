@@ -98,10 +98,10 @@ export default function PlanPage() {
                   'px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200',
                   'border min-w-[80px]',
                   selectedWeek === i && !isLocked
-                    ? 'bg-[#3B82F6] border-[#3B82F6] text-white shadow-[0_0_15px_rgba(59,130,246,0.3)]'
+                    ? 'bg-cta border-cta text-white shadow-glow-blue'
                     : isLocked
                     ? 'bg-surface border-border text-text-secondary/30 cursor-not-allowed'
-                    : 'bg-surface2 border-border text-text-secondary hover:text-text-primary hover:border-[#3B82F6]/40',
+                    : 'bg-surface2 border-border text-text-secondary hover:text-text-primary hover:border-cta/40 active:scale-[0.97]',
                 ].join(' ')}
               >
                 {isLocked ? (

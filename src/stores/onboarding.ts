@@ -44,6 +44,7 @@ interface OnboardingState extends OnboardingData {
 }
 
 const initialState: OnboardingData = {
+  selectedTrack: null,
   photos: [],
   photoConsent: false,
   goal: null,
@@ -111,7 +112,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       canGoNext: () => {
         const state = get();
         switch (state.currentStep) {
-          case 0: return true; // Welcome screen
+          case 0: return !!state.selectedTrack; // Track must be selected
           case 1: {
             // Photos are optional but consent must be given if photos are uploaded
             if (state.photos.length > 0 && !state.photoConsent) return false;
@@ -165,6 +166,11 @@ export const useOnboardingStore = create<OnboardingState>()(
           dietaryPreference: state.dietaryPreference || 'no_preference',
           injuries: state.injuries || '',
           targetMotivation: state.targetMotivation || '',
+          activityLevel: state.activityLevel,
+          sessionDurationMinutes: state.sessionDurationMinutes,
+          mainFrictions: state.mainFrictions,
+          interestSignals: state.interestSignals,
+          selectedTrack: state.selectedTrack,
           // onboardingCompleted intentionally omitted — set only by generate-plan API
         };
       },
@@ -185,6 +191,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       // Persist form data and current step — skip photos (large base64 strings) and actions
       partialize: (state): Partial<OnboardingState> => ({
         currentStep: state.currentStep,
+        selectedTrack: state.selectedTrack,
         goal: state.goal,
         sex: state.sex,
         age: state.age,

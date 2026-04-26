@@ -16,6 +16,11 @@ interface AdminUserRow {
   onboarding_completed: boolean;
   is_platform_admin: boolean;
   target_motivation: string | null;
+  selected_track: string | null;
+  main_frictions: string[] | null;
+  interest_signals: string[] | null;
+  activity_level: string | null;
+  session_duration_minutes: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -36,12 +41,30 @@ const GOAL_LABELS: Record<string, string> = {
   improve_appearance: 'Vzhled',
 };
 
+const TRACK_META: Record<string, { label: string; icon: string; cls: string }> = {
+  physique: { label: 'Fyzická',    icon: '💪', cls: 'text-cta' },
+  looks:    { label: 'Vzhled',     icon: '✨', cls: 'text-highlight' },
+  habits:   { label: 'Návyky',     icon: '🎯', cls: 'text-blue-400' },
+};
+
+const FRICTION_LABELS: Record<string, string> = {
+  no_time:           'Nemá čas',
+  no_motivation:     'Chybí motivace',
+  no_energy:         'Nemá energii',
+  dont_know_what_to_do: 'Neví co dělat',
+  injury_fear:       'Strach ze zranění',
+  past_failures:     'Dřívější neúspěchy',
+  social_anxiety:    'Soc. úzkost',
+  bad_diet_habits:   'Špatné stravování',
+};
+
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [tierFilter, setTierFilter] = useState('all');
+  const [trackFilter, setTrackFilter] = useState('all');
   const [onboardingFilter, setOnboardingFilter] = useState('all');
 
   useEffect(() => {
@@ -61,11 +84,12 @@ export default function AdminUsersPage() {
       (u.name ?? '').toLowerCase().includes(q) ||
       (u.email ?? '').toLowerCase().includes(q);
     const matchTier = tierFilter === 'all' || u.subscription_tier === tierFilter;
+    const matchTrack = trackFilter === 'all' || u.selected_track === trackFilter;
     const matchOnboarding =
       onboardingFilter === 'all' ||
       (onboardingFilter === 'done' && u.onboarding_completed) ||
       (onboardingFilter === 'pending' && !u.onboarding_completed);
-    return matchSearch && matchTier && matchOnboarding;
+    return matchSearch && matchTier && matchTrack && matchOnboarding;
   });
 
   const paidCount = users.filter((u) => u.subscription_tier !== 'free').length;
@@ -104,6 +128,16 @@ export default function AdminUsersPage() {
           <option value="elite">Elite</option>
         </select>
         <select
+          value={trackFilter}
+          onChange={(e) => setTrackFilter(e.target.value)}
+          className="px-3 py-2 bg-surface border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-cta/40 transition-colors"
+        >
+          <option value="all">Všechny cesty</option>
+          <option value="physique">💪 Fyzická</option>
+          <option value="looks">✨ Vzhled</option>
+          <option value="habits">🎯 Návyky</option>
+        </select>
+        <select
           value={onboardingFilter}
           onChange={(e) => setOnboardingFilter(e.target.value)}
           className="px-3 py-2 bg-surface border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-cta/40 transition-colors"
@@ -116,9 +150,10 @@ export default function AdminUsersPage() {
 
       {/* Table header */}
       {!loading && filtered.length > 0 && (
-        <div className="hidden sm:grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-3 px-4 py-1.5">
+        <div className="hidden lg:grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] gap-3 px-4 py-1.5">
           <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest">Uživatel</span>
           <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest w-16 text-center">Plán</span>
+          <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest w-20 text-center">Cesta</span>
           <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest w-24 text-center">Cíl</span>
           <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest w-16 text-center">Onboarding</span>
           <span className="text-[10px] font-bold text-text-secondary/40 uppercase tracking-widest w-24 text-right">Registrace</span>
@@ -145,20 +180,22 @@ export default function AdminUsersPage() {
         <div className="flex flex-col gap-1.5">
           {filtered.map((user) => {
             const tier = TIER_BADGE[user.subscription_tier] ?? TIER_BADGE.free;
+            const track = user.selected_track ? TRACK_META[user.selected_track] : null;
             const initials = (user.name ?? user.email ?? '?')[0]?.toUpperCase() ?? '?';
             const regDate = new Date(user.created_at).toLocaleDateString('cs-CZ', {
               day: 'numeric', month: 'short',
             });
+            const frictions = Array.isArray(user.main_frictions) ? user.main_frictions : [];
 
             return (
               <Link
                 key={user.id}
                 href={`/admin/users/${user.id}`}
-                className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-3 bg-surface border border-border rounded-xl px-4 py-3 hover:border-cta/25 hover:bg-surface2/40 transition-all group"
+                className="grid grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-3 bg-surface border border-border rounded-xl px-4 py-3 hover:border-cta/25 hover:bg-surface2/40 transition-all group"
               >
-                {/* Name + email */}
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 bg-cta/10 border border-cta/20 rounded-lg flex items-center justify-center text-xs font-black text-cta shrink-0">
+                {/* Name + email + frictions */}
+                <div className="flex items-start gap-2.5 min-w-0">
+                  <div className="w-8 h-8 bg-cta/10 border border-cta/20 rounded-lg flex items-center justify-center text-xs font-black text-cta shrink-0 mt-0.5">
                     {initials}
                   </div>
                   <div className="min-w-0">
@@ -169,6 +206,18 @@ export default function AdminUsersPage() {
                       )}
                     </p>
                     <p className="text-xs text-text-secondary/50 truncate">{user.email}</p>
+                    {frictions.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {frictions.slice(0, 2).map((f) => (
+                          <span key={f} className="px-1.5 py-0.5 bg-surface2 border border-border rounded text-[9px] text-text-secondary/50">
+                            {FRICTION_LABELS[f] ?? f}
+                          </span>
+                        ))}
+                        {frictions.length > 2 && (
+                          <span className="text-[9px] text-text-secondary/30">+{frictions.length - 2}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -177,13 +226,25 @@ export default function AdminUsersPage() {
                   {tier.label}
                 </span>
 
+                {/* Track */}
+                <div className="shrink-0 hidden lg:flex justify-center w-20">
+                  {track ? (
+                    <span className={`text-xs font-semibold ${track.cls} flex items-center gap-1`}>
+                      <span>{track.icon}</span>
+                      <span className="hidden xl:inline">{track.label}</span>
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-text-secondary/25">—</span>
+                  )}
+                </div>
+
                 {/* Goal */}
-                <span className="shrink-0 hidden sm:block text-xs text-text-secondary/60 w-24 text-center">
+                <span className="shrink-0 hidden lg:block text-xs text-text-secondary/60 w-24 text-center">
                   {user.goal ? GOAL_LABELS[user.goal] : '—'}
                 </span>
 
                 {/* Onboarding */}
-                <div className="shrink-0 hidden sm:flex justify-center w-16">
+                <div className="shrink-0 hidden lg:flex justify-center w-16">
                   {user.onboarding_completed ? (
                     <span className="w-5 h-5 bg-green-500/12 border border-green-500/25 rounded-full flex items-center justify-center">
                       <svg className="w-3 h-3 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +259,7 @@ export default function AdminUsersPage() {
                 </div>
 
                 {/* Date */}
-                <span className="shrink-0 hidden sm:block text-[10px] text-text-secondary/40 w-24 text-right">
+                <span className="shrink-0 hidden lg:block text-[10px] text-text-secondary/40 w-24 text-right">
                   {regDate}
                 </span>
 

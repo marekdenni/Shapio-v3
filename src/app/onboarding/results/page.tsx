@@ -254,7 +254,7 @@ export default function ResultsPage() {
                 <div className="border-t border-border/60 my-1" />
                 <AnalysisRow icon="🔁" label="Návyk pro první týden" body={freeAnalysis.habitFocus} />
                 <AnalysisRow icon="▶️" label="Příští krok" body={freeAnalysis.nextStep} highlight />
-                <div className="mt-1 p-3 bg-cta/8 border border-cta/25 rounded-xl">
+                <div className="mt-1 p-3 bg-cta/10 border border-cta/25 rounded-xl">
                   <p className="text-sm text-highlight font-medium leading-relaxed">{freeAnalysis.motivationalCta}</p>
                 </div>
                 {freeAnalysis.premiumTeaser && (

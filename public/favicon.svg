@@ -1,21 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B1E2D"/>
-      <stop offset="100%" stop-color="#C0253F"/>
+      <stop offset="0%" stop-color="#1E40AF"/>
+      <stop offset="45%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
     </linearGradient>
   </defs>
-  <!-- Rounded square background -->
-  <rect width="32" height="32" rx="7" fill="url(#bg)"/>
-  <!-- White S letterform — clean, bold, centered -->
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <!-- Subtle inner shine overlay -->
+  <rect width="32" height="16" rx="8" fill="url(#shine)"/>
+  <!-- G letterform — bold, centered, white -->
   <text
     x="16"
-    y="23"
+    y="22.5"
     font-family="'Arial Black', 'Arial', sans-serif"
-    font-size="20"
+    font-size="18"
     font-weight="900"
     text-anchor="middle"
     fill="white"
     letter-spacing="-0.5"
-  >S</text>
+  >G</text>
 </svg>

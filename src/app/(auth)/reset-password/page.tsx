@@ -56,15 +56,15 @@ export default function ResetPasswordPage() {
   if (done) {
     return (
       <div className="text-center">
-        <div className="w-16 h-16 bg-[#1D1D22] border border-[#2A2A31] rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
+        <div className="w-16 h-16 bg-surface2 border border-border rounded-2xl flex items-center justify-center mx-auto mb-5 text-3xl">
           ✅
         </div>
-        <h1 className="text-2xl font-black text-[#F5F5F5] mb-3">Heslo bylo změněno</h1>
-        <p className="text-[#A1A1AA] text-sm leading-relaxed mb-6">
+        <h1 className="text-2xl font-black text-text-primary mb-3">Heslo bylo změněno</h1>
+        <p className="text-text-secondary text-sm leading-relaxed mb-6">
           Tvoje heslo bylo úspěšně aktualizováno. Přesměrovávám tě do aplikace…
         </p>
-        <div className="w-full h-1 bg-[#1D1D22] rounded-full overflow-hidden">
-          <div className="h-full bg-[#3B82F6] rounded-full animate-[loading_2.5s_linear_forwards]" />
+        <div className="w-full h-1 bg-surface2 rounded-full overflow-hidden">
+          <div className="h-full bg-cta rounded-full animate-[loading_2.5s_linear_forwards]" />
         </div>
       </div>
     );
@@ -73,8 +73,8 @@ export default function ResetPasswordPage() {
   return (
     <div>
       <div className="mb-7">
-        <h1 className="text-2xl font-black text-[#F5F5F5] mb-2">Nastavit nové heslo</h1>
-        <p className="text-[#A1A1AA] text-sm">
+        <h1 className="text-2xl font-black text-text-primary mb-2">Nastavit nové heslo</h1>
+        <p className="text-text-secondary text-sm">
           Zadej nové heslo pro svůj účet.
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function ResetPasswordPage() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">Nové heslo</label>
+          <label className="text-sm font-medium text-text-primary">Nové heslo</label>
           <input
             type="password"
             placeholder="Alespoň 6 znaků"
@@ -95,26 +95,26 @@ export default function ResetPasswordPage() {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
             autoFocus
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
+            className="px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#F5F5F5]">Zopakovat heslo</label>
+          <label className="text-sm font-medium text-text-primary">Zopakovat heslo</label>
           <input
             type="password"
             placeholder="Stejné heslo ještě jednou"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             autoComplete="new-password"
-            className="px-4 py-3 bg-[#1D1D22] text-[#F5F5F5] border border-[#2A2A31] rounded-xl placeholder:text-[#A1A1AA]/50 focus:outline-none focus:ring-2 focus:ring-[#3B82F6]/40 focus:border-[#3B82F6]/60 transition-all duration-200"
+            className="px-4 py-3 bg-surface2 text-text-primary border border-border rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:ring-2 focus:ring-cta/40 focus:border-cta/60 transition-all duration-200"
           />
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting || loading}
-          className="w-full py-3.5 bg-[#3B82F6] hover:bg-[#7C3AED] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-[0.98] mt-1"
+          className="w-full py-3.5 bg-cta hover:bg-highlight disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold rounded-xl transition-all duration-200 hover:shadow-glow-blue active:scale-[0.98] mt-1"
         >
           {isSubmitting ? 'Ukládám...' : 'Uložit nové heslo'}
         </button>

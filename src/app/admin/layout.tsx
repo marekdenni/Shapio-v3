@@ -73,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   className={[
                     'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
                     isActive
-                      ? 'bg-cta/12 text-cta border border-cta/20'
+                      ? 'bg-cta/10 text-cta border border-cta/20'
                       : 'text-text-secondary hover:text-text-primary hover:bg-surface2',
                   ].join(' ')}
                 >
